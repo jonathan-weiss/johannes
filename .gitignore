@@ -1,0 +1,7 @@
+.idea/workspace.xml
+
+build/
+.gradle/
+
+# os temp files
+.directory
