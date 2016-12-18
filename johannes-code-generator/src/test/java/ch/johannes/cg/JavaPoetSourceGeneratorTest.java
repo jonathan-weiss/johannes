@@ -1,5 +1,6 @@
 package ch.johannes.cg;
 
+import ch.johannes.FileUtil;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.*;
