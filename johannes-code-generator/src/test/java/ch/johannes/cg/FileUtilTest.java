@@ -9,12 +9,12 @@ public class FileUtilTest {
 
     @Test
     public void readFileInPackage() throws Exception {
-        assertThat(FileUtil.readFileInPackage(this, "FileUtilTest.readFileInPackage.txt"), startsWith("hello file util"));
+        assertThat(FileUtil.readFileInPackage(this, FileUtilTest.class.getSimpleName() + ".readFileInPackage.txt"), startsWith("hello file util"));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void readFileInUnknownPackage() throws Exception {
-        assertThat(FileUtil.readFileInPackage(this, "inexistent-file.txt"), startsWith("hello file util"));
+        FileUtil.readFileInPackage(this, "inexistent-file.txt");
     }
 
 }
