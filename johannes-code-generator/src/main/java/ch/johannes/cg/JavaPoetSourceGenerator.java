@@ -24,8 +24,6 @@ public class JavaPoetSourceGenerator {
         JavaFile javaFile = JavaFile.builder("com.example.helloworld", helloWorld)
                 .build();
 
-
-
         return javaFile.toString();
     }
 
