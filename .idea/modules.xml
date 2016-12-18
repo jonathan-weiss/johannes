@@ -5,6 +5,9 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/johannes-code-generator.iml" filepath="$PROJECT_DIR$/.idea/modules/johannes-code-generator.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/johannes-code-generator_main.iml" filepath="$PROJECT_DIR$/.idea/modules/johannes-code-generator_main.iml" group="johannes-code-generator" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/johannes-code-generator_test.iml" filepath="$PROJECT_DIR$/.idea/modules/johannes-code-generator_test.iml" group="johannes-code-generator" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/johannes-examples.iml" filepath="$PROJECT_DIR$/.idea/modules/johannes-examples.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/johannes-examples_main.iml" filepath="$PROJECT_DIR$/.idea/modules/johannes-examples_main.iml" group="johannes-examples" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/johannes-examples_test.iml" filepath="$PROJECT_DIR$/.idea/modules/johannes-examples_test.iml" group="johannes-examples" />
       <module fileurl="file://$PROJECT_DIR$/.idea/johannes-framework.iml" filepath="$PROJECT_DIR$/.idea/johannes-framework.iml" />
     </modules>
   </component>
