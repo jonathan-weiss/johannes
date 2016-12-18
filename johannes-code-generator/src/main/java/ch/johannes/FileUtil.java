@@ -8,11 +8,11 @@ import java.io.InputStream;
 public class FileUtil {
 
     public static String readFileInPackage(Object instanceOfPackage, String filename) {
-        try {
-            Package aPackage = instanceOfPackage.getClass().getPackage();
-            String packageName = aPackage.getName();
-            String resourceName = "/".concat(packageName.replace('.', '/')).concat("/").concat(filename);
-            InputStream resourceAsStream = instanceOfPackage.getClass().getResourceAsStream(resourceName);
+        Package aPackage = instanceOfPackage.getClass().getPackage();
+        String packageName = aPackage.getName();
+        String resourceName = "/".concat(packageName.replace('.', '/')).concat("/").concat(filename);
+
+        try(InputStream resourceAsStream = instanceOfPackage.getClass().getResourceAsStream(resourceName)) {
             if (resourceAsStream == null) {
                 throw new IllegalArgumentException(String.format("Couldn't find resource '%s' in package '%s' (%s).", filename, packageName, resourceName));
             }
@@ -24,18 +24,13 @@ public class FileUtil {
     }
 
     private static String readInputStream(InputStream inputStream) throws IOException {
-        BufferedInputStream bis = new BufferedInputStream(inputStream);
-        ByteArrayOutputStream buf = new ByteArrayOutputStream();
-        try {
+        try (BufferedInputStream bis = new BufferedInputStream(inputStream); ByteArrayOutputStream buf = new ByteArrayOutputStream()) {
             int result = bis.read();
             while (result != -1) {
                 buf.write((byte) result);
                 result = bis.read();
             }
             return buf.toString();
-        } finally {
-            bis.close();
-            buf.close();
         }
     }
 
