@@ -49,14 +49,14 @@ public class JavaSourceWriterTest {
         //Arrange
         Path basePath = Files.createTempDirectory("JavaSourceWriterTest");
         JavaSourceWriter javaSourceWriter = new JavaSourceWriter(basePath);
-        PackageDescriptor packageName = PackageDescriptor.of("");
+        PackageDescriptor packageName = PackageDescriptor.of("com.foo.bar");
         ClassnameDescriptor className = ClassnameDescriptor.of("MyClass");
         String content = "public class MyClass {}";
         Path pathToWriteTo = javaSourceWriter.getJavaSourceFilePath(packageName, className);
 
         //Act
-        javaSourceWriter.writeJavaSourceFile(pathToWriteTo, content); //test write
-        javaSourceWriter.writeJavaSourceFile(pathToWriteTo, content); //test overwrite
+        JavaSourceWriter.writeJavaSourceFile(pathToWriteTo, content); //test write
+        JavaSourceWriter.writeJavaSourceFile(pathToWriteTo, content); //test overwrite
 
         //Assert
         assertThat(Files.exists(pathToWriteTo), is(Boolean.TRUE));

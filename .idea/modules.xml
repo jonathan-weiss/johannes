@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1382810767/code-generator_main.iml" filepath="$PROJECT_DIR$/.idea/modules/1382810767/code-generator_main.iml" group="code-generator" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1382810767/code-generator_test.iml" filepath="$PROJECT_DIR$/.idea/modules/1382810767/code-generator_test.iml" group="code-generator" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/-177266971/examples.iml" filepath="$PROJECT_DIR$/.idea/modules/-177266971/examples.iml" group="examples" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-177266971/examples_codegeneration.iml" filepath="$PROJECT_DIR$/.idea/modules/-177266971/examples_codegeneration.iml" group="examples" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/-177266971/examples_main.iml" filepath="$PROJECT_DIR$/.idea/modules/-177266971/examples_main.iml" group="examples" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/-177266971/examples_test.iml" filepath="$PROJECT_DIR$/.idea/modules/-177266971/examples_test.iml" group="examples" />
       <module fileurl="file://$PROJECT_DIR$/.idea/johannes-framework.iml" filepath="$PROJECT_DIR$/.idea/johannes-framework.iml" />

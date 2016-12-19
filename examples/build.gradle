@@ -1,8 +1,51 @@
 apply from: "$rootDir/java.gradle"
 apply from: "$rootDir/intellij.gradle"
 
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java', 'src/generated/main/java']
+        }
+        resources {
+            srcDirs = ['src/main/resources', 'src/generated/main/resources']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['src/test/java', 'src/generated/test/java']
+        }
+        resources {
+            srcDirs = ['src/test/resources', 'src/generated/test/resources']
+        }
+    }
+    codegeneration {
+        java {
+            srcDir './codegeneration/java'
+        }
+        resources {
+            srcDir './codegeneration/resources'
+        }
+    }
+
+}
+configurations {
+    codegeneration
+}
 dependencies {
     compile libs.junit
     compile project(':code-generator')
-
+    codegenerationCompile project(':code-generator')
 }
+
+
+// generate the sources
+task generateSources(type: JavaExec) {
+    classpath configurations.codegeneration + sourceSets.codegeneration.runtimeClasspath
+    main = 'ch.johannes.examples.ExamplesCodeGenerationRunner'
+    args =["./src/generated/main/java", "./src/generated/test/java"]
+}
+
+
+// making sure that source files are generated
+// before compilation
+compileJava.dependsOn(generateSources)

@@ -25,8 +25,14 @@ public class JavaSourceWriter {
         return path;
     };
 
-    public void writeJavaSourceFile(Path path, String content) throws IOException{
+    public void writeJavaSourceFile(PackageDescriptor packageName, ClassnameDescriptor filename, String content) throws IOException {
+        final Path filePath = getJavaSourceFilePath(packageName, filename);
+        writeJavaSourceFile(filePath, content);
+    }
+
+    public static void writeJavaSourceFile(Path path, String content) throws IOException {
         if(!Files.exists(path)) {
+            Files.createDirectories(path.getParent());
             Files.createFile(path);
         }
         Files.write(path, content.getBytes());
