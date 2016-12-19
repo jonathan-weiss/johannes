@@ -10,9 +10,9 @@ public class PersonMappingDescription {
 
     public static BeanDescriptor create() {
         BeanDescriptor personTODescriptor = BeanDescriptorBuilder.with(ClassnameDescriptor.of("MyPersonTO"))
-                .addTargetField(FieldDescriptor.of("lastname", String.class))
-                .addTargetField(FieldDescriptor.of("firstname", String.class))
-                .setTargetBeanPackage(PackageDescriptor.of("ch.johannes.examples.mapper.oneone"))
+                .addBeanField(FieldDescriptor.of("lastname", String.class))
+                .addBeanField(FieldDescriptor.of("firstname", String.class))
+                .setBeanPackage(PackageDescriptor.of("ch.johannes.examples.mapper.oneone"))
                 .createBeanDescriptor();
 
         return personTODescriptor;

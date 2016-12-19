@@ -5,44 +5,43 @@ import java.util.List;
 
 public class BeanDescriptorBuilder {
 
-    private PackageDescriptor targetBeanPackage;
+    private PackageDescriptor beanPackage;
 
-    private ClassnameDescriptor targetBeanName;
+    private ClassnameDescriptor beanName;
 
-    private List<FieldDescriptor> targetFields = new ArrayList<>();
+    private List<FieldDescriptor> beanFields = new ArrayList<>();
 
-    public static BeanDescriptorBuilder with(ClassnameDescriptor targetBeanName) {
+    public static BeanDescriptorBuilder with(ClassnameDescriptor beanName) {
         BeanDescriptorBuilder builder = new BeanDescriptorBuilder();
-        return builder.setTargetBeanName(targetBeanName);
+        return builder.setBeanName(beanName);
     }
 
-    public BeanDescriptorBuilder setTargetBeanPackage(PackageDescriptor targetBeanPackage) {
-        this.targetBeanPackage = targetBeanPackage;
+    public BeanDescriptorBuilder setBeanPackage(PackageDescriptor beanPackage) {
+        this.beanPackage = beanPackage;
         return this;
     }
 
-
-    public BeanDescriptorBuilder setTargetBeanName(ClassnameDescriptor targetBeanName) {
-        this.targetBeanName = targetBeanName;
+    public BeanDescriptorBuilder setBeanName(ClassnameDescriptor beanName) {
+        this.beanName = beanName;
         return this;
     }
 
-    public BeanDescriptorBuilder setTargetFields(List<FieldDescriptor> targetFields) {
-        this.targetFields = targetFields;
+    public BeanDescriptorBuilder setBeanFields(List<FieldDescriptor> beanFields) {
+        this.beanFields = beanFields;
         return this;
     }
 
-    public BeanDescriptorBuilder addTargetFields(List<FieldDescriptor> targetFields) {
-        this.targetFields.addAll(targetFields);
+    public BeanDescriptorBuilder addBeanFields(List<FieldDescriptor> beanFields) {
+        this.beanFields.addAll(beanFields);
         return this;
     }
 
-    public BeanDescriptorBuilder addTargetField(FieldDescriptor targetField) {
-        this.targetFields.add(targetField);
+    public BeanDescriptorBuilder addBeanField(FieldDescriptor beanField) {
+        this.beanFields.add(beanField);
         return this;
     }
 
     public BeanDescriptor createBeanDescriptor() {
-        return new BeanDescriptor(targetBeanPackage, targetBeanName, targetFields);
+        return new BeanDescriptor(beanPackage, beanName, beanFields);
     }
 }

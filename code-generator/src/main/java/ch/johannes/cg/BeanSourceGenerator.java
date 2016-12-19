@@ -16,7 +16,7 @@ public class BeanSourceGenerator {
     public String generateCode(BeanDescriptor beanDescriptor) {
         List<FieldSpec> fields = new ArrayList<>();
         List<MethodSpec> setterAndGetterMethods = new ArrayList<>();
-        for (FieldDescriptor fieldDescriptor : beanDescriptor.getTargetFields()) {
+        for (FieldDescriptor fieldDescriptor : beanDescriptor.getBeanFields()) {
             String nameOfField = fieldDescriptor.getFieldName();
             Class<?> classOfField = fieldDescriptor.getFieldType();
             FieldSpec fieldSpec = FieldSpec.builder(classOfField, nameOfField)
@@ -42,13 +42,13 @@ public class BeanSourceGenerator {
             setterAndGetterMethods.add(setter);
 
         }
-        TypeSpec targetType = TypeSpec.classBuilder(beanDescriptor.getTargetBeanName().getClassName())
+        TypeSpec targetType = TypeSpec.classBuilder(beanDescriptor.getBeanName().getClassName())
                 .addModifiers(Modifier.PUBLIC)
                 .addFields(fields)
                 .addMethods(setterAndGetterMethods)
                 .build();
 
-        JavaFile javaFile = JavaFile.builder(beanDescriptor.getTargetBeanPackage().getPackageName(), targetType)
+        JavaFile javaFile = JavaFile.builder(beanDescriptor.getBeanPackage().getPackageName(), targetType)
                 .build();
 
         return javaFile.toString();

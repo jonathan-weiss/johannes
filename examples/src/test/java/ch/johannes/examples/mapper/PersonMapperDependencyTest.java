@@ -10,7 +10,7 @@ import org.junit.Test;
 public class PersonMapperDependencyTest {
   @Test
   public void testDependenciesCanBeResolved() {
-      Person person = new Person("Johannes", "Generator");
+      Person person = new Person("Johannes", "Täufer");
       PersonTO personTO = new PersonTO();
       MyPersonTO myPersonTO = new MyPersonTO();
       MyGeneratedPersonMapper myGeneratedPersonMapper = new MyGeneratedPersonMapper();

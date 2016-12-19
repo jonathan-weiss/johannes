@@ -38,19 +38,19 @@ public class ExamplesCodeGenerationRunner {
             final BeanDescriptor personTODescriptor = PersonMappingDescription.create();
             BeanSourceGenerator cg = new BeanSourceGenerator();
             final String sourceCodeForPersonTO = cg.generateCode(personTODescriptor);
-            mainJavaSourceWriter.writeJavaSourceFile(personTODescriptor.getTargetBeanPackage(), personTODescriptor.getTargetBeanName(), sourceCodeForPersonTO);
+            mainJavaSourceWriter.writeJavaSourceFile(personTODescriptor.getBeanPackage(), personTODescriptor.getBeanName(), sourceCodeForPersonTO);
 
             //generate mapper
             String mapperName = "MyGeneratedPersonMapper";
             MapperSourceGenerator mapperCg = new MapperSourceGenerator();
-            final String sourceCodeForPersonMapper = mapperCg.generateCode(personDescriptor, personTODescriptor, personTODescriptor.getTargetBeanPackage(), ClassnameDescriptor.of(mapperName));
-            mainJavaSourceWriter.writeJavaSourceFile(personTODescriptor.getTargetBeanPackage(), ClassnameDescriptor.of(mapperName), sourceCodeForPersonMapper);
+            final String sourceCodeForPersonMapper = mapperCg.generateCode(personDescriptor, personTODescriptor, personTODescriptor.getBeanPackage(), ClassnameDescriptor.of(mapperName));
+            mainJavaSourceWriter.writeJavaSourceFile(personTODescriptor.getBeanPackage(), ClassnameDescriptor.of(mapperName), sourceCodeForPersonMapper);
 
             //generate test
             String mapperTestName = "MyGeneratedPersonMapperTest";
             MapperTestSourceGenerator mapperTestCg = new MapperTestSourceGenerator();
-            final String sourceCodeForPersonMapperTest = mapperTestCg.generateCode(personDescriptor, personTODescriptor, personTODescriptor.getTargetBeanPackage(), ClassnameDescriptor.of(mapperTestName));
-            testJavaSourceWriter.writeJavaSourceFile(personTODescriptor.getTargetBeanPackage(), ClassnameDescriptor.of(mapperTestName), sourceCodeForPersonMapperTest);
+            final String sourceCodeForPersonMapperTest = mapperTestCg.generateCode(personDescriptor, personTODescriptor, personTODescriptor.getBeanPackage(), ClassnameDescriptor.of(mapperTestName));
+            testJavaSourceWriter.writeJavaSourceFile(personTODescriptor.getBeanPackage(), ClassnameDescriptor.of(mapperTestName), sourceCodeForPersonMapperTest);
 
         } catch (IOException e) {
             throw new RuntimeException(e);

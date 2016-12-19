@@ -20,9 +20,9 @@ public class BeanSourceGeneratorTest {
         BeanSourceGenerator cg = new BeanSourceGenerator();
 
         BeanDescriptor personTODescriptor = BeanDescriptorBuilder.with(ClassnameDescriptor.of("PersonTO"))
-                .addTargetField(FieldDescriptor.of("firstname", String.class))
-                .addTargetField(FieldDescriptor.of("lastname", String.class))
-                .setTargetBeanPackage(PackageDescriptor.of("ch.johannes.examples.mapper.oneone"))
+                .addBeanField(FieldDescriptor.of("firstname", String.class))
+                .addBeanField(FieldDescriptor.of("lastname", String.class))
+                .setBeanPackage(PackageDescriptor.of("ch.johannes.examples.mapper.oneone"))
                 .createBeanDescriptor();
 
         String generatedCode = cg.generateCode(personTODescriptor);
