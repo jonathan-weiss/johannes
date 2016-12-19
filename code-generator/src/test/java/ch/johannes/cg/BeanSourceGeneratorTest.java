@@ -1,8 +1,8 @@
 package ch.johannes.cg;
 
 import ch.johannes.FileUtil;
-import ch.johannes.descriptor.BeanDescriptor;
-import ch.johannes.descriptor.BeanDescriptorBuilder;
+import ch.johannes.descriptor.ClassDescriptor;
+import ch.johannes.descriptor.ClassDescriptorBuilder;
 import ch.johannes.descriptor.ClassnameDescriptor;
 import ch.johannes.descriptor.FieldDescriptor;
 import ch.johannes.descriptor.PackageDescriptor;
@@ -19,11 +19,11 @@ public class BeanSourceGeneratorTest {
 
         BeanSourceGenerator cg = new BeanSourceGenerator();
 
-        BeanDescriptor personTODescriptor = BeanDescriptorBuilder.with(ClassnameDescriptor.of("PersonTO"))
-                .addBeanField(FieldDescriptor.of("firstname", String.class))
-                .addBeanField(FieldDescriptor.of("lastname", String.class))
-                .setBeanPackage(PackageDescriptor.of("ch.johannes.examples.mapper.oneone"))
-                .createBeanDescriptor();
+        ClassDescriptor personTODescriptor = ClassDescriptorBuilder.with(ClassnameDescriptor.of("PersonTO"))
+                .addClassField(FieldDescriptor.of("firstname", String.class))
+                .addClassField(FieldDescriptor.of("lastname", String.class))
+                .setClassPackage(PackageDescriptor.of("ch.johannes.examples.mapper.oneone"))
+                .build();
 
         String generatedCode = cg.generateCode(personTODescriptor);
         assertThat(generatedCode, equalTo(expectedJavaSourceText));

@@ -1,6 +1,6 @@
 package ch.johannes.cg.dummy;
 
-import ch.johannes.descriptor.BeanDescriptor;
+import ch.johannes.descriptor.ClassDescriptor;
 import ch.johannes.descriptor.ClassnameDescriptor;
 import ch.johannes.descriptor.PackageDescriptor;
 import com.squareup.javapoet.JavaFile;
@@ -12,7 +12,7 @@ import javax.lang.model.element.Modifier;
 
 public class MapperTestSourceGenerator {
 
-    public String generateCode(BeanDescriptor sourceBean, BeanDescriptor targetBean, PackageDescriptor packageDescriptor, ClassnameDescriptor testClassName) {
+    public String generateCode(ClassDescriptor sourceBean, ClassDescriptor targetBean, PackageDescriptor packageDescriptor, ClassnameDescriptor testClassName) {
         MethodSpec dummyTestMethod = MethodSpec.methodBuilder("simpleTest")
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Test.class)

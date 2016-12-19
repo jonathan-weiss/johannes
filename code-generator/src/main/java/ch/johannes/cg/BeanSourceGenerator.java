@@ -1,6 +1,6 @@
 package ch.johannes.cg;
 
-import ch.johannes.descriptor.BeanDescriptor;
+import ch.johannes.descriptor.ClassDescriptor;
 import ch.johannes.descriptor.FieldDescriptor;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
@@ -13,10 +13,10 @@ import java.util.List;
 
 public class BeanSourceGenerator {
 
-    public String generateCode(BeanDescriptor beanDescriptor) {
+    public String generateCode(ClassDescriptor classDescriptor) {
         List<FieldSpec> fields = new ArrayList<>();
         List<MethodSpec> setterAndGetterMethods = new ArrayList<>();
-        for (FieldDescriptor fieldDescriptor : beanDescriptor.getBeanFields()) {
+        for (FieldDescriptor fieldDescriptor : classDescriptor.getFields()) {
             String nameOfField = fieldDescriptor.getFieldName();
             Class<?> classOfField = fieldDescriptor.getFieldType();
             FieldSpec fieldSpec = FieldSpec.builder(classOfField, nameOfField)
@@ -42,13 +42,13 @@ public class BeanSourceGenerator {
             setterAndGetterMethods.add(setter);
 
         }
-        TypeSpec targetType = TypeSpec.classBuilder(beanDescriptor.getBeanName().getClassName())
+        TypeSpec targetType = TypeSpec.classBuilder(classDescriptor.getTypeDescriptor().getClassName().getClassName())
                 .addModifiers(Modifier.PUBLIC)
                 .addFields(fields)
                 .addMethods(setterAndGetterMethods)
                 .build();
 
-        JavaFile javaFile = JavaFile.builder(beanDescriptor.getBeanPackage().getPackageName(), targetType)
+        JavaFile javaFile = JavaFile.builder(classDescriptor.getTypeDescriptor().getClassPackage().getPackageName(), targetType)
                 .build();
 
         return javaFile.toString();

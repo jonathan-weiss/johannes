@@ -1,6 +1,6 @@
 package ch.johannes.cg.dummy;
 
-import ch.johannes.descriptor.BeanDescriptor;
+import ch.johannes.descriptor.ClassDescriptor;
 import ch.johannes.descriptor.ClassnameDescriptor;
 import ch.johannes.descriptor.PackageDescriptor;
 import com.squareup.javapoet.ClassName;
@@ -12,9 +12,9 @@ import javax.lang.model.element.Modifier;
 
 public class MapperSourceGenerator {
 
-    public String generateCode(BeanDescriptor sourceBean, BeanDescriptor targetBean, PackageDescriptor packageDescriptor, ClassnameDescriptor mapperClassName) {
-        ClassName sourceBeanClass = ClassName.get(sourceBean.getBeanPackage().getPackageName(), sourceBean.getBeanName().getClassName());
-        ClassName targetBeanClass = ClassName.get(targetBean.getBeanPackage().getPackageName(), targetBean.getBeanName().getClassName());
+    public String generateCode(ClassDescriptor sourceBean, ClassDescriptor targetBean, PackageDescriptor packageDescriptor, ClassnameDescriptor mapperClassName) {
+        ClassName sourceBeanClass = ClassName.get(sourceBean.getTypeDescriptor().getClassPackage().getPackageName(), sourceBean.getTypeDescriptor().getClassName().getClassName());
+        ClassName targetBeanClass = ClassName.get(targetBean.getTypeDescriptor().getClassPackage().getPackageName(), targetBean.getTypeDescriptor().getClassName().getClassName());
 
         MethodSpec dummyApply = MethodSpec.methodBuilder("apply")
                 .addModifiers(Modifier.PUBLIC)
