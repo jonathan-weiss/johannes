@@ -9,7 +9,7 @@ public class BeanDescriptorBuilder {
 
     private String targetBeanName;
 
-    private List<FieldDescription> targetFields = new ArrayList<>();
+    private List<FieldDescriptor> targetFields = new ArrayList<>();
 
     public static BeanDescriptorBuilder with(String targetBeanName) {
         BeanDescriptorBuilder builder = new BeanDescriptorBuilder();
@@ -27,17 +27,17 @@ public class BeanDescriptorBuilder {
         return this;
     }
 
-    public BeanDescriptorBuilder setTargetFields(List<FieldDescription> targetFields) {
+    public BeanDescriptorBuilder setTargetFields(List<FieldDescriptor> targetFields) {
         this.targetFields = targetFields;
         return this;
     }
 
-    public BeanDescriptorBuilder addTargetFields(List<FieldDescription> targetFields) {
+    public BeanDescriptorBuilder addTargetFields(List<FieldDescriptor> targetFields) {
         this.targetFields.addAll(targetFields);
         return this;
     }
 
-    public BeanDescriptorBuilder addTargetField(FieldDescription targetField) {
+    public BeanDescriptorBuilder addTargetField(FieldDescriptor targetField) {
         this.targetFields.add(targetField);
         return this;
     }

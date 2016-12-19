@@ -8,9 +8,9 @@ public class BeanDescriptor {
 
     private final String targetBeanName;
 
-    private final List<FieldDescription> targetFields;
+    private final List<FieldDescriptor> targetFields;
 
-    public BeanDescriptor(String targetBeanPackage, String targetBeanName, List<FieldDescription> targetFields) {
+    public BeanDescriptor(String targetBeanPackage, String targetBeanName, List<FieldDescriptor> targetFields) {
         this.targetBeanPackage = targetBeanPackage;
         this.targetBeanName = targetBeanName;
         this.targetFields = targetFields;
@@ -24,7 +24,7 @@ public class BeanDescriptor {
         return targetBeanName;
     }
 
-    public List<FieldDescription> getTargetFields() {
+    public List<FieldDescriptor> getTargetFields() {
         return targetFields;
     }
 }

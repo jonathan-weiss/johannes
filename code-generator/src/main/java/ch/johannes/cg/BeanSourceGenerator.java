@@ -1,7 +1,7 @@
 package ch.johannes.cg;
 
 import ch.johannes.descriptor.BeanDescriptor;
-import ch.johannes.descriptor.FieldDescription;
+import ch.johannes.descriptor.FieldDescriptor;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
@@ -9,7 +9,6 @@ import com.squareup.javapoet.TypeSpec;
 
 import javax.lang.model.element.Modifier;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public class BeanSourceGenerator {
@@ -17,9 +16,9 @@ public class BeanSourceGenerator {
     public String generateCode(BeanDescriptor beanDescriptor) {
         List<FieldSpec> fields = new ArrayList<>();
         List<MethodSpec> setterAndGetterMethods = new ArrayList<>();
-        for (FieldDescription fieldDescription : beanDescriptor.getTargetFields()) {
-            String nameOfField = fieldDescription.getFieldName();
-            Class<?> classOfField = fieldDescription.getFieldType();
+        for (FieldDescriptor fieldDescriptor : beanDescriptor.getTargetFields()) {
+            String nameOfField = fieldDescriptor.getFieldName();
+            Class<?> classOfField = fieldDescriptor.getFieldType();
             FieldSpec fieldSpec = FieldSpec.builder(classOfField, nameOfField)
                     .addModifiers(Modifier.PRIVATE)
                     .build();
