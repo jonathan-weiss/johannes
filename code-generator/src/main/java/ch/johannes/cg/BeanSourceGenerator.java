@@ -42,7 +42,7 @@ public class BeanSourceGenerator {
             setterAndGetterMethods.add(setter);
 
         }
-        TypeSpec targetType = TypeSpec.classBuilder(beanDescriptor.getTargetBeanName())
+        TypeSpec targetType = TypeSpec.classBuilder(beanDescriptor.getTargetBeanName().getClassName())
                 .addModifiers(Modifier.PUBLIC)
                 .addFields(fields)
                 .addMethods(setterAndGetterMethods)

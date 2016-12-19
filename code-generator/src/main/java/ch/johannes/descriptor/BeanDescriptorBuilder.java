@@ -7,11 +7,11 @@ public class BeanDescriptorBuilder {
 
     private PackageDescriptor targetBeanPackage;
 
-    private String targetBeanName;
+    private ClassnameDescriptor targetBeanName;
 
     private List<FieldDescriptor> targetFields = new ArrayList<>();
 
-    public static BeanDescriptorBuilder with(String targetBeanName) {
+    public static BeanDescriptorBuilder with(ClassnameDescriptor targetBeanName) {
         BeanDescriptorBuilder builder = new BeanDescriptorBuilder();
         return builder.setTargetBeanName(targetBeanName);
     }
@@ -22,7 +22,7 @@ public class BeanDescriptorBuilder {
     }
 
 
-    public BeanDescriptorBuilder setTargetBeanName(String targetBeanName) {
+    public BeanDescriptorBuilder setTargetBeanName(ClassnameDescriptor targetBeanName) {
         this.targetBeanName = targetBeanName;
         return this;
     }

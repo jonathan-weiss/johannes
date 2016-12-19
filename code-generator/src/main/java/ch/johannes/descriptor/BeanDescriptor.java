@@ -6,11 +6,11 @@ public class BeanDescriptor {
 
     private final PackageDescriptor targetBeanPackage;
 
-    private final String targetBeanName;
+    private final ClassnameDescriptor targetBeanName;
 
     private final List<FieldDescriptor> targetFields;
 
-    public BeanDescriptor(PackageDescriptor targetBeanPackage, String targetBeanName, List<FieldDescriptor> targetFields) {
+    public BeanDescriptor(PackageDescriptor targetBeanPackage, ClassnameDescriptor targetBeanName, List<FieldDescriptor> targetFields) {
         this.targetBeanPackage = targetBeanPackage;
         this.targetBeanName = targetBeanName;
         this.targetFields = targetFields;
@@ -20,7 +20,7 @@ public class BeanDescriptor {
         return targetBeanPackage;
     }
 
-    public String getTargetBeanName() {
+    public ClassnameDescriptor getTargetBeanName() {
         return targetBeanName;
     }
 

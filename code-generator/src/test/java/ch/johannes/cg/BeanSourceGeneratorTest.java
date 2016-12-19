@@ -3,6 +3,7 @@ package ch.johannes.cg;
 import ch.johannes.FileUtil;
 import ch.johannes.descriptor.BeanDescriptor;
 import ch.johannes.descriptor.BeanDescriptorBuilder;
+import ch.johannes.descriptor.ClassnameDescriptor;
 import ch.johannes.descriptor.FieldDescriptor;
 import ch.johannes.descriptor.PackageDescriptor;
 import org.junit.Test;
@@ -18,7 +19,7 @@ public class BeanSourceGeneratorTest {
 
         BeanSourceGenerator cg = new BeanSourceGenerator();
 
-        BeanDescriptor personTODescriptor = BeanDescriptorBuilder.with("PersonTO")
+        BeanDescriptor personTODescriptor = BeanDescriptorBuilder.with(ClassnameDescriptor.of("PersonTO"))
                 .addTargetField(FieldDescriptor.of("firstname", String.class))
                 .addTargetField(FieldDescriptor.of("lastname", String.class))
                 .setTargetBeanPackage(PackageDescriptor.of("ch.johannes.examples.mapper.oneone"))
