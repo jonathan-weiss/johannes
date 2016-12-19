@@ -1,6 +1,7 @@
 package ch.johannes.cg;
 
 public class BeanUtil {
+
     public static String createGetterName(String fieldname) {
         return "get" + fieldname.substring(0, 1).toUpperCase() + fieldname.substring(1);
     }

@@ -1,6 +1,9 @@
 package ch.johannes.cg;
 
 import ch.johannes.FileUtil;
+import ch.johannes.descriptor.BeanDescriptor;
+import ch.johannes.descriptor.BeanDescriptorBuilder;
+import ch.johannes.descriptor.FieldDescription;
 import org.junit.Test;
 
 import java.util.LinkedHashMap;
@@ -16,13 +19,13 @@ public class BeanSourceGeneratorTest {
 
         BeanSourceGenerator cg = new BeanSourceGenerator();
 
-        String targetPackageName = "ch.johannes.examples.mapper.oneone";
-        String targetClassName = "PersonTO";
-        LinkedHashMap<String, Class<?>> targetFieldNames = new LinkedHashMap<>();
-        targetFieldNames.put("firstname", String.class);
-        targetFieldNames.put("lastname", String.class);
+        BeanDescriptor personTODescriptor = BeanDescriptorBuilder.with("PersonTO")
+                .addTargetField(FieldDescription.of("firstname", String.class))
+                .addTargetField(FieldDescription.of("lastname", String.class))
+                .setTargetBeanPackage("ch.johannes.examples.mapper.oneone")
+                .createBeanDescriptor();
 
-        String generatedCode = cg.generateCode(targetPackageName, targetClassName, targetFieldNames);
+        String generatedCode = cg.generateCode(personTODescriptor);
         assertThat(generatedCode, equalTo(expectedJavaSourceText));
     }
 }
