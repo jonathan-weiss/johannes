@@ -1,0 +1,26 @@
+apply plugin: 'java'
+
+sourceSets {
+    main {
+        compileClasspath += configurations.provided
+        test.compileClasspath += configurations.provided
+        test.runtimeClasspath += configurations.provided
+    }
+}
+
+dependencies {
+    testCompile libs.junit
+    testCompile libs.hamcrest
+    testCompile libs.mockito
+}
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+jar { manifest.attributes provider: 'gradle' }

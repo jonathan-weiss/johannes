@@ -1,0 +1,8 @@
+apply from: "$rootDir/java.gradle"
+apply from: "$rootDir/intellij.gradle"
+
+dependencies {
+    compile libs.junit
+    compile project(':code-generator')
+
+}

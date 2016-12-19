@@ -1,0 +1,7 @@
+apply from: "$rootDir/java.gradle"
+apply from: "$rootDir/intellij.gradle"
+
+dependencies {
+    testCompile libs.junit
+    compile libs.javapoet
+}

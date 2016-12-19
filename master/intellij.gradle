@@ -1,0 +1,11 @@
+apply plugin: 'idea'
+
+idea {
+
+    module {
+        //if you need to put 'provided' dependencies on the classpath
+        scopes.PROVIDED.plus += [configurations.provided]
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
