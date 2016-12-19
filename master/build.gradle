@@ -2,15 +2,16 @@ buildscript {
     ext {
         // Define symbolic dependency versions.
         versions = [
-                commons_collections: '4.1',
-                commons_io         : '2.5',
-                commons_lang       : '3.4',
-                groovy             : '2.4.6',
-                guava              : '19.0',
-                hamcrest           : '1.3',
-                javapoet           : '1.8.0',
-                junit              : '4.11',
-                mockito            : '2.0.2-beta',
+                commons_collections            : '4.1',
+                commons_io                     : '2.5',
+                commons_lang                   : '3.4',
+                fast_classpath_scanner         : '2.0.9',
+                groovy                         : '2.4.6',
+                guava                          : '19.0',
+                hamcrest                       : '1.3',
+                javapoet                       : '1.8.0',
+                junit                          : '4.11',
+                mockito                        : '2.0.2-beta',
         ]
 
         // Define symbolic names for dependencies.
@@ -18,6 +19,7 @@ buildscript {
                 commons_collections           : "org.apache.commons:commons-collections4:${versions.commons_collections}",
                 commons_io                    : "commons-io:commons-io:${versions.commons_io}",
                 commons_lang                  : "org.apache.commons:commons-lang3:${versions.commons_lang}",
+                fast_classpath_scanner        : "io.github.lukehutch:fast-classpath-scanner:${versions.fast_classpath_scanner}",
                 groovy                        : "org.codehaus.groovy:groovy-all:${versions.groovy}",
                 guava                         : "com.google.guava:guava:${versions.guava}",
                 hamcrest                      : "org.hamcrest:hamcrest-all:${versions.hamcrest}",
