@@ -11,6 +11,10 @@ public class TypeDescriptor {
         this.className = className;
     }
 
+    public static TypeDescriptor of(PackageDescriptor packageDescriptor, ClassnameDescriptor classnameDescriptor) {
+        return new TypeDescriptor(packageDescriptor, classnameDescriptor);
+    }
+
     public PackageDescriptor getClassPackage() {
         return classPackage;
     }

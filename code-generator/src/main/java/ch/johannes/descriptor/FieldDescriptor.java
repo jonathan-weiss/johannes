@@ -4,14 +4,14 @@ public class FieldDescriptor {
 
     private final String fieldName;
 
-    private final Class<?> fieldType;
+    private final TypeDescriptor fieldType;
 
-    private FieldDescriptor(String fieldName, Class<?> fieldType) {
+    private FieldDescriptor(String fieldName, TypeDescriptor fieldType) {
         this.fieldName = fieldName;
         this.fieldType = fieldType;
     }
 
-    public static FieldDescriptor of(String fieldName, Class<?> fieldType) {
+    public static FieldDescriptor of(String fieldName, TypeDescriptor fieldType) {
         return new FieldDescriptor(fieldName, fieldType);
     }
 
@@ -19,7 +19,7 @@ public class FieldDescriptor {
         return fieldName;
     }
 
-    public Class<?> getFieldType() {
+    public TypeDescriptor getFieldType() {
         return fieldType;
     }
 }

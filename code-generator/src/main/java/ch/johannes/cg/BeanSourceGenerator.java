@@ -2,6 +2,7 @@ package ch.johannes.cg;
 
 import ch.johannes.descriptor.ClassDescriptor;
 import ch.johannes.descriptor.FieldDescriptor;
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
@@ -18,7 +19,7 @@ public class BeanSourceGenerator {
         List<MethodSpec> setterAndGetterMethods = new ArrayList<>();
         for (FieldDescriptor fieldDescriptor : classDescriptor.getFields()) {
             String nameOfField = fieldDescriptor.getFieldName();
-            Class<?> classOfField = fieldDescriptor.getFieldType();
+            ClassName classOfField = ClassName.get(fieldDescriptor.getFieldType().getClassPackage().getPackageName(), fieldDescriptor.getFieldType().getClassName().getClassName());
             FieldSpec fieldSpec = FieldSpec.builder(classOfField, nameOfField)
                     .addModifiers(Modifier.PRIVATE)
                     .build();
