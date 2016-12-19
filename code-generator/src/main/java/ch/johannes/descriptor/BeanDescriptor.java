@@ -4,19 +4,19 @@ import java.util.List;
 
 public class BeanDescriptor {
 
-    private final String targetBeanPackage;
+    private final PackageDescriptor targetBeanPackage;
 
     private final String targetBeanName;
 
     private final List<FieldDescriptor> targetFields;
 
-    public BeanDescriptor(String targetBeanPackage, String targetBeanName, List<FieldDescriptor> targetFields) {
+    public BeanDescriptor(PackageDescriptor targetBeanPackage, String targetBeanName, List<FieldDescriptor> targetFields) {
         this.targetBeanPackage = targetBeanPackage;
         this.targetBeanName = targetBeanName;
         this.targetFields = targetFields;
     }
 
-    public String getTargetBeanPackage() {
+    public PackageDescriptor getTargetBeanPackage() {
         return targetBeanPackage;
     }
 

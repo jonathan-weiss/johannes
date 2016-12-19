@@ -48,7 +48,7 @@ public class BeanSourceGenerator {
                 .addMethods(setterAndGetterMethods)
                 .build();
 
-        JavaFile javaFile = JavaFile.builder(beanDescriptor.getTargetBeanPackage(), targetType)
+        JavaFile javaFile = JavaFile.builder(beanDescriptor.getTargetBeanPackage().getPackageName(), targetType)
                 .build();
 
         return javaFile.toString();

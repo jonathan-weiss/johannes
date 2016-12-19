@@ -4,6 +4,7 @@ import ch.johannes.FileUtil;
 import ch.johannes.descriptor.BeanDescriptor;
 import ch.johannes.descriptor.BeanDescriptorBuilder;
 import ch.johannes.descriptor.FieldDescriptor;
+import ch.johannes.descriptor.PackageDescriptor;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -20,7 +21,7 @@ public class BeanSourceGeneratorTest {
         BeanDescriptor personTODescriptor = BeanDescriptorBuilder.with("PersonTO")
                 .addTargetField(FieldDescriptor.of("firstname", String.class))
                 .addTargetField(FieldDescriptor.of("lastname", String.class))
-                .setTargetBeanPackage("ch.johannes.examples.mapper.oneone")
+                .setTargetBeanPackage(PackageDescriptor.of("ch.johannes.examples.mapper.oneone"))
                 .createBeanDescriptor();
 
         String generatedCode = cg.generateCode(personTODescriptor);

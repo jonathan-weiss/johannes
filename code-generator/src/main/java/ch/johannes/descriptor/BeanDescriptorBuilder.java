@@ -5,7 +5,7 @@ import java.util.List;
 
 public class BeanDescriptorBuilder {
 
-    private String targetBeanPackage;
+    private PackageDescriptor targetBeanPackage;
 
     private String targetBeanName;
 
@@ -16,7 +16,7 @@ public class BeanDescriptorBuilder {
         return builder.setTargetBeanName(targetBeanName);
     }
 
-    public BeanDescriptorBuilder setTargetBeanPackage(String targetBeanPackage) {
+    public BeanDescriptorBuilder setTargetBeanPackage(PackageDescriptor targetBeanPackage) {
         this.targetBeanPackage = targetBeanPackage;
         return this;
     }
