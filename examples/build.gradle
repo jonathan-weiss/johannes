@@ -45,6 +45,12 @@ task generateSources(type: JavaExec) {
     args =["./src/generated/main/java", "./src/generated/test/java"]
 }
 
+// deletes the generated sources
+task cleanupGenerateSources(type: Delete) {
+    delete './src/generated'
+    followSymlinks = false
+}
+
 
 // making sure that source files are generated
 // before compilation
