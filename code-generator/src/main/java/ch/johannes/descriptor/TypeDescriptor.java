@@ -26,6 +26,36 @@ public class TypeDescriptor {
     public ClassnameDescriptor getClassName() {
         return className;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        TypeDescriptor that = (TypeDescriptor) o;
+
+        if (!classPackage.equals(that.classPackage)) {
+            return false;
+        }
+        return className.equals(that.className);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = classPackage.hashCode();
+        result = 31 * result + className.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return classPackage + "|" + className;
+    }
 }
 
 

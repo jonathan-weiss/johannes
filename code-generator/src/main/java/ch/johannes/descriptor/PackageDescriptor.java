@@ -29,4 +29,29 @@ public class PackageDescriptor {
         }
         return Arrays.asList(packageName.split("\\."));
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        PackageDescriptor that = (PackageDescriptor) o;
+
+        return packageName.equals(that.packageName);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return packageName.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return packageName;
+    }
 }

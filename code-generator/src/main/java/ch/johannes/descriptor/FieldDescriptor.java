@@ -28,4 +28,37 @@ public class FieldDescriptor {
     public TypeDescriptor getFieldType() {
         return fieldType;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        FieldDescriptor that = (FieldDescriptor) o;
+
+        if (!fieldName.equals(that.fieldName)) {
+            return false;
+        }
+        return fieldType.equals(that.fieldType);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = fieldName.hashCode();
+        result = 31 * result + fieldType.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "FieldDescriptor{" +
+                "fieldName='" + fieldName + '\'' +
+                ", fieldType=" + fieldType +
+                '}';
+    }
 }

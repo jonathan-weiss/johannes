@@ -24,6 +24,34 @@ public class ClassDescriptor {
     public TypeDescriptor getTypeDescriptor() {
         return typeDescriptor;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        ClassDescriptor that = (ClassDescriptor) o;
+
+        return typeDescriptor.equals(that.typeDescriptor);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return typeDescriptor.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "ClassDescriptor{" +
+                "typeDescriptor=" + typeDescriptor +
+                ", fields=" + fields +
+                '}';
+    }
 }
 
 
