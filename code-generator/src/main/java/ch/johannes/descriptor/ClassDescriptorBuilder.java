@@ -3,7 +3,7 @@ package ch.johannes.descriptor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassDescriptorBuilder {
+public class ClassDescriptorBuilder implements DescriptorBuilder<ClassDescriptor> {
 
     private TypeDescriptorBuilder typeDescriptorBuilder = new TypeDescriptorBuilder();
 

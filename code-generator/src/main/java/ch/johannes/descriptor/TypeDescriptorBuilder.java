@@ -1,6 +1,6 @@
 package ch.johannes.descriptor;
 
-public class TypeDescriptorBuilder {
+public class TypeDescriptorBuilder implements DescriptorBuilder<TypeDescriptor>{
 
     private PackageDescriptor classPackage;
 
