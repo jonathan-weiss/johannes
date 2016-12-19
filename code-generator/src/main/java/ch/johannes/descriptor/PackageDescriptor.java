@@ -1,5 +1,7 @@
 package ch.johannes.descriptor;
 
+import com.google.common.base.Preconditions;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -9,6 +11,7 @@ public class PackageDescriptor {
     private final String packageName;
 
     private PackageDescriptor(String packageName) {
+        Preconditions.checkNotNull(packageName, "package must not be null. Define empty string for default package");
         this.packageName = packageName;
     }
 

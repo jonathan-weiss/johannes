@@ -1,5 +1,7 @@
 package ch.johannes.descriptor;
 
+import com.google.common.base.Preconditions;
+
 public class FieldDescriptor {
 
     private final String fieldName;
@@ -7,6 +9,10 @@ public class FieldDescriptor {
     private final TypeDescriptor fieldType;
 
     private FieldDescriptor(String fieldName, TypeDescriptor fieldType) {
+        Preconditions.checkNotNull(fieldName, "field name must not be null.");
+        Preconditions.checkState(!fieldName.isEmpty(), "field name must not be empty.");
+        Preconditions.checkNotNull(fieldType, "field type must not be null.");
+
         this.fieldName = fieldName;
         this.fieldType = fieldType;
     }

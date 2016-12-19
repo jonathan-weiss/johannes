@@ -2,7 +2,8 @@ apply from: "$rootDir/java.gradle"
 apply from: "$rootDir/intellij.gradle"
 
 dependencies {
-    compile libs.junit //for generators
+    compile libs.junit //for generators to know test annotations
+    compile libs.guava
     testCompile libs.junit
     compile libs.javapoet
 }

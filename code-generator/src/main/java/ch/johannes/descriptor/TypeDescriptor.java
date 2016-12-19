@@ -1,5 +1,7 @@
 package ch.johannes.descriptor;
 
+import com.google.common.base.Preconditions;
+
 public class TypeDescriptor {
 
     private final PackageDescriptor classPackage;
@@ -7,6 +9,8 @@ public class TypeDescriptor {
     private final ClassnameDescriptor className;
 
     TypeDescriptor(PackageDescriptor classPackage, ClassnameDescriptor className) {
+        Preconditions.checkNotNull(classPackage, "package must not be null.");
+        Preconditions.checkNotNull(className, "classname must not be null.");
         this.classPackage = classPackage;
         this.className = className;
     }
