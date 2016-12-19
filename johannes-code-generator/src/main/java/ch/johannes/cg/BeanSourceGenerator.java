@@ -14,14 +14,7 @@ import java.util.List;
 
 public class BeanSourceGenerator {
 
-    public String generateCode() {
-        String targetPackageName = "ch.johannes.examples.mapper.oneone";
-        String targetClassName = "PersonTO";
-        LinkedHashMap<String, Class<?>> targetFieldNames = new LinkedHashMap<>();
-        targetFieldNames.put("firstname", String.class);
-        targetFieldNames.put("lastname", String.class);
-
-
+    public String generateCode(String targetPackageName, String targetClassName, LinkedHashMap<String, Class<?>> targetFieldNames) {
         List<FieldSpec> fields = new ArrayList<>();
         List<MethodSpec> setterAndGetterMethods = new ArrayList<>();
         for(String fieldName : targetFieldNames.keySet()) {
