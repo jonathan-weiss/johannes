@@ -17,22 +17,20 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
-@Ignore("The following is not supported,yet: 1. generics, 2. Arrays, 3. Primitives and its arrays (NPE)")
 public class ClassReflectorTest {
 
-    class MyTestClassToReflect {
-        private final int number = 0;
-        private String text = "";
-        private List<String> tokenList;
-        private String [] tokenArray;
-        private List<String> [] tokenListArray;
-        private List<List<Class<String>>> genericInGeneric;
-        private MyTestClassToReflect recursive;
-    }
-
     @Test
-    @Ignore("The following is not supported,yet: 1. generics, 2. Arrays, 3. Primitives and its arrays (NPE)")
     public void reflectClassWithMiscClass() throws Exception {
+        class MyTestClassToReflect {
+            private final int number = 0;
+            private String text = "";
+            private List<String> tokenList;
+            private String [] tokenArray;
+            private List<String> [] tokenListArray;
+            private List<List<Class<String>>> genericInGeneric;
+            private MyTestClassToReflect recursive;
+        }
+
         //Arrange
         Class<?> clazzString = MyTestClassToReflect.class;
 
@@ -62,7 +60,6 @@ public class ClassReflectorTest {
 
 
     @Test
-    @Ignore("The following is not supported,yet: 1. generics, 2. Arrays, 3. Primitives and its arrays (NPE)")
     public void reflectClassWithString() throws Exception {
         //Arrange
         Class<?> clazzString = String.class;
@@ -73,11 +70,10 @@ public class ClassReflectorTest {
         //Assert
         assertThat(classDescriptorForString.getTypeDescriptor().getClassName().getClassName(), is("String"));
         assertThat(classDescriptorForString.getTypeDescriptor().getClassPackage().getPackageName(), is("java.lang"));
-        assertThat(classDescriptorForString.getFields().size(), is(1));
+        assertThat(classDescriptorForString.getFields().size(), is(5));
     }
 
     @Test
-    @Ignore("The following is not supported,yet: 1. generics, 2. Arrays, 3. Primitives and its arrays (NPE)")
     public void reflectAllClasses() throws Exception {
         //Arrange
         List<Class<?>> classList = new ArrayList<>();
@@ -95,7 +91,6 @@ public class ClassReflectorTest {
     }
 
     @Test
-    @Ignore("The following is not supported,yet: 1. generics, 2. Arrays, 3. Primitives and its arrays (NPE)")
     public void reflectTypeWithListOfStrings() throws Exception {
         //Arrange
         List<String> listOfString = new ArrayList<>();
@@ -104,8 +99,8 @@ public class ClassReflectorTest {
         final TypeDescriptor typeDescriptor = ClassReflector.reflectType(listOfString.getClass());
 
         //Assert
-        assertThat(typeDescriptor.getClassName(), is("List"));
-        assertThat(typeDescriptor.getClassPackage(), is("java.util"));
+        assertThat(typeDescriptor.getClassName().getClassName(), is("ArrayList"));
+        assertThat(typeDescriptor.getClassPackage().getPackageName(), is("java.util"));
     }
 
 }
