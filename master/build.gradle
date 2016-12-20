@@ -12,6 +12,7 @@ buildscript {
                 javapoet                       : '1.8.0',
                 junit                          : '4.11',
                 mockito                        : '2.0.2-beta',
+                typetools                      : '0.4.8',
         ]
 
         // Define symbolic names for dependencies.
@@ -26,6 +27,7 @@ buildscript {
                 javapoet                      : "com.squareup:javapoet:${versions.javapoet}",
                 junit                         : "junit:junit:${versions.junit}",
                 mockito                       : "org.mockito:mockito-all:${versions.mockito}",
+                typetools                     : "net.jodah:typetools:${versions.typetools}",
         ]
 
 

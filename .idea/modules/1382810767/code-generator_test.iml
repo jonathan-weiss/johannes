@@ -12,6 +12,7 @@
     <orderEntry type="module" module-name="code-generator_main" />
     <orderEntry type="library" name="Gradle: junit:junit:4.11" level="project" />
     <orderEntry type="library" name="Gradle: io.github.lukehutch:fast-classpath-scanner:2.0.9" level="project" />
+    <orderEntry type="library" name="Gradle: net.jodah:typetools:0.4.8" level="project" />
     <orderEntry type="library" name="Gradle: com.google.guava:guava:19.0" level="project" />
     <orderEntry type="library" name="Gradle: com.squareup:javapoet:1.8.0" level="project" />
     <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-all:1.3" level="project" />
