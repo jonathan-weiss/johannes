@@ -3,10 +3,8 @@ package ch.johannes.reflector;
 import ch.johannes.descriptor.ClassDescriptor;
 import ch.johannes.descriptor.FieldDescriptor;
 import ch.johannes.descriptor.TypeDescriptor;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -289,7 +287,7 @@ public class ClassReflectorTypeTest {
         List<String> instanceToInspect = new ArrayList<>();
 
         //Act
-        final TypeDescriptor typeDescriptor = ClassReflector.reflectType(instanceToInspect.getClass());
+        final TypeDescriptor typeDescriptor = ClassReflector.reflectClassAsTypeDescriptor(instanceToInspect.getClass());
 
         //Assert
         assertThat(typeDescriptor.getClassName().getClassName(), is("ArrayList"));
@@ -305,7 +303,7 @@ public class ClassReflectorTypeTest {
         String [] instanceToInspect = new String [] {};
 
         //Act
-        final TypeDescriptor typeDescriptor = ClassReflector.reflectType(instanceToInspect.getClass());
+        final TypeDescriptor typeDescriptor = ClassReflector.reflectClassAsTypeDescriptor(instanceToInspect.getClass());
 
         //Assert
         assertThat(typeDescriptor.getClassName().getClassName(), is("String[]"));

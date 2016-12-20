@@ -5,7 +5,6 @@ import ch.johannes.descriptor.ClassnameDescriptor;
 import ch.johannes.descriptor.FieldDescriptor;
 import ch.johannes.descriptor.PackageDescriptor;
 import ch.johannes.descriptor.TypeDescriptor;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -96,7 +95,7 @@ public class ClassReflectorTest {
         List<String> listOfString = new ArrayList<>();
 
         //Act
-        final TypeDescriptor typeDescriptor = ClassReflector.reflectType(listOfString.getClass());
+        final TypeDescriptor typeDescriptor = ClassReflector.reflectClassAsTypeDescriptor(listOfString.getClass());
 
         //Assert
         assertThat(typeDescriptor.getClassName().getClassName(), is("ArrayList"));

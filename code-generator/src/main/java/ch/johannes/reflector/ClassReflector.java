@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class ClassReflector {
 
     public static ClassDescriptor reflectClass(Class<?> clazz) {
-        TypeDescriptor typeDescriptor = reflectType(clazz);
+        TypeDescriptor typeDescriptor = reflectClassAsTypeDescriptor(clazz);
         ClassDescriptorBuilder builder = ClassDescriptorBuilder
                 .with(typeDescriptor.getClassName())
                 .setClassPackage(typeDescriptor.getClassPackage());
@@ -34,12 +34,12 @@ public class ClassReflector {
 
     public static TypeDescriptor reflectFieldType(Field field) {
         final Type genericType = field.getGenericType();
-        return createTypeDescriptorForType(genericType);
+        return reflectType(genericType);
     }
 
-    private static TypeDescriptor createTypeDescriptorForType(Type type) {
+    private static TypeDescriptor reflectType(Type type) {
         if (type instanceof Class) {
-            return reflectType((Class)type);
+            return reflectClassAsTypeDescriptor((Class)type);
         } else if (type instanceof ParameterizedType) {
             ParameterizedType parameterizedType = (ParameterizedType) type;
 
@@ -47,10 +47,10 @@ public class ClassReflector {
             List<TypeDescriptor> genericParameters = new ArrayList<>();
             Type[] typeArguments = parameterizedType.getActualTypeArguments();
             for (Type typeArgument : typeArguments) {
-                final TypeDescriptor typeDescriptorForGenericParameter = createTypeDescriptorForType(typeArgument);
+                final TypeDescriptor typeDescriptorForGenericParameter = reflectType(typeArgument);
                 genericParameters.add(typeDescriptorForGenericParameter);
             }
-            final TypeDescriptor rawType = createTypeDescriptorForType(parameterizedType.getRawType());
+            final TypeDescriptor rawType = reflectType(parameterizedType.getRawType());
 
             return TypeDescriptor.of(rawType.getClassPackage(), rawType.getClassName(), rawType.isArray(), rawType.isPrimitive(), genericParameters);
         } else {
@@ -59,7 +59,7 @@ public class ClassReflector {
 
     }
 
-    public static TypeDescriptor reflectType(Class<?> clazz) {
+    public static TypeDescriptor reflectClassAsTypeDescriptor(Class<?> clazz) {
         return TypeDescriptor.of(reflectPackage(clazz), reflectClassname(clazz), clazz.isArray(), clazz.isPrimitive(), Collections.emptyList());
     }
 
@@ -74,8 +74,6 @@ public class ClassReflector {
             return PackageDescriptor.of(clazz.getPackage().getName());
         }
     }
-
-
 
     public static FieldDescriptor reflectField(Field field) {
         TypeDescriptor fieldTypeDescriptor = reflectFieldType(field);

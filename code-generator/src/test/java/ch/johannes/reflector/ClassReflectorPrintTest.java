@@ -78,7 +78,7 @@ public class ClassReflectorPrintTest {
         List<String> instanceToInspect = new ArrayList<>();
 
         //Act
-        final TypeDescriptor typeDescriptor = ClassReflector.reflectType(instanceToInspect.getClass());
+        final TypeDescriptor typeDescriptor = ClassReflector.reflectClassAsTypeDescriptor(instanceToInspect.getClass());
 
         //Assert
         assertThat(typeDescriptor.getClassName().getClassName(), is("ArrayList"));
