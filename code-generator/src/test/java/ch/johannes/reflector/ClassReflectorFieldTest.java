@@ -1,32 +1,27 @@
 package ch.johannes.reflector;
 
 import ch.johannes.descriptor.ClassDescriptor;
+import ch.johannes.descriptor.ClassnameDescriptor;
 import ch.johannes.descriptor.FieldDescriptor;
+import ch.johannes.descriptor.PackageDescriptor;
 import ch.johannes.descriptor.TypeDescriptor;
 import org.junit.Test;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
-public class ClassReflectorTypeTest {
-
-    class MyTestClassToReflect {
-
-        //private List<String> [] tokenListArray;
-    }
+public class ClassReflectorFieldTest {
 
     @Test
     public void reflectGenericAndArray() throws Exception {
         //Arrange
         class MyTestClassToReflectGenericAndArray {
-            private List<String> [] genericAndArray;
+            private List<String>[] genericAndArray;
         }
 
         Object instanceToInspect = new MyTestClassToReflectGenericAndArray();
@@ -41,13 +36,21 @@ public class ClassReflectorTypeTest {
         assertThat(classDescriptor.getTypeDescriptor().isPrimitive(), is(Boolean.FALSE));
         assertThat(classDescriptor.getFields().size(), is(1));
         final FieldDescriptor fieldDescriptor = classDescriptor.getFields().get(0);
+        //array
         assertThat(fieldDescriptor.getFieldName(), is("genericAndArray"));
-        assertThat(fieldDescriptor.getFieldType().getClassName().getClassName(), is("List<String>[]"));
-        assertThat(fieldDescriptor.getFieldType().isArray(), is(Boolean.FALSE));
-        assertThat(fieldDescriptor.getFieldType().isPrimitive(), is(Boolean.FALSE));
-        assertThat(fieldDescriptor.getFieldType().getGenericParameters().size(), is(0));
-    }
+        assertThat(fieldDescriptor.getFieldType().isArray(), is(Boolean.TRUE));
 
+        //type of array
+        assertThat(fieldDescriptor.getFieldType().getClassName().getClassName(), is("List"));
+        assertThat(fieldDescriptor.getFieldType().isPrimitive(), is(Boolean.FALSE));
+
+        //inner generic params
+        assertThat(fieldDescriptor.getFieldType().getGenericParameters().size(), is(1));
+        final TypeDescriptor firstGenericParamOfList = fieldDescriptor.getFieldType().getGenericParameters().get(0);
+        assertThat(firstGenericParamOfList.getClassName().getClassName(), is("String"));
+        assertThat(firstGenericParamOfList.getGenericParameters().size(), is(0));
+
+    }
 
     @Test
     public void reflectRecursiveField() throws Exception {
@@ -75,7 +78,6 @@ public class ClassReflectorTypeTest {
         assertThat(fieldDescriptor.getFieldType().isPrimitive(), is(Boolean.FALSE));
         assertThat(fieldDescriptor.getFieldType().getGenericParameters().size(), is(0));
     }
-
 
     @Test
     public void reflectPrimitiveIntField() throws Exception {
@@ -131,7 +133,6 @@ public class ClassReflectorTypeTest {
         assertThat(fieldDescriptor.getFieldType().getGenericParameters().size(), is(0));
     }
 
-
     @Test
     public void reflectGenericInGenericParams() throws Exception {
         //Arrange
@@ -172,7 +173,7 @@ public class ClassReflectorTypeTest {
     public void reflectArray() throws Exception {
         //Arrange
         class MyTestClassToReflectArray {
-            private String [] myArray;
+            private String[] myArray;
         }
 
         Object instanceToInspect = new MyTestClassToReflectArray();
@@ -188,8 +189,8 @@ public class ClassReflectorTypeTest {
         assertThat(classDescriptor.getFields().size(), is(1));
         final FieldDescriptor fieldDescriptor = classDescriptor.getFields().get(0);
         assertThat(fieldDescriptor.getFieldName(), is("myArray"));
-        assertThat(fieldDescriptor.getFieldType().getClassName().getClassName(), is("String[]"));
-        assertThat(fieldDescriptor.getFieldType().getClassPackage().getPackageName(), is(""));
+        assertThat(fieldDescriptor.getFieldType().getClassName().getClassName(), is("String"));
+        assertThat(fieldDescriptor.getFieldType().getClassPackage().getPackageName(), is("java.lang"));
         assertThat(fieldDescriptor.getFieldType().isArray(), is(Boolean.TRUE));
         assertThat(fieldDescriptor.getFieldType().isPrimitive(), is(Boolean.FALSE));
     }
@@ -198,7 +199,7 @@ public class ClassReflectorTypeTest {
     public void reflectPrimitiveArray() throws Exception {
         //Arrange
         class MyTestClassToReflectPrimitiveArray {
-            private char [] myArray;
+            private char[] myArray;
         }
 
         Object instanceToInspect = new MyTestClassToReflectPrimitiveArray();
@@ -214,12 +215,11 @@ public class ClassReflectorTypeTest {
         assertThat(classDescriptor.getFields().size(), is(1));
         final FieldDescriptor fieldDescriptor = classDescriptor.getFields().get(0);
         assertThat(fieldDescriptor.getFieldName(), is("myArray"));
-        assertThat(fieldDescriptor.getFieldType().getClassName().getClassName(), is("char[]"));
+        assertThat(fieldDescriptor.getFieldType().getClassName().getClassName(), is("char"));
         assertThat(fieldDescriptor.getFieldType().getClassPackage().getPackageName(), is(""));
         assertThat(fieldDescriptor.getFieldType().isArray(), is(Boolean.TRUE));
-        assertThat(fieldDescriptor.getFieldType().isPrimitive(), is(Boolean.FALSE)); //array itself is never primitive, only it's type
+        assertThat(fieldDescriptor.getFieldType().isPrimitive(), is(Boolean.TRUE));
     }
-
 
     @Test
     public void reflectSingleGenericParams() throws Exception {
@@ -280,132 +280,53 @@ public class ClassReflectorTypeTest {
         assertThat(innerParamOfSecondGenericParam.getClassName().getClassName(), is("Integer"));
     }
 
-
     @Test
-    public void reflectTypeListOfStrings() throws Exception {
+    public void reflectClassWithMiscClass() throws Exception {
+        class MyTestClassToReflectMixedFields {
+            private final int number = 0;
+            private String text = "";
+            private List<String> tokenList;
+            private String [] tokenArray;
+            private List<String> [] tokenListArray;
+            private List<List<Class<String>>> genericInGeneric;
+            private MyTestClassToReflectMixedFields recursive;
+        }
+
         //Arrange
-        List<String> instanceToInspect = new ArrayList<>();
+        Class<?> clazzString = MyTestClassToReflectMixedFields.class;
 
         //Act
-        final TypeDescriptor typeDescriptor = ClassReflector.reflectClassAsTypeDescriptor(instanceToInspect.getClass());
+        final ClassDescriptor classDescriptorForString = ClassReflector.reflectClass(clazzString);
 
         //Assert
-        assertThat(typeDescriptor.getClassName().getClassName(), is("ArrayList"));
-        assertThat(typeDescriptor.getClassPackage().getPackageName(), is("java.util"));
-        assertThat(typeDescriptor.isArray(), is(Boolean.FALSE));
-        assertThat(typeDescriptor.isPrimitive(), is(Boolean.FALSE));
-        assertThat(typeDescriptor.getGenericParameters().isEmpty(), is(Boolean.TRUE)); //only not empty for fields!
+        assertThat(classDescriptorForString.getTypeDescriptor().getClassName().getClassName(), is("MyTestClassToReflectMixedFields"));
+        assertThat(classDescriptorForString.getTypeDescriptor().getClassPackage().getPackageName(), is(this.getClass().getPackage().getName()));
+
+        final TypeDescriptor stringTypeDescriptor = TypeDescriptor.of(PackageDescriptor.of("java.lang"), ClassnameDescriptor.of("String"), TypeDescriptor.IS_NOT_ARRAY, TypeDescriptor.IS_NOT_PRIMITIVE, Collections.emptyList());
+        final TypeDescriptor arrayOfStringTypeDescriptor = TypeDescriptor.of(PackageDescriptor.of("java.lang"), ClassnameDescriptor.of("String"), TypeDescriptor.IS_ARRAY, TypeDescriptor.IS_NOT_PRIMITIVE, Collections.emptyList());
+        final TypeDescriptor listOfStringTypeDescriptor = TypeDescriptor.of(PackageDescriptor.of("java.util"), ClassnameDescriptor.of("List"), TypeDescriptor.IS_NOT_ARRAY, TypeDescriptor.IS_NOT_PRIMITIVE, Collections.singletonList(stringTypeDescriptor));
+        final TypeDescriptor arrayOfListOfStringTypeDescriptor = TypeDescriptor.of(PackageDescriptor.of("java.util"), ClassnameDescriptor.of("List"), TypeDescriptor.IS_ARRAY, TypeDescriptor.IS_NOT_PRIMITIVE, Collections.singletonList(stringTypeDescriptor));
+        final TypeDescriptor primitiveIntTypeDescriptor = TypeDescriptor.of(PackageDescriptor.of(""), ClassnameDescriptor.of("int"), TypeDescriptor.IS_NOT_ARRAY, TypeDescriptor.IS_PRIMITIVE, Collections.emptyList());
+        final TypeDescriptor classOfStringTypeDescriptor = TypeDescriptor.of(PackageDescriptor.of("java.lang"), ClassnameDescriptor.of("Class"), TypeDescriptor.IS_NOT_ARRAY, TypeDescriptor.IS_NOT_PRIMITIVE, Collections.singletonList(stringTypeDescriptor));
+        final TypeDescriptor listOfClassOfStringTypeDescriptor = TypeDescriptor.of(PackageDescriptor.of("java.util"), ClassnameDescriptor.of("List"), TypeDescriptor.IS_NOT_ARRAY, TypeDescriptor.IS_NOT_PRIMITIVE, Collections.singletonList(classOfStringTypeDescriptor));
+        final TypeDescriptor listOfListOfClassOfStringTypeDescriptor = TypeDescriptor.of(PackageDescriptor.of("java.util"), ClassnameDescriptor.of("List"), TypeDescriptor.IS_NOT_ARRAY, TypeDescriptor.IS_NOT_PRIMITIVE, Collections.singletonList(listOfClassOfStringTypeDescriptor));
+        final TypeDescriptor myTestClassToReflectTypeDescriptor = TypeDescriptor.of(PackageDescriptor.of(this.getClass().getPackage().getName()), ClassnameDescriptor.of("MyTestClassToReflectMixedFields"), TypeDescriptor.IS_NOT_ARRAY, TypeDescriptor.IS_NOT_PRIMITIVE, Collections.emptyList());
+
+        FieldDescriptor primitiveIntDescriptor = FieldDescriptor.of("number", primitiveIntTypeDescriptor);
+        FieldDescriptor stringDescriptor = FieldDescriptor.of("text", stringTypeDescriptor);
+        FieldDescriptor listOfStringDescriptor = FieldDescriptor.of("tokenList", listOfStringTypeDescriptor);
+        FieldDescriptor arrayOfStringDescriptor = FieldDescriptor.of("tokenArray", arrayOfStringTypeDescriptor);
+        FieldDescriptor arrayOfListOfStringDescriptor = FieldDescriptor.of("tokenListArray", arrayOfListOfStringTypeDescriptor);
+        FieldDescriptor listOfListOfClassOfStringDescriptor = FieldDescriptor.of("genericInGeneric", listOfListOfClassOfStringTypeDescriptor);
+        FieldDescriptor myTestClassToReflectDescriptor = FieldDescriptor.of("recursive", myTestClassToReflectTypeDescriptor);
+        assertThat(classDescriptorForString.getFields(), containsInAnyOrder(
+                primitiveIntDescriptor,
+                stringDescriptor,
+                listOfStringDescriptor,
+                arrayOfStringDescriptor,
+                arrayOfListOfStringDescriptor,
+                listOfListOfClassOfStringDescriptor,
+                myTestClassToReflectDescriptor));
     }
 
-    @Test
-    public void reflectTypeArrayOfStrings() throws Exception {
-        //Arrange
-        String [] instanceToInspect = new String [] {};
-
-        //Act
-        final TypeDescriptor typeDescriptor = ClassReflector.reflectClassAsTypeDescriptor(instanceToInspect.getClass());
-
-        //Assert
-        assertThat(typeDescriptor.getClassName().getClassName(), is("String[]"));
-        assertThat(typeDescriptor.getClassPackage().getPackageName(), is(""));
-        assertThat(typeDescriptor.isArray(), is(Boolean.TRUE));
-        assertThat(typeDescriptor.isPrimitive(), is(Boolean.FALSE));
-        assertThat(typeDescriptor.getGenericParameters().isEmpty(), is(Boolean.TRUE));
-    }
-
-
-    private static void printClassInformation(Object instance) {
-        Class<?> clazz = instance.getClass();
-        System.out.println(String.format("-%s---------", clazz.getSimpleName()));
-        System.out.println(String.format("class: %s", clazz));
-        System.out.println(String.format("getName: %s", clazz.getName()));
-        System.out.println(String.format("getSimpleName: %s", clazz.getSimpleName()));
-        System.out.println(String.format("getPackage: %s", clazz.getPackage()));
-        System.out.println(String.format("getPackageName: %s", clazz.getPackage() != null ? clazz.getPackage().getName() : null));
-        System.out.println(String.format("getCanonicalName: %s", clazz.getCanonicalName()));
-        System.out.println(String.format("getComponentType: %s", clazz.getComponentType()));
-        System.out.println(String.format("getGenericInterfaces: %s", clazz.getGenericInterfaces().length));
-        for (Type genericInterface : clazz.getGenericInterfaces()) {
-            System.out.println(String.format(" - type: %s", genericInterface));
-            System.out.println(String.format(" - type name: %s", genericInterface.getTypeName()));
-        }
-        System.out.println(String.format("getGenericInterfaces: %s", clazz.getGenericInterfaces().length));
-        System.out.println(String.format("getGenericSuperclass: %s", clazz.getGenericSuperclass()));
-        System.out.println(String.format("----------"));
-        System.out.println(String.format("%s", structureDump(instance)));
-        System.out.println(String.format("----------"));
-    }
-
-    private static final int MAX_DEEP = 2;
-
-    private static String structureDump(Object o) {
-        return structureDump(o, 0);
-    }
-
-    private static String structureDump(Object inspectedInstance, int depth) {
-        Class inspectedClass = inspectedInstance.getClass();
-
-        StringBuffer buffer = new StringBuffer();
-
-        boolean isArray = inspectedClass.isArray();
-        boolean isSimpleTypeOrPrimitive = isSimpleTypeOrPrimitive(inspectedInstance);
-
-        appendLine(buffer, "isArray", isArray, depth);
-        appendLine(buffer, "isSimpleTypeOrPrimitive", isSimpleTypeOrPrimitive, depth);
-
-        if (!isArray) {
-            appendLine(buffer, "name", inspectedClass.getSimpleName(), depth);
-
-            if (isSimpleTypeOrPrimitive) {
-                appendLine(buffer, "simple/primitive", "TODO simple type inspection is missing", depth);
-
-            } else {
-                Field[] fields = inspectedClass.getDeclaredFields();
-                for (Field field : fields) {
-                    appendLine(buffer, "field", "--------", depth);
-                    appendLine(buffer, "field", field.getName(), depth + 1);
-                    appendLine(buffer, "field-type", field.getType(), depth + 1);
-                    final Type genericType = field.getGenericType();
-                    appendLine(buffer, "field-generic-type", genericType, depth + 1);
-                    appendLine(buffer, "field-generic-type-name", genericType.getTypeName(), depth + 1);
-                    appendLine(buffer, "field-generic-type-name", field.toGenericString(), depth + 1);
-
-                    if (genericType instanceof ParameterizedType) {
-                        ParameterizedType type = (ParameterizedType) genericType;
-                        Type[] typeArguments = type.getActualTypeArguments();
-                        for (Type typeArgument : typeArguments) {
-                            appendLine(buffer, "type-arguments", typeArgument, depth + 2);
-                        }
-                    }
-                }
-            }
-        } else {
-            appendLine(buffer, "array", "TODO array inspection is missing", depth);
-        }
-
-        return buffer.toString();
-    }
-
-    private static void appendLine(StringBuffer buffer, String name, Object value, int depth) {
-        String tabs = getSpaces(depth);
-        buffer.append(String.format("%s%s:%s\n", tabs, name, value));
-
-    }
-
-    private static boolean isSimpleTypeOrPrimitive(Object inspectedInstance) {
-        return (inspectedInstance.getClass().isPrimitive() ||
-                inspectedInstance.getClass() == java.lang.Long.class ||
-                inspectedInstance.getClass() == java.lang.String.class ||
-                inspectedInstance.getClass() == java.lang.Integer.class ||
-                inspectedInstance.getClass() == java.lang.Boolean.class
-        );
-    }
-
-    private static String getSpaces(int depth) {
-        StringBuffer tabs = new StringBuffer();
-        for (int k = 0; k < depth; k++) {
-            tabs.append("\t");
-        }
-        return tabs.toString();
-    }
 }

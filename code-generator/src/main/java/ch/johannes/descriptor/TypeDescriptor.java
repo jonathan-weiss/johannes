@@ -7,6 +7,14 @@ import java.util.List;
 
 public class TypeDescriptor {
 
+    public static final boolean IS_ARRAY = true;
+
+    public static final boolean IS_NOT_ARRAY = false;
+
+    public static final boolean IS_PRIMITIVE = true;
+
+    public static final boolean IS_NOT_PRIMITIVE = false;
+
     private final PackageDescriptor classPackage;
 
     private final ClassnameDescriptor className;
