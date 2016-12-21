@@ -9,6 +9,7 @@ import ch.johannes.descriptor.PackageDescriptor;
 import ch.johannes.descriptor.TypeDescriptor;
 import org.junit.Test;
 
+import static ch.johannes.descriptor.Descriptors.STRING_TYPE_DESCRIPTOR;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
@@ -20,11 +21,10 @@ public class BeanSourceGeneratorTest {
 
         BeanSourceGenerator cg = new BeanSourceGenerator();
 
-        TypeDescriptor stringFieldType = TypeDescriptor.of(PackageDescriptor.of("java.lang"), ClassnameDescriptor.of("String"));
-        ClassDescriptor personTODescriptor = ClassDescriptorBuilder.with(ClassnameDescriptor.of("PersonTO"))
-                .addClassField(FieldDescriptor.of("firstname", stringFieldType))
-                .addClassField(FieldDescriptor.of("lastname", stringFieldType))
-                .setClassPackage(PackageDescriptor.of("ch.johannes.examples.mapper.oneone"))
+        ClassDescriptor personTODescriptor = ClassDescriptorBuilder.with("PersonTO")
+                .addClassField(FieldDescriptor.of("firstname", STRING_TYPE_DESCRIPTOR))
+                .addClassField(FieldDescriptor.of("lastname", STRING_TYPE_DESCRIPTOR))
+                .setClassPackage("ch.johannes.examples.mapper.oneone")
                 .build();
 
         String generatedCode = cg.generateCode(personTODescriptor);

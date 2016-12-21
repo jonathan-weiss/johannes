@@ -21,6 +21,9 @@ public class ClassDescriptor {
         this.fields = fields;
     }
 
+    /**
+     * Factory method
+     */
     public static ClassDescriptor of(TypeDescriptor typeDescriptor, List<FieldDescriptor> fields) {
         return new ClassDescriptor(typeDescriptor, fields);
     }

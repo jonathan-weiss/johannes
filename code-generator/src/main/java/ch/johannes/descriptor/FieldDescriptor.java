@@ -2,11 +2,18 @@ package ch.johannes.descriptor;
 
 import com.google.common.base.Preconditions;
 
+import java.util.List;
+
 public class FieldDescriptor {
 
     private final String fieldName;
 
     private final TypeDescriptor fieldType;
+
+    /**
+     * private constructor.
+     * For construction, use factory method {@link #of(String, TypeDescriptor)}
+     */
 
     private FieldDescriptor(String fieldName, TypeDescriptor fieldType) {
         Preconditions.checkNotNull(fieldName, "field name must not be null.");
@@ -17,6 +24,9 @@ public class FieldDescriptor {
         this.fieldType = fieldType;
     }
 
+    /**
+     * Factory method
+     */
     public static FieldDescriptor of(String fieldName, TypeDescriptor fieldType) {
         return new FieldDescriptor(fieldName, fieldType);
     }

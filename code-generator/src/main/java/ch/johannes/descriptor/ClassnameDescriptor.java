@@ -18,6 +18,9 @@ public class ClassnameDescriptor {
         this.className = className;
     }
 
+    /**
+     * Factory method
+     */
     public static ClassnameDescriptor of(String className) {
         return new ClassnameDescriptor(className);
     }

@@ -40,10 +40,16 @@ public class TypeDescriptor {
         this.genericParameters = Collections.unmodifiableList(genericParameters);
     }
 
+    /**
+     * Factory method
+     */
     public static TypeDescriptor of(PackageDescriptor packageDescriptor, ClassnameDescriptor classnameDescriptor) {
         return new TypeDescriptor(packageDescriptor, classnameDescriptor, false, false, Collections.emptyList());
     }
 
+    /**
+     * Factory method
+     */
     public static TypeDescriptor of(PackageDescriptor packageDescriptor, ClassnameDescriptor classnameDescriptor, boolean isArray, boolean isPrimitive, List<TypeDescriptor> genericParameters) {
         return new TypeDescriptor(packageDescriptor, classnameDescriptor, isArray, isPrimitive, genericParameters);
     }

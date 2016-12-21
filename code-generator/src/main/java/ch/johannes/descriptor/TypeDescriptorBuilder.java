@@ -1,5 +1,7 @@
 package ch.johannes.descriptor;
 
+import ch.johannes.CollectionUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,16 +11,50 @@ public class TypeDescriptorBuilder implements DescriptorBuilder<TypeDescriptor>{
 
     private ClassnameDescriptor className;
 
-    private boolean isArray = false;
+    private boolean isArray = TypeDescriptor.IS_NOT_ARRAY;
 
-    private boolean isPrimitive = false;
+    private boolean isPrimitive = TypeDescriptor.IS_NOT_PRIMITIVE;
 
     private List<TypeDescriptor> genericParameters = new ArrayList<>();
 
-    public static TypeDescriptorBuilder with(ClassnameDescriptor className) {
-        TypeDescriptorBuilder builder = new TypeDescriptorBuilder();
-        return builder.setClassName(className);
+    private TypeDescriptorBuilder() {
+        //private constructor
     }
+
+    public static TypeDescriptorBuilder with() {
+        return new TypeDescriptorBuilder();
+    }
+
+    public static TypeDescriptorBuilder with(TypeDescriptor typeDescriptor) {
+        if(typeDescriptor == null) {
+            return with();
+        }
+        return with().setTypeDescriptor(typeDescriptor);
+    }
+
+    public static TypeDescriptorBuilder with(String packageName, String className) {
+        ClassnameDescriptor classnameDescriptor = ClassnameDescriptorBuilder.with(className).build();
+        PackageDescriptor packageDescriptor = PackageDescriptorBuilder.with(packageName).build();
+        return with()
+                .setClassName(classnameDescriptor)
+                .setClassPackage(packageDescriptor);
+    }
+
+
+    public static TypeDescriptorBuilder with(ClassnameDescriptor className) {
+        return with().setClassName(className);
+    }
+
+    public TypeDescriptorBuilder setTypeDescriptor(TypeDescriptor typeDescriptor) {
+        setClassName(typeDescriptor.getClassName());
+        setClassPackage(typeDescriptor.getClassPackage());
+        setIsArray(typeDescriptor.isArray());
+        setIsPrimitive(typeDescriptor.isPrimitive());
+        setGenericParameters(new ArrayList<>(typeDescriptor.getGenericParameters()));
+
+        return this;
+    }
+
 
     public TypeDescriptorBuilder setClassPackage(PackageDescriptor classPackage) {
         this.classPackage = classPackage;
@@ -59,4 +95,5 @@ public class TypeDescriptorBuilder implements DescriptorBuilder<TypeDescriptor>{
     public TypeDescriptor build() {
         return TypeDescriptor.of(classPackage, className, isArray, isPrimitive, genericParameters);
     }
+
 }

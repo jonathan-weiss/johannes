@@ -6,6 +6,7 @@ import ch.johannes.cg.dummy.MapperSourceGenerator;
 import ch.johannes.cg.dummy.MapperTestSourceGenerator;
 import ch.johannes.descriptor.ClassDescriptor;
 import ch.johannes.descriptor.ClassnameDescriptor;
+import ch.johannes.descriptor.ClassnameDescriptorBuilder;
 import ch.johannes.examples.descriptor.PersonDescriptor;
 import ch.johannes.examples.descriptor.PersonTODescriptor;
 
@@ -50,10 +51,10 @@ public class ExamplesCodeGenerationRunner {
                     personDescriptor,
                     personTODescriptor,
                     personTODescriptor.getTypeDescriptor().getClassPackage(),
-                    ClassnameDescriptor.of(mapperName));
+                    ClassnameDescriptorBuilder.with(mapperName).build());
             mainJavaSourceWriter.writeJavaSourceFile(
                     personTODescriptor.getTypeDescriptor().getClassPackage(),
-                    ClassnameDescriptor.of(mapperName),
+                    ClassnameDescriptorBuilder.with(mapperName).build(),
                     sourceCodeForPersonMapper);
 
             //generate test
@@ -63,10 +64,10 @@ public class ExamplesCodeGenerationRunner {
                     personDescriptor,
                     personTODescriptor,
                     personTODescriptor.getTypeDescriptor().getClassPackage(),
-                    ClassnameDescriptor.of(mapperTestName));
+                    ClassnameDescriptorBuilder.with(mapperTestName).build());
             testJavaSourceWriter.writeJavaSourceFile(
                     personTODescriptor.getTypeDescriptor().getClassPackage(),
-                    ClassnameDescriptor.of(mapperTestName),
+                    ClassnameDescriptorBuilder.with(mapperTestName).build(),
                     sourceCodeForPersonMapperTest);
 
         } catch (IOException e) {

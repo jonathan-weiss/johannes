@@ -3,8 +3,11 @@ package ch.johannes.reflector;
 import ch.johannes.descriptor.ClassDescriptor;
 import ch.johannes.descriptor.ClassDescriptorBuilder;
 import ch.johannes.descriptor.ClassnameDescriptor;
+import ch.johannes.descriptor.ClassnameDescriptorBuilder;
 import ch.johannes.descriptor.FieldDescriptor;
+import ch.johannes.descriptor.FieldDescriptorBuilder;
 import ch.johannes.descriptor.PackageDescriptor;
+import ch.johannes.descriptor.PackageDescriptorBuilder;
 import ch.johannes.descriptor.TypeDescriptor;
 
 import java.lang.reflect.Field;
@@ -25,7 +28,6 @@ public class ClassReflector {
 
     public static ClassDescriptor reflectClass(Class<?> clazz) {
         TypeDescriptor typeDescriptor = reflectClassAsTypeDescriptor(clazz);
-        //TODO probably replace builder by plain calls
         ClassDescriptorBuilder builder = ClassDescriptorBuilder
                 .with(typeDescriptor.getClassName())
                 .setClassPackage(typeDescriptor.getClassPackage());
@@ -48,8 +50,10 @@ public class ClassReflector {
     }
 
     private static FieldDescriptor reflectField(Field field) {
-        TypeDescriptor fieldTypeDescriptor = reflectFieldType(field);
-        return FieldDescriptor.of(field.getName(), fieldTypeDescriptor);
+        return FieldDescriptorBuilder
+                .with(field.getName())
+                .setFieldType(reflectFieldType(field))
+                .build();
     }
 
     private static TypeDescriptor reflectFieldType(Field field) {
@@ -86,15 +90,15 @@ public class ClassReflector {
 
     private static ClassnameDescriptor reflectClassname(Class<?> clazz) {
         rejectArrayClass(clazz);
-        return ClassnameDescriptor.of(clazz.getSimpleName());
+        return ClassnameDescriptorBuilder.with(clazz.getSimpleName()).build();
     }
 
     private static PackageDescriptor reflectPackage(Class<?> clazz) {
         rejectArrayClass(clazz);
         if(clazz.isPrimitive()) {
-            return PackageDescriptor.of("");
+            return PackageDescriptorBuilder.with("").build();
         } else {
-            return PackageDescriptor.of(clazz.getPackage().getName());
+            return PackageDescriptorBuilder.with(clazz.getPackage().getName()).build();
         }
     }
 

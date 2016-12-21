@@ -1,6 +1,5 @@
 package ch.johannes.cg;
 
-import ch.johannes.CollectionUtil;
 import ch.johannes.FileUtil;
 import ch.johannes.descriptor.ClassDescriptor;
 import ch.johannes.descriptor.ClassDescriptorBuilder;
@@ -8,12 +7,13 @@ import ch.johannes.descriptor.ClassnameDescriptor;
 import ch.johannes.descriptor.FieldDescriptor;
 import ch.johannes.descriptor.PackageDescriptor;
 import ch.johannes.descriptor.TypeDescriptor;
+import ch.johannes.descriptor.TypeDescriptorBuilder;
 import org.junit.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
 
+import static ch.johannes.descriptor.Descriptors.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
@@ -25,13 +25,11 @@ public class MetadataSourceGeneratorTest {
 
         MetadataSourceGenerator metadataSourceGenerator = new MetadataSourceGenerator();
 
-        TypeDescriptor stringFieldType = TypeDescriptor.of(PackageDescriptor.of("java.lang"), ClassnameDescriptor.of("String"));
-        TypeDescriptor integerFieldType = TypeDescriptor.of(PackageDescriptor.of("java.lang"), ClassnameDescriptor.of("Integer"));
-        TypeDescriptor listOfStringFieldType = TypeDescriptor.of(PackageDescriptor.of("java.lang"), ClassnameDescriptor.of("List"), TypeDescriptor.IS_NOT_ARRAY, TypeDescriptor.IS_NOT_PRIMITIVE, CollectionUtil.listOf(stringFieldType));
-        TypeDescriptor mapOfStringAndIntegerFieldType = TypeDescriptor.of(PackageDescriptor.of("java.lang"), ClassnameDescriptor.of("Map"), TypeDescriptor.IS_NOT_ARRAY, TypeDescriptor.IS_NOT_PRIMITIVE, CollectionUtil.listOf(stringFieldType, integerFieldType));
-        ClassDescriptor personDescriptor = ClassDescriptorBuilder.with(ClassnameDescriptor.of("Person"))
-                .addClassField(FieldDescriptor.of("firstname", stringFieldType))
-                .addClassField(FieldDescriptor.of("lastname", stringFieldType))
+        TypeDescriptor listOfStringFieldType = TypeDescriptorBuilder.with(LIST_TYPE_DESCRIPTOR).addGenericParameter(STRING_TYPE_DESCRIPTOR).build();
+        TypeDescriptor mapOfStringAndIntegerFieldType = TypeDescriptorBuilder.with(MAP_TYPE_DESCRIPTOR).addGenericParameter(STRING_TYPE_DESCRIPTOR).addGenericParameter(INTEGER_TYPE_DESCRIPTOR).build();
+        ClassDescriptor personDescriptor = ClassDescriptorBuilder.with("Person")
+                .addClassField(FieldDescriptor.of("firstname", STRING_TYPE_DESCRIPTOR))
+                .addClassField(FieldDescriptor.of("lastname", STRING_TYPE_DESCRIPTOR))
                 .addClassField(FieldDescriptor.of("nicknames", listOfStringFieldType))
                 .addClassField(FieldDescriptor.of("stupidMap", mapOfStringAndIntegerFieldType))
                 .setClassPackage(PackageDescriptor.of("ch.johannes.virtualpackage"))

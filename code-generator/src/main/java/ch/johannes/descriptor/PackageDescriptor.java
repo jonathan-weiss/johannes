@@ -19,6 +19,9 @@ public class PackageDescriptor {
         this.packageName = packageName;
     }
 
+    /**
+     * Factory method
+     */
     public static PackageDescriptor of(String packageName) {
         return new PackageDescriptor(packageName);
     }
