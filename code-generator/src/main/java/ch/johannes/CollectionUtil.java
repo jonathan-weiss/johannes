@@ -10,39 +10,52 @@ import java.util.Set;
 
 public class CollectionUtil {
 
+    public static <T> List<T> listOf(Collection<T> collection, T ... elements) {
+        return (List<T>) fillCollection(fillCollection(newList(), collection), elements);
+    }
+
+    public static <T> List<T> listOf(Collection<T> collectionA, Collection<T> collectionB) {
+        return (List<T>) fillCollection(fillCollection(newList(), collectionA), collectionB);
+    }
+
     public static <T> List<T> listOf(T ... elements) {
-        return arrayListOf(elements);
-    }
-
-    public static <T> List<T> arrayListOf(T ... elements) {
-        return (List<T>) fillCollection(new ArrayList<>(), elements);
-    }
-
-    public static <T> List<T> linkedListOf(T ... elements) {
-        return (List<T>) fillCollection(new LinkedList<>(), elements);
+        return (List<T>) fillCollection(newList(), elements);
     }
 
     public static <T> Set<T> setOf(T ... elements) {
-        return hashSetOf(elements);
+        return (Set<T>) fillCollection(newSet(), elements);
     }
 
-    public static <T> Set<T> hashSetOf(T ... elements) {
-        return (Set<T>) fillCollection(new HashSet<>(), elements);
+    public static <T> Set<T> setOf(Collection<T> collection, T ... elements) {
+        return (Set<T>) fillCollection(fillCollection(newSet(), collection), elements);
     }
 
-    public static <T> Set<T> linkedHashSetOf(T ... elements) {
-        return (Set<T>) fillCollection(new LinkedHashSet<>(), elements);
+    public static <T> Set<T> setOf(Collection<T> collectionA, Collection<T> collectionB) {
+        return (Set<T>) fillCollection(fillCollection(newSet(), collectionA), collectionB);
+    }
+
+    private static <T> List<T> newList() {
+        return new ArrayList<T>();
+    }
+
+    private static <T> Set<T> newSet() {
+        return new LinkedHashSet<T>();
     }
 
 
-    private static <T> Collection<T> fillCollection(Collection<T> myList, T [] elements) {
-        if(elements == null) {
-            myList.add(null);
-        } else {
+    private static <T> Collection<T> fillCollection(Collection<T> myCollection, T [] elements) {
+        if(elements != null) {
             for(T element : elements) {
-                myList.add(element);
+                myCollection.add(element);
             }
         }
-        return myList;
+        return myCollection;
+    }
+
+    private static <T> Collection<T> fillCollection(Collection<T> myCollection, Collection<T> elements) {
+        if(elements != null) {
+            myCollection.addAll(elements);
+        }
+        return myCollection;
     }
 }

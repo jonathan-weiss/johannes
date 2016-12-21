@@ -2,8 +2,6 @@ package ch.johannes.descriptor;
 
 import com.google.common.base.Preconditions;
 
-import java.util.List;
-
 public class FieldDescriptor {
 
     private final String fieldName;
@@ -29,6 +27,20 @@ public class FieldDescriptor {
      */
     public static FieldDescriptor of(String fieldName, TypeDescriptor fieldType) {
         return new FieldDescriptor(fieldName, fieldType);
+    }
+
+    /**
+     * Prototype method
+     */
+    public FieldDescriptor with(String fieldName) {
+        return new FieldDescriptor(fieldName, this.getFieldType());
+    }
+
+    /**
+     * Prototype method
+     */
+    public FieldDescriptor with(TypeDescriptor fieldType) {
+        return new FieldDescriptor(this.getFieldName(), fieldType);
     }
 
     public String getFieldName() {

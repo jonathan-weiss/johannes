@@ -1,5 +1,6 @@
 package ch.johannes.descriptor;
 
+import ch.johannes.CollectionUtil;
 import com.google.common.base.Preconditions;
 
 import java.util.Collections;
@@ -27,7 +28,7 @@ public class TypeDescriptor {
 
     /**
      * private constructor.
-     * For construction, use factory method {@link #of(PackageDescriptor, ClassnameDescriptor)}
+     * For construction, use factory methods
      */
     private TypeDescriptor(PackageDescriptor classPackage, ClassnameDescriptor className, boolean isArray, boolean isPrimitive, List<TypeDescriptor> genericParameters) {
         Preconditions.checkNotNull(classPackage, "package must not be null.");
@@ -43,17 +44,65 @@ public class TypeDescriptor {
     /**
      * Factory method
      */
-    public static TypeDescriptor of(PackageDescriptor packageDescriptor, ClassnameDescriptor classnameDescriptor) {
-        return new TypeDescriptor(packageDescriptor, classnameDescriptor, false, false, Collections.emptyList());
+    public static TypeDescriptor of(PackageDescriptor packageDescriptor, ClassnameDescriptor classnameDescriptor, boolean isArray, boolean isPrimitive, List<TypeDescriptor> genericParameters) {
+        return new TypeDescriptor(packageDescriptor, classnameDescriptor, isArray, isPrimitive, genericParameters);
     }
 
     /**
      * Factory method
      */
-    public static TypeDescriptor of(PackageDescriptor packageDescriptor, ClassnameDescriptor classnameDescriptor, boolean isArray, boolean isPrimitive, List<TypeDescriptor> genericParameters) {
-        return new TypeDescriptor(packageDescriptor, classnameDescriptor, isArray, isPrimitive, genericParameters);
+    public static TypeDescriptor of(PackageDescriptor packageDescriptor, ClassnameDescriptor classnameDescriptor) {
+        return new TypeDescriptor(packageDescriptor, classnameDescriptor, false, false, Collections.emptyList());
     }
 
+    /**
+     * Prototype method
+     */
+    public TypeDescriptor with(PackageDescriptor packageDescriptor) {
+        return new TypeDescriptor(packageDescriptor, this.getClassName(), this.isArray(), this.isPrimitive(), this.getGenericParameters());
+    }
+
+    /**
+     * Prototype method
+     */
+    public TypeDescriptor with(ClassnameDescriptor classnameDescriptor) {
+        return new TypeDescriptor(this.getClassPackage(), classnameDescriptor, this.isArray(), this.isPrimitive(), this.getGenericParameters());
+    }
+
+    /**
+     * Prototype method
+     */
+    public TypeDescriptor isArray(boolean isArray) {
+        return new TypeDescriptor(this.getClassPackage(), this.getClassName(), isArray, this.isPrimitive(), this.getGenericParameters());
+    }
+
+    /**
+     * Prototype method
+     */
+    public TypeDescriptor isPrimitive(boolean isPrimitive) {
+        return new TypeDescriptor(this.getClassPackage(), this.getClassName(), this.isArray(), isPrimitive, this.getGenericParameters());
+    }
+
+    /**
+     * Prototype method
+     */
+    public TypeDescriptor addGenericParameter(TypeDescriptor genericParameter) {
+        return new TypeDescriptor(this.getClassPackage(), this.getClassName(), this.isArray(), this.isPrimitive(), CollectionUtil.listOf(this.getGenericParameters(), genericParameter));
+    }
+
+    /**
+     * Prototype method
+     */
+    public TypeDescriptor addGenericParameters(List<TypeDescriptor> genericParameters) {
+        return new TypeDescriptor(this.getClassPackage(), this.getClassName(), this.isArray(), this.isPrimitive(), CollectionUtil.listOf(this.getGenericParameters(), genericParameters));
+    }
+
+    /**
+     * Prototype method
+     */
+    public TypeDescriptor withGenericParameters(List<TypeDescriptor> genericParameters) {
+        return new TypeDescriptor(this.getClassPackage(), this.getClassName(), this.isArray(), this.isPrimitive(), genericParameters);
+    }
 
     public PackageDescriptor getClassPackage() {
         return classPackage;
