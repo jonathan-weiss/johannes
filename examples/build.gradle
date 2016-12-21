@@ -40,7 +40,7 @@ dependencies {
 // generate the metadata of existing classes
 task generateMetadata(type: JavaExec) {
     classpath sourceSets.main.runtimeClasspath + sourceSets.test.runtimeClasspath
-    main = 'ch.johannes.examples.metadata.ExamplesMetadataCodeGenerationRunner'
+    main = 'ch.johannes.examples.metadatageneration.ExamplesMetadataCodeGenerationRunner'
     args =["./codegeneration/java"]
 }
 

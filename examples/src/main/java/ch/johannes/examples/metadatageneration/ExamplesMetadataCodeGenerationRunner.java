@@ -1,4 +1,4 @@
-package ch.johannes.examples.metadata;
+package ch.johannes.examples.metadatageneration;
 
 import ch.johannes.cg.JavaSourceWriter;
 import ch.johannes.cg.MetadataSourceGenerator;
