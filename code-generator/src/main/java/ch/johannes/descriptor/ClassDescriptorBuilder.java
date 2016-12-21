@@ -40,6 +40,6 @@ public class ClassDescriptorBuilder implements DescriptorBuilder<ClassDescriptor
     }
 
     public ClassDescriptor build() {
-        return new ClassDescriptor(typeDescriptorBuilder.build(), classFields);
+        return ClassDescriptor.of(typeDescriptorBuilder.build(), classFields);
     }
 }

@@ -10,6 +10,10 @@ public class PackageDescriptor {
 
     private final String packageName;
 
+    /**
+     * private constructor.
+     * For construction, use factory method {@link #of(String)}
+     */
     private PackageDescriptor(String packageName) {
         Preconditions.checkNotNull(packageName, "package must not be null. Define empty string for default package");
         this.packageName = packageName;

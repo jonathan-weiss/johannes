@@ -57,6 +57,6 @@ public class TypeDescriptorBuilder implements DescriptorBuilder<TypeDescriptor>{
 
 
     public TypeDescriptor build() {
-        return new TypeDescriptor(classPackage, className, isArray, isPrimitive, genericParameters);
+        return TypeDescriptor.of(classPackage, className, isArray, isPrimitive, genericParameters);
     }
 }

@@ -2,17 +2,23 @@ package ch.johannes.descriptor;
 
 import com.google.common.base.Preconditions;
 
+import java.util.List;
+
 public class ClassnameDescriptor {
 
     private final String className;
 
+    /**
+     * private constructor.
+     * For construction, use factory method {@link #of(String)}
+     */
     private ClassnameDescriptor(String className) {
+        Preconditions.checkNotNull(className, "class name must not be null.");
+        Preconditions.checkState(!className.isEmpty(), "class name must not be empty.");
         this.className = className;
     }
 
     public static ClassnameDescriptor of(String className) {
-        Preconditions.checkNotNull(className, "class name must not be null.");
-        Preconditions.checkState(!className.isEmpty(), "class name must not be empty.");
         return new ClassnameDescriptor(className);
     }
 

@@ -25,7 +25,11 @@ public class TypeDescriptor {
 
     private final boolean primitive;
 
-    TypeDescriptor(PackageDescriptor classPackage, ClassnameDescriptor className, boolean isArray, boolean isPrimitive, List<TypeDescriptor> genericParameters) {
+    /**
+     * private constructor.
+     * For construction, use factory method {@link #of(PackageDescriptor, ClassnameDescriptor)}
+     */
+    private TypeDescriptor(PackageDescriptor classPackage, ClassnameDescriptor className, boolean isArray, boolean isPrimitive, List<TypeDescriptor> genericParameters) {
         Preconditions.checkNotNull(classPackage, "package must not be null.");
         Preconditions.checkNotNull(className, "classname must not be null.");
         Preconditions.checkNotNull(genericParameters, "genericParameters must not be null.");

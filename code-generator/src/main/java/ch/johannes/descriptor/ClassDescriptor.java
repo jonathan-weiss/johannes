@@ -10,11 +10,19 @@ public class ClassDescriptor {
 
     private final List<FieldDescriptor> fields;
 
-    ClassDescriptor(TypeDescriptor typeDescriptor, List<FieldDescriptor> fields) {
+    /**
+     * private constructor.
+     * For construction, use factory method {@link ClassDescriptor#of(TypeDescriptor, List)}
+     */
+    private ClassDescriptor(TypeDescriptor typeDescriptor, List<FieldDescriptor> fields) {
         Preconditions.checkNotNull(typeDescriptor, "type must not be null.");
         Preconditions.checkNotNull(fields, "fields must not be null.");
         this.typeDescriptor = typeDescriptor;
         this.fields = fields;
+    }
+
+    public static ClassDescriptor of(TypeDescriptor typeDescriptor, List<FieldDescriptor> fields) {
+        return new ClassDescriptor(typeDescriptor, fields);
     }
 
     public List<FieldDescriptor> getFields() {
