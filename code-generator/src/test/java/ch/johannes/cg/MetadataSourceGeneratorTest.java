@@ -14,8 +14,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static ch.johannes.descriptor.Descriptors.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 
 public class MetadataSourceGeneratorTest {
 
@@ -57,11 +57,10 @@ public class MetadataSourceGeneratorTest {
         PackageDescriptor targetPackage = PackageDescriptor.of("ch.johannes.generated.metadata");
         String generatedCode = metadataSourceGenerator.generateCode(personDescriptor, targetPackage);
 
-        //TODO uncomment the assertion
-        assertThat(generatedCode, equalTo(expectedJavaSourceText));
+        assertThat(generatedCode, is(expectedJavaSourceText));
 
-        //convinience to check for compiler errors
-        writeToFile(targetPackage, ClassnameDescriptor.of("Person" + MetadataSourceGenerator.CLASS_SUFFIX), generatedCode);
+        //convinience method to check for compiler errors
+        //writeToFile(targetPackage, ClassnameDescriptor.of("Person" + MetadataSourceGenerator.METADATA_CLASS_SUFFIX), generatedCode);
     }
 
     /**
