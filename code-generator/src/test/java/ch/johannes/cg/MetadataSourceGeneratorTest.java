@@ -19,24 +19,45 @@ import static org.junit.Assert.*;
 
 public class MetadataSourceGeneratorTest {
 
+    private static final String SOURCE_PACKAGE = "ch.johannes.virtualpackage";
+
     @Test
     public void generateCode() throws Exception {
         String expectedJavaSourceText = FileUtil.readFileInPackage(this, MetadataSourceGeneratorTest.class.getSimpleName() + ".generateCode.txt");
 
         MetadataSourceGenerator metadataSourceGenerator = new MetadataSourceGenerator();
 
-        TypeDescriptor listOfStringFieldType = TypeDescriptorBuilder.with(LIST_TYPE_DESCRIPTOR).addGenericParameter(STRING_TYPE_DESCRIPTOR).build();
-        TypeDescriptor mapOfStringAndIntegerFieldType = TypeDescriptorBuilder.with(MAP_TYPE_DESCRIPTOR).addGenericParameter(STRING_TYPE_DESCRIPTOR).addGenericParameter(INTEGER_TYPE_DESCRIPTOR).build();
-        ClassDescriptor personDescriptor = ClassDescriptorBuilder.with("Person")
+        ClassDescriptor addressDescriptor = ClassDescriptorBuilder.with("Address")
+                .addClassField(FieldDescriptor.of("street", STRING_TYPE_DESCRIPTOR))
+                .addClassField(FieldDescriptor.of("zipCode", STRING_TYPE_DESCRIPTOR))
+                .addClassField(FieldDescriptor.of("city", STRING_TYPE_DESCRIPTOR))
+                .setClassPackage(SOURCE_PACKAGE)
+                .build();
+
+
+        TypeDescriptor listOfStringFieldType = TypeDescriptorBuilder
+                .with(LIST_TYPE_DESCRIPTOR)
+                .addGenericParameter(STRING_TYPE_DESCRIPTOR)
+                .build();
+
+        TypeDescriptor mapOfStringAndAddressFieldType = TypeDescriptorBuilder
+                .with(MAP_TYPE_DESCRIPTOR)
+                .addGenericParameter(STRING_TYPE_DESCRIPTOR)
+                .addGenericParameter(addressDescriptor.getTypeDescriptor())
+                .build();
+        ClassDescriptor personDescriptor = ClassDescriptorBuilder
+                .with("Person")
                 .addClassField(FieldDescriptor.of("firstname", STRING_TYPE_DESCRIPTOR))
                 .addClassField(FieldDescriptor.of("lastname", STRING_TYPE_DESCRIPTOR))
                 .addClassField(FieldDescriptor.of("nicknames", listOfStringFieldType))
-                .addClassField(FieldDescriptor.of("stupidMap", mapOfStringAndIntegerFieldType))
-                .setClassPackage(PackageDescriptor.of("ch.johannes.virtualpackage"))
+                .addClassField(FieldDescriptor.of("addressMap", mapOfStringAndAddressFieldType))
+                .setClassPackage(SOURCE_PACKAGE)
                 .build();
 
         PackageDescriptor targetPackage = PackageDescriptor.of("ch.johannes.generated.metadata");
         String generatedCode = metadataSourceGenerator.generateCode(personDescriptor, targetPackage);
+
+        //TODO uncomment the assertion
         assertThat(generatedCode, equalTo(expectedJavaSourceText));
 
         //convinience to check for compiler errors

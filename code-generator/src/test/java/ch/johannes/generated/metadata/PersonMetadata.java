@@ -1,17 +1,24 @@
 package ch.johannes.generated.metadata;
 
-import ch.johannes.CollectionUtil;
-import ch.johannes.descriptor.ClassnameDescriptor;
+import ch.johannes.descriptor.Descriptors;
 import ch.johannes.descriptor.FieldDescriptor;
-import ch.johannes.descriptor.PackageDescriptor;
 import ch.johannes.descriptor.TypeDescriptor;
+import ch.johannes.descriptor.TypeDescriptorBuilder;
 
 public class PersonMetadata {
-  public static final FieldDescriptor FIRSTNAME = FieldDescriptor.of("firstname", TypeDescriptor.of(PackageDescriptor.of("java.lang"), ClassnameDescriptor.of("String"), false, false, CollectionUtil.<TypeDescriptor>listOf()));
+  public static final TypeDescriptor TYPE_FOR_FIRSTNAME = Descriptors.STRING_TYPE_DESCRIPTOR;
 
-  public static final FieldDescriptor LASTNAME = FieldDescriptor.of("lastname", TypeDescriptor.of(PackageDescriptor.of("java.lang"), ClassnameDescriptor.of("String"), false, false, CollectionUtil.<TypeDescriptor>listOf()));
+  public static final FieldDescriptor FIRSTNAME = FieldDescriptor.of("firstname", TYPE_FOR_FIRSTNAME);
 
-  public static final FieldDescriptor NICKNAMES = FieldDescriptor.of("nicknames", TypeDescriptor.of(PackageDescriptor.of("java.util"), ClassnameDescriptor.of("List"), false, false, CollectionUtil.<TypeDescriptor>listOf(TypeDescriptor.of(PackageDescriptor.of("java.lang"), ClassnameDescriptor.of("String"), false, false, CollectionUtil.<TypeDescriptor>listOf()))));
+  public static final TypeDescriptor TYPE_FOR_LASTNAME = Descriptors.STRING_TYPE_DESCRIPTOR;
 
-  public static final FieldDescriptor STUPID_MAP = FieldDescriptor.of("stupidMap", TypeDescriptor.of(PackageDescriptor.of("java.util"), ClassnameDescriptor.of("Map"), false, false, CollectionUtil.<TypeDescriptor>listOf(TypeDescriptor.of(PackageDescriptor.of("java.lang"), ClassnameDescriptor.of("String"), false, false, CollectionUtil.<TypeDescriptor>listOf()),TypeDescriptor.of(PackageDescriptor.of("java.lang"), ClassnameDescriptor.of("Integer"), false, false, CollectionUtil.<TypeDescriptor>listOf()))));
+  public static final FieldDescriptor LASTNAME = FieldDescriptor.of("lastname", TYPE_FOR_LASTNAME);
+
+  public static final TypeDescriptor TYPE_FOR_NICKNAMES = TypeDescriptorBuilder.with("java.util", "List").addGenericParameter(Descriptors.STRING_TYPE_DESCRIPTOR).build();
+
+  public static final FieldDescriptor NICKNAMES = FieldDescriptor.of("nicknames", TYPE_FOR_NICKNAMES);
+
+  public static final TypeDescriptor TYPE_FOR_ADDRESS_MAP = TypeDescriptorBuilder.with("java.util", "Map").addGenericParameter(Descriptors.STRING_TYPE_DESCRIPTOR).addGenericParameter(TypeDescriptorBuilder.with("ch.johannes.virtualpackage", "Address").build()).build();
+
+  public static final FieldDescriptor ADDRESS_MAP = FieldDescriptor.of("addressMap", TYPE_FOR_ADDRESS_MAP);
 }

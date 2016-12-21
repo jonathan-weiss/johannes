@@ -1,12 +1,12 @@
 package ch.johannes.cg;
 
-import ch.johannes.CollectionUtil;
 import ch.johannes.FieldNameUtil;
 import ch.johannes.descriptor.ClassDescriptor;
-import ch.johannes.descriptor.ClassnameDescriptor;
+import ch.johannes.descriptor.Descriptors;
 import ch.johannes.descriptor.FieldDescriptor;
 import ch.johannes.descriptor.PackageDescriptor;
 import ch.johannes.descriptor.TypeDescriptor;
+import ch.johannes.descriptor.TypeDescriptorBuilder;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
@@ -16,9 +16,7 @@ import com.squareup.javapoet.TypeSpec;
 
 import javax.lang.model.element.Modifier;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MetadataSourceGenerator {
 
@@ -34,12 +32,20 @@ public class MetadataSourceGenerator {
             String nameOfField = fieldDescriptor.getFieldName();
             ClassName classOfField = ClassName.get(fieldDescriptor.getFieldType().getClassPackage().getPackageName(), fieldDescriptor.getFieldType().getClassName().getClassName());
 
+            //create constant for field type
+            FieldSpec fieldTypeSpec = FieldSpec.builder(TypeDescriptor.class, "TYPE_FOR_" + FieldNameUtil.fieldNameToConstant(nameOfField))
+                    .addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
+                    .initializer(createTypeDescriptorBuilderCode(fieldDescriptor.getFieldType()))
+                    .build();
+            constantFields.add(fieldTypeSpec);
+
             //create constant for field
             FieldSpec fieldSpec = FieldSpec.builder(FieldDescriptor.class, FieldNameUtil.fieldNameToConstant(nameOfField))
                     .addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
-                    .initializer(createFieldDescriptorCode(fieldDescriptor))
+                    .initializer(createFieldDescriptorBuilderCode(fieldDescriptor, fieldTypeSpec))
                     .build();
             constantFields.add(fieldSpec);
+
         }
 
         fields.addAll(constantFields);
@@ -55,83 +61,63 @@ public class MetadataSourceGenerator {
         return javaFile.toString();
     }
 
-
     /**
      * <code>
-     * FieldDescriptor.of("name", TypeDescriptor.of(PackageDescriptor.of("packageName"), ClassnameDescriptor.of("className"), isArray, isPrimitive, List<TypeDescriptor> genericParameters))
+     * FieldDescriptorBuilder.with("firstname").setFieldType(..).build();
      * </code>
      */
-    private CodeBlock createFieldDescriptorCode(FieldDescriptor fieldDescriptor) {
+    private CodeBlock createFieldDescriptorBuilderCode(FieldDescriptor fieldDescriptor, FieldSpec fieldTypeSpec) {
+
         String fieldName = fieldDescriptor.getFieldName();
         CodeBlock.Builder codeBlockBuilder = CodeBlock.builder();
-        codeBlockBuilder.add("$T.of($S, $L)", FieldDescriptor.class, fieldName, createTypeDescriptorCode(fieldDescriptor.getFieldType()));
+        codeBlockBuilder.add("$T.of($S, $N)", FieldDescriptor.class, fieldName, fieldTypeSpec);
         return codeBlockBuilder.build();
     }
 
     /**
      * <code>
-     * TypeDescriptor.of(PackageDescriptor.of("packageName"), ClassnameDescriptor.of("className"), isArray, isPrimitive, List<TypeDescriptor> genericParameters);
+     * TypeDescriptorBuilder
+     * .with("packageName", "className")
+     * .setIsArray(true)
+     * .setIsPrimitive(true)
+     * .addGenericParameter(STRING_TYPE_DESCRIPTOR)
+     * .build();
      * </code>
      */
-    private CodeBlock createTypeDescriptorCode(TypeDescriptor typeDescriptor) {
+    private CodeBlock createTypeDescriptorBuilderCode(TypeDescriptor typeDescriptor) {
         CodeBlock.Builder codeBlockBuilder = CodeBlock.builder();
-        final List<CodeBlock> codeBlocksForEachGenericParameter = typeDescriptor.getGenericParameters().stream().map(this::createTypeDescriptorCode).collect(Collectors.toList());
+        if (Descriptors.AccessorMap.MAP_OF_TYPE_DESCRIPTOR.containsKey(typeDescriptor)) {
+            codeBlockBuilder.add("$T.$L", Descriptors.class, Descriptors.AccessorMap.MAP_OF_TYPE_DESCRIPTOR.get(typeDescriptor));
+        } else {
+            codeBlockBuilder.add("$T", TypeDescriptorBuilder.class);
+            addBuilderLineBreak(codeBlockBuilder);
+            codeBlockBuilder.add(".with($S, $S)",
+                    typeDescriptor.getClassPackage().getPackageName(),
+                    typeDescriptor.getClassName().getClassName());
 
-        codeBlockBuilder.add("$T.of($L, $L, $L, $L, $L)",
-                TypeDescriptor.class,
-                createPackageDescriptorCode(typeDescriptor.getClassPackage()),
-                createClassnameDescriptorCode(typeDescriptor.getClassName()),
-                typeDescriptor.isArray(), //TODO work with constants
-                typeDescriptor.isPrimitive(), //TODO work with constants
-                createListOfTypeCode(TypeDescriptor.class, codeBlocksForEachGenericParameter));
-        return codeBlockBuilder.build();
-    }
-
-    /**
-     * <code>
-     * PackageDescriptor.of("packageName");
-     * </code>
-     */
-    private CodeBlock createPackageDescriptorCode(PackageDescriptor packageDescriptor) {
-        CodeBlock.Builder codeBlockBuilder = CodeBlock.builder();
-        codeBlockBuilder.add("$T.of($S)", PackageDescriptor.class, packageDescriptor.getPackageName());
-        return codeBlockBuilder.build();
-    }
-
-    /**
-     * <code>
-     * ClassnameDescriptor.of("className")
-     * </code>
-     */
-    private CodeBlock createClassnameDescriptorCode(ClassnameDescriptor classnameDescriptor) {
-        CodeBlock.Builder codeBlockBuilder = CodeBlock.builder();
-        codeBlockBuilder.add("$T.of($S)", ClassnameDescriptor.class, classnameDescriptor.getClassName());
-        return codeBlockBuilder.build();
-    }
-
-    /**
-     * <code>
-     * CollectionUtil<String></>.arrayListOf("1", "2", "3");
-     * </code>
-     */
-    private CodeBlock createListOfTypeCode(Class<?> genericClassOfList, List<CodeBlock> elementsInList) {
-        CodeBlock.Builder enumerationOfElements = CodeBlock.builder();
-        boolean isFirstElement = true;
-        for(CodeBlock element: elementsInList) {
-            if(isFirstElement) {
-                isFirstElement = false;
-            } else {
-                enumerationOfElements.add(",");
+            if (typeDescriptor.isArray()) { //only write isArray, if it is true (builder default is false)
+                addBuilderLineBreak(codeBlockBuilder);
+                codeBlockBuilder.add(".setIsArray($L)", typeDescriptor.isArray());
             }
-            enumerationOfElements.add(element);
+
+            if (typeDescriptor.isPrimitive()) { //only write isPrimitive, if it is true (builder default is false)
+                addBuilderLineBreak(codeBlockBuilder);
+                codeBlockBuilder.add(".setIsPrimitive($L)", typeDescriptor.isPrimitive());
+            }
+
+            for (TypeDescriptor genericParameter : typeDescriptor.getGenericParameters()) {
+                addBuilderLineBreak(codeBlockBuilder);
+                codeBlockBuilder.add(".addGenericParameter($L)", createTypeDescriptorBuilderCode(genericParameter));
+            }
+            codeBlockBuilder.add(".build()");
         }
 
-        CodeBlock.Builder codeBlockBuilder = CodeBlock.builder();
-
-        codeBlockBuilder.add("$T.<$T>listOf($L)", CollectionUtil.class, genericClassOfList, enumerationOfElements.build());
         return codeBlockBuilder.build();
     }
 
-
+    private CodeBlock.Builder addBuilderLineBreak(CodeBlock.Builder codeBlockBuilder) {
+        //codeBlockBuilder.add("\n");
+        return codeBlockBuilder;
+    }
 
 }
