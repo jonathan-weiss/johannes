@@ -4,6 +4,8 @@ ToDos
 - Make descriptor comparable
 - Support for wildcards in ClassReflector
 
+- Descriptor refactoring to a similar style like java.time builder (object and builder in one)
+
 - Create plan for Bean creation
 - Create plan for Bean-to-Bean mapper creation
 - Create simplified metadata entity for non-existing classes (e.g. target classes)
