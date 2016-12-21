@@ -5,10 +5,10 @@ import ch.johannes.cg.JavaSourceWriter;
 import ch.johannes.cg.dummy.MapperSourceGenerator;
 import ch.johannes.cg.dummy.MapperTestSourceGenerator;
 import ch.johannes.descriptor.ClassDescriptor;
-import ch.johannes.descriptor.ClassnameDescriptor;
+import ch.johannes.descriptor.ClassDescriptorBuilder;
 import ch.johannes.descriptor.ClassnameDescriptorBuilder;
-import ch.johannes.examples.descriptor.PersonDescriptor;
-import ch.johannes.examples.descriptor.PersonTODescriptor;
+import ch.johannes.examples.metadata.PersonMetadata;
+import ch.johannes.examples.metadata.PersonTOMetadata;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -16,9 +16,8 @@ import java.nio.file.Paths;
 
 public class ExamplesCodeGenerationRunner {
 
-    public static void main(String [] args)
-    {
-        if(args.length != 2) {
+    public static void main(String[] args) {
+        if (args.length != 2) {
             throw new IllegalArgumentException("Arguments must be two absolute paths (mainSourceFileBase, testSourceFileBase)");
         }
         String mainSourceFileBasePath = args[0];
@@ -33,10 +32,11 @@ public class ExamplesCodeGenerationRunner {
             JavaSourceWriter testJavaSourceWriter = new JavaSourceWriter(testSourceFilesBase);
 
             //generate person bean descriptor
-            final ClassDescriptor personDescriptor = PersonDescriptor.create();
+            final ClassDescriptor personDescriptor = PersonMetadata.PERSON_DESCRIPTOR;
 
             //generate personTO bean
-            final ClassDescriptor personTODescriptor = PersonTODescriptor.create();
+
+            final ClassDescriptor personTODescriptor = ClassDescriptorBuilder.with(PersonTOMetadata.PERSONT_O_DESCRIPTOR).setClassname("MyPersonTO").build();
             BeanSourceGenerator cg = new BeanSourceGenerator();
             final String sourceCodeForPersonTO = cg.generateCode(personTODescriptor);
             mainJavaSourceWriter.writeJavaSourceFile(

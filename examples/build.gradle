@@ -37,6 +37,13 @@ dependencies {
     codegenerationCompile project(':code-generator')
 }
 
+// generate the metadata of existing classes
+task generateMetadata(type: JavaExec) {
+    classpath sourceSets.main.runtimeClasspath + sourceSets.test.runtimeClasspath
+    main = 'ch.johannes.examples.metadata.ExamplesMetadataCodeGenerationRunner'
+    args =["./codegeneration/java"]
+}
+
 
 // generate the sources
 task generateSources(type: JavaExec) {

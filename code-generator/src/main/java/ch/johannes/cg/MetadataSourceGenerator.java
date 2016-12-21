@@ -3,6 +3,7 @@ package ch.johannes.cg;
 import ch.johannes.JavaNameUtil;
 import ch.johannes.descriptor.ClassDescriptor;
 import ch.johannes.descriptor.ClassDescriptorBuilder;
+import ch.johannes.descriptor.ClassnameDescriptor;
 import ch.johannes.descriptor.Descriptors;
 import ch.johannes.descriptor.FieldDescriptor;
 import ch.johannes.descriptor.PackageDescriptor;
@@ -32,6 +33,10 @@ public class MetadataSourceGenerator {
     public static final String CLASS_DESCRIPTOR_FIELD_NAME = "CLASS_DESCRIPTOR";
     public static final String NAMED_CLASS_DESCRIPTOR_FIELD_NAME_PREFIX = "";
     public static final String NAMED_CLASS_DESCRIPTOR_FIELD_NAME_SUFFIX = "_DESCRIPTOR";
+
+    public ClassnameDescriptor getTargetClassname(ClassDescriptor sourceClassDescriptor, PackageDescriptor targetPackage) {
+        return ClassnameDescriptor.of(METADATA_CLASS_PREFIX + sourceClassDescriptor.getTypeDescriptor().getClassName().getClassName() + METADATA_CLASS_SUFFIX);
+    }
 
     public String generateCode(ClassDescriptor sourceClassDescriptor, PackageDescriptor targetPackage) {
 
@@ -86,7 +91,7 @@ public class MetadataSourceGenerator {
 
 
         fields.addAll(constantFields);
-        TypeSpec targetType = TypeSpec.classBuilder(METADATA_CLASS_PREFIX + sourceClassDescriptor.getTypeDescriptor().getClassName().getClassName() + METADATA_CLASS_SUFFIX)
+        TypeSpec targetType = TypeSpec.classBuilder(getTargetClassname(sourceClassDescriptor, targetPackage).getClassName())
                 .addModifiers(Modifier.PUBLIC)
                 .addFields(fields)
                 .addMethods(methods)
