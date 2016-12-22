@@ -2,12 +2,10 @@ package ch.johannes.cg;
 
 import ch.johannes.FileUtil;
 import ch.johannes.descriptor.ClassDescriptor;
-import ch.johannes.descriptor.ClassDescriptorBuilder;
 import ch.johannes.descriptor.ClassnameDescriptor;
 import ch.johannes.descriptor.FieldDescriptor;
 import ch.johannes.descriptor.PackageDescriptor;
 import ch.johannes.descriptor.TypeDescriptor;
-import ch.johannes.descriptor.TypeDescriptorBuilder;
 import org.junit.Test;
 
 import java.nio.file.Path;
@@ -27,32 +25,20 @@ public class MetadataSourceGeneratorTest {
 
         MetadataSourceGenerator metadataSourceGenerator = new MetadataSourceGenerator();
 
-        ClassDescriptor addressDescriptor = ClassDescriptorBuilder.with("Address")
-                .addClassField(FieldDescriptor.of("street", STRING_TYPE_DESCRIPTOR))
-                .addClassField(FieldDescriptor.of("zipCode", STRING_TYPE_DESCRIPTOR))
-                .addClassField(FieldDescriptor.of("city", STRING_TYPE_DESCRIPTOR))
-                .setClassPackage(SOURCE_PACKAGE)
-                .build();
+        ClassDescriptor addressDescriptor = ClassDescriptor.of(SOURCE_PACKAGE, "Address")
+                .addField(FieldDescriptor.of("street", STRING_TYPE_DESCRIPTOR))
+                .addField(FieldDescriptor.of("zipCode", STRING_TYPE_DESCRIPTOR))
+                .addField(FieldDescriptor.of("city", STRING_TYPE_DESCRIPTOR));
 
 
-        TypeDescriptor listOfStringFieldType = TypeDescriptorBuilder
-                .with(LIST_TYPE_DESCRIPTOR)
-                .addGenericParameter(STRING_TYPE_DESCRIPTOR)
-                .build();
+        TypeDescriptor listOfStringFieldType = LIST_TYPE_DESCRIPTOR.addGenericParameter(STRING_TYPE_DESCRIPTOR);
 
-        TypeDescriptor mapOfStringAndAddressFieldType = TypeDescriptorBuilder
-                .with(MAP_TYPE_DESCRIPTOR)
-                .addGenericParameter(STRING_TYPE_DESCRIPTOR)
-                .addGenericParameter(addressDescriptor.getTypeDescriptor())
-                .build();
-        ClassDescriptor personDescriptor = ClassDescriptorBuilder
-                .with("Person")
-                .addClassField(FieldDescriptor.of("firstname", STRING_TYPE_DESCRIPTOR))
-                .addClassField(FieldDescriptor.of("lastname", STRING_TYPE_DESCRIPTOR))
-                .addClassField(FieldDescriptor.of("nicknames", listOfStringFieldType))
-                .addClassField(FieldDescriptor.of("addressMap", mapOfStringAndAddressFieldType))
-                .setClassPackage(SOURCE_PACKAGE)
-                .build();
+        TypeDescriptor mapOfStringAndAddressFieldType = MAP_TYPE_DESCRIPTOR.addGenericParameter(STRING_TYPE_DESCRIPTOR).addGenericParameter(addressDescriptor.getTypeDescriptor());
+        ClassDescriptor personDescriptor = ClassDescriptor.of(SOURCE_PACKAGE, "Person")
+                .addField(FieldDescriptor.of("firstname", STRING_TYPE_DESCRIPTOR))
+                .addField(FieldDescriptor.of("lastname", STRING_TYPE_DESCRIPTOR))
+                .addField(FieldDescriptor.of("nicknames", listOfStringFieldType))
+                .addField(FieldDescriptor.of("addressMap", mapOfStringAndAddressFieldType));
 
         PackageDescriptor targetPackage = PackageDescriptor.of("ch.johannes.generated.metadata");
         String generatedCode = metadataSourceGenerator.generateCode(personDescriptor, targetPackage);

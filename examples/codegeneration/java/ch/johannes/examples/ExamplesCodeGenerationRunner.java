@@ -5,12 +5,10 @@ import ch.johannes.cg.JavaSourceWriter;
 import ch.johannes.cg.dummy.MapperSourceGenerator;
 import ch.johannes.cg.dummy.MapperTestSourceGenerator;
 import ch.johannes.descriptor.ClassDescriptor;
-import ch.johannes.descriptor.ClassDescriptorBuilder;
-import ch.johannes.descriptor.ClassnameDescriptorBuilder;
+import ch.johannes.descriptor.ClassnameDescriptor;
 import ch.johannes.examples.metadata.PersonMetadata;
 import ch.johannes.examples.metadata.PersonTOMetadata;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -36,7 +34,10 @@ public class ExamplesCodeGenerationRunner {
 
             //generate personTO bean
 
-            final ClassDescriptor personTODescriptor = ClassDescriptorBuilder.with(PersonTOMetadata.PERSONT_O_DESCRIPTOR).setClassname("MyPersonTO").build();
+            final ClassDescriptor personTODescriptor = ClassDescriptor.of(
+                    PersonTOMetadata.PERSONT_O_DESCRIPTOR.getTypeDescriptor().getClassPackage(),
+                    "MyPersonTO")
+                    .addFields(PersonTOMetadata.PERSONT_O_DESCRIPTOR.getFields());
             BeanSourceGenerator cg = new BeanSourceGenerator();
             final String sourceCodeForPersonTO = cg.generateCode(personTODescriptor);
             mainJavaSourceWriter.writeJavaSourceFile(
@@ -51,10 +52,10 @@ public class ExamplesCodeGenerationRunner {
                     personDescriptor,
                     personTODescriptor,
                     personTODescriptor.getTypeDescriptor().getClassPackage(),
-                    ClassnameDescriptorBuilder.with(mapperName).build());
+                    ClassnameDescriptor.of(mapperName));
             mainJavaSourceWriter.writeJavaSourceFile(
                     personTODescriptor.getTypeDescriptor().getClassPackage(),
-                    ClassnameDescriptorBuilder.with(mapperName).build(),
+                    ClassnameDescriptor.of(mapperName),
                     sourceCodeForPersonMapper);
 
             //generate test
@@ -64,13 +65,13 @@ public class ExamplesCodeGenerationRunner {
                     personDescriptor,
                     personTODescriptor,
                     personTODescriptor.getTypeDescriptor().getClassPackage(),
-                    ClassnameDescriptorBuilder.with(mapperTestName).build());
+                    ClassnameDescriptor.of(mapperTestName));
             testJavaSourceWriter.writeJavaSourceFile(
                     personTODescriptor.getTypeDescriptor().getClassPackage(),
-                    ClassnameDescriptorBuilder.with(mapperTestName).build(),
+                    ClassnameDescriptor.of(mapperTestName),
                     sourceCodeForPersonMapperTest);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

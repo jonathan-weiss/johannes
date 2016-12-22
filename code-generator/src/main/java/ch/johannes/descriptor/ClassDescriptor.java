@@ -38,6 +38,21 @@ public class ClassDescriptor {
     }
 
     /**
+     * Factory method
+     */
+    public static ClassDescriptor of(String packageName, String className) {
+        return ClassDescriptor.of(TypeDescriptor.of(packageName, className));
+    }
+
+    /**
+     * Factory method
+     */
+    public static ClassDescriptor of(PackageDescriptor packageDescriptor, String className) {
+        return ClassDescriptor.of(TypeDescriptor.of(packageDescriptor, ClassnameDescriptor.of(className)));
+    }
+
+
+    /**
      * Prototype method
      */
     public ClassDescriptor with(TypeDescriptor typeDescriptor) {

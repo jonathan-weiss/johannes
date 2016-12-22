@@ -1,7 +1,6 @@
 package ch.johannes.examples.metadata;
 
 import ch.johannes.descriptor.ClassDescriptor;
-import ch.johannes.descriptor.ClassDescriptorBuilder;
 import ch.johannes.descriptor.Descriptors;
 import ch.johannes.descriptor.FieldDescriptor;
 import ch.johannes.descriptor.PackageDescriptor;
@@ -18,7 +17,7 @@ public class PersonTOMetadata {
 
   public static final PackageDescriptor PACKAGE_DESCRIPTOR = PackageDescriptor.of("ch.johannes.examples.mapper.oneone");
 
-  public static final ClassDescriptor CLASS_DESCRIPTOR = ClassDescriptorBuilder.with("PersonTO").setClassPackage(PACKAGE_DESCRIPTOR).addClassField(FIRSTNAME).addClassField(LASTNAME).build();
+  public static final ClassDescriptor CLASS_DESCRIPTOR = ClassDescriptor.of(PACKAGE_DESCRIPTOR,"PersonTO").addField(FIRSTNAME).addField(LASTNAME);
 
   public static final ClassDescriptor PERSONT_O_DESCRIPTOR = CLASS_DESCRIPTOR;
 }

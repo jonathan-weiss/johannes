@@ -2,13 +2,11 @@ package ch.johannes.cg;
 
 import ch.johannes.JavaNameUtil;
 import ch.johannes.descriptor.ClassDescriptor;
-import ch.johannes.descriptor.ClassDescriptorBuilder;
 import ch.johannes.descriptor.ClassnameDescriptor;
 import ch.johannes.descriptor.Descriptors;
 import ch.johannes.descriptor.FieldDescriptor;
 import ch.johannes.descriptor.PackageDescriptor;
 import ch.johannes.descriptor.TypeDescriptor;
-import ch.johannes.descriptor.TypeDescriptorBuilder;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
@@ -105,25 +103,20 @@ public class MetadataSourceGenerator {
 
     /**
      * <code>
-     *   ClassDescriptorBuilder
-     *    .with("Classname")
-     *    .addClassField(FieldDescriptor.of("firstname", STRING_TYPE_DESCRIPTOR))
-     *    .addClassField(FieldDescriptor.of("lastname", STRING_TYPE_DESCRIPTOR))
-     *    .addClassField(FieldDescriptor.of("nicknames", listOfStringFieldType))
-     *    .addClassField(FieldDescriptor.of("addressMap", mapOfStringAndAddressFieldType))
-     *    .setClassPackage(SOURCE_PACKAGE)
-     *    .build();
+     *   ClassDescriptor
+     *    .of("packageName", "className")
+     *    .addField(FieldDescriptor.of("firstname", STRING_TYPE_DESCRIPTOR))
+     *    .addField(FieldDescriptor.of("lastname", STRING_TYPE_DESCRIPTOR))
+     *    .addField(FieldDescriptor.of("nicknames", listOfStringFieldType))
+     *    .addField(FieldDescriptor.of("addressMap", mapOfStringAndAddressFieldType))
      * </code>
      */
     private CodeBlock createClassDescriptorBuilderCode(ClassDescriptor sourceClassDescriptor, FieldSpec packageFieldSpec, Map<FieldDescriptor, FieldSpec> fieldSpecs) {
-
         CodeBlock.Builder codeBlockBuilder = CodeBlock.builder();
-        codeBlockBuilder.add("$T.with($S)", ClassDescriptorBuilder.class, sourceClassDescriptor.getTypeDescriptor().getClassName().getClassName());
-        codeBlockBuilder.add(".setClassPackage($N)", packageFieldSpec);
+        codeBlockBuilder.add("$T.of($N,$S)", ClassDescriptor.class, packageFieldSpec, sourceClassDescriptor.getTypeDescriptor().getClassName().getClassName());
         for(FieldDescriptor fieldDescriptor: sourceClassDescriptor.getFields()) {
-            codeBlockBuilder.add(".addClassField($N)", fieldSpecs.get(fieldDescriptor));
+            codeBlockBuilder.add(".addField($N)", fieldSpecs.get(fieldDescriptor));
         }
-        codeBlockBuilder.add(".build()");
         return codeBlockBuilder.build();
     }
 
@@ -142,11 +135,10 @@ public class MetadataSourceGenerator {
 
     /**
      * <code>
-     * FieldDescriptorBuilder.with("firstname").setFieldType(..).build();
+     * FieldDescriptor.of("firstname", typeDescriptor);
      * </code>
      */
     private CodeBlock createFieldDescriptorBuilderCode(FieldDescriptor fieldDescriptor, FieldSpec fieldTypeSpec) {
-
         String fieldName = fieldDescriptor.getFieldName();
         CodeBlock.Builder codeBlockBuilder = CodeBlock.builder();
         codeBlockBuilder.add("$T.of($S, $N)", FieldDescriptor.class, fieldName, fieldTypeSpec);
@@ -155,12 +147,11 @@ public class MetadataSourceGenerator {
 
     /**
      * <code>
-     * TypeDescriptorBuilder
-     * .with("packageName", "className")
-     * .setIsArray(true)
-     * .setIsPrimitive(true)
+     * TypeDescriptor
+     * .of("packageName", "className")
+     * .withArray(true)
+     * .withPrimitive(true)
      * .addGenericParameter(STRING_TYPE_DESCRIPTOR)
-     * .build();
      * </code>
      */
     private CodeBlock createTypeDescriptorBuilderCode(TypeDescriptor typeDescriptor) {
@@ -168,23 +159,22 @@ public class MetadataSourceGenerator {
         if (Descriptors.AccessorMap.MAP_OF_TYPE_DESCRIPTOR.containsKey(typeDescriptor)) {
             codeBlockBuilder.add("$T.$L", Descriptors.class, Descriptors.AccessorMap.MAP_OF_TYPE_DESCRIPTOR.get(typeDescriptor));
         } else {
-            codeBlockBuilder.add("$T", TypeDescriptorBuilder.class);
-            codeBlockBuilder.add(".with($S, $S)",
+            codeBlockBuilder.add("$T", TypeDescriptor.class);
+            codeBlockBuilder.add(".of($S, $S)",
                     typeDescriptor.getClassPackage().getPackageName(),
                     typeDescriptor.getClassName().getClassName());
 
             if (typeDescriptor.isArray()) { //only write isArray, if it is true (builder default is false)
-                codeBlockBuilder.add(".setIsArray($L)", typeDescriptor.isArray());
+                codeBlockBuilder.add(".withArray($L)", typeDescriptor.isArray());
             }
 
             if (typeDescriptor.isPrimitive()) { //only write isPrimitive, if it is true (builder default is false)
-                codeBlockBuilder.add(".setIsPrimitive($L)", typeDescriptor.isPrimitive());
+                codeBlockBuilder.add(".withPrimitive($L)", typeDescriptor.isPrimitive());
             }
 
             for (TypeDescriptor genericParameter : typeDescriptor.getGenericParameters()) {
                 codeBlockBuilder.add(".addGenericParameter($L)", createTypeDescriptorBuilderCode(genericParameter));
             }
-            codeBlockBuilder.add(".build()");
         }
 
         return codeBlockBuilder.build();

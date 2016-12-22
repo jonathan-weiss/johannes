@@ -22,9 +22,17 @@ public class TypeDescriptor {
 
     private final List<TypeDescriptor> genericParameters; //TODO use comparable (unmodifiable) list
 
-    private final boolean array;
+    private final boolean array; //default
 
-    private final boolean primitive;
+    private final boolean primitive; //default
+
+    /**
+     * private constructor.
+     * For construction, use factory methods
+     */
+    private TypeDescriptor(PackageDescriptor classPackage, ClassnameDescriptor className) {
+        this(classPackage, className, false, false, Collections.emptyList());
+    }
 
     /**
      * private constructor.
@@ -52,14 +60,29 @@ public class TypeDescriptor {
      * Factory method
      */
     public static TypeDescriptor of(PackageDescriptor packageDescriptor, ClassnameDescriptor classnameDescriptor) {
-        return new TypeDescriptor(packageDescriptor, classnameDescriptor, false, false, Collections.emptyList());
+        return new TypeDescriptor(packageDescriptor, classnameDescriptor);
     }
+
+    /**
+     * Factory method
+     */
+    public static TypeDescriptor of(String packageName, String className) {
+        return new TypeDescriptor(PackageDescriptor.of(packageName), ClassnameDescriptor.of(className));
+    }
+
 
     /**
      * Prototype method
      */
     public TypeDescriptor with(PackageDescriptor packageDescriptor) {
         return new TypeDescriptor(packageDescriptor, this.getClassName(), this.isArray(), this.isPrimitive(), this.getGenericParameters());
+    }
+
+    /**
+     * Prototype method
+     */
+    public TypeDescriptor withPackage(String packageName) {
+        return new TypeDescriptor(PackageDescriptor.of(packageName), this.getClassName(), this.isArray(), this.isPrimitive(), this.getGenericParameters());
     }
 
     /**
@@ -72,14 +95,21 @@ public class TypeDescriptor {
     /**
      * Prototype method
      */
-    public TypeDescriptor isArray(boolean isArray) {
+    public TypeDescriptor withClassname(String className) {
+        return new TypeDescriptor(this.getClassPackage(), ClassnameDescriptor.of(className), this.isArray(), this.isPrimitive(), this.getGenericParameters());
+    }
+
+    /**
+     * Prototype method
+     */
+    public TypeDescriptor withArray(boolean isArray) {
         return new TypeDescriptor(this.getClassPackage(), this.getClassName(), isArray, this.isPrimitive(), this.getGenericParameters());
     }
 
     /**
      * Prototype method
      */
-    public TypeDescriptor isPrimitive(boolean isPrimitive) {
+    public TypeDescriptor withPrimitive(boolean isPrimitive) {
         return new TypeDescriptor(this.getClassPackage(), this.getClassName(), this.isArray(), isPrimitive, this.getGenericParameters());
     }
 

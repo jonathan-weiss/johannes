@@ -1,13 +1,9 @@
 package ch.johannes.reflector;
 
 import ch.johannes.descriptor.ClassDescriptor;
-import ch.johannes.descriptor.ClassDescriptorBuilder;
 import ch.johannes.descriptor.ClassnameDescriptor;
-import ch.johannes.descriptor.ClassnameDescriptorBuilder;
 import ch.johannes.descriptor.FieldDescriptor;
-import ch.johannes.descriptor.FieldDescriptorBuilder;
 import ch.johannes.descriptor.PackageDescriptor;
-import ch.johannes.descriptor.PackageDescriptorBuilder;
 import ch.johannes.descriptor.TypeDescriptor;
 
 import java.lang.reflect.Field;
@@ -25,19 +21,17 @@ public class ClassReflector {
         return listOfClasses.stream().map(ClassReflector::reflectClass).collect(Collectors.toList());
     }
 
-
     public static ClassDescriptor reflectClass(Class<?> clazz) {
         TypeDescriptor typeDescriptor = reflectClassAsTypeDescriptor(clazz);
-        ClassDescriptorBuilder builder = ClassDescriptorBuilder
-                .with(typeDescriptor.getClassName())
-                .setClassPackage(typeDescriptor.getClassPackage());
+        ClassDescriptor classDescriptor = ClassDescriptor.of(typeDescriptor);
+
 
         for (Field field : clazz.getDeclaredFields()) {
-            if(!field.isSynthetic()) { //filter compile generated fields like this$0 for inner classes
-                builder.addClassField(reflectField(field));
+            if (!field.isSynthetic()) { //filter compile generated fields like this$0 for inner classes
+                classDescriptor = classDescriptor.addField(reflectField(field));
             }
         }
-        return builder.build();
+        return classDescriptor;
     }
 
     public static TypeDescriptor reflectClassAsTypeDescriptor(Class<?> clazz) {
@@ -50,10 +44,7 @@ public class ClassReflector {
     }
 
     private static FieldDescriptor reflectField(Field field) {
-        return FieldDescriptorBuilder
-                .with(field.getName())
-                .setFieldType(reflectFieldType(field))
-                .build();
+        return FieldDescriptor.of(field.getName(), reflectFieldType(field));
     }
 
     private static TypeDescriptor reflectFieldType(Field field) {
@@ -63,7 +54,7 @@ public class ClassReflector {
 
     private static TypeDescriptor reflectType(Type type) {
         if (type instanceof Class) {
-            return reflectClassAsTypeDescriptor((Class)type);
+            return reflectClassAsTypeDescriptor((Class) type);
         } else if (type instanceof GenericArrayType) {
             GenericArrayType genericArrayType = (GenericArrayType) type;
             final TypeDescriptor rawType = reflectType(genericArrayType.getGenericComponentType()); //recursive
@@ -71,7 +62,6 @@ public class ClassReflector {
             return TypeDescriptor.of(rawType.getClassPackage(), rawType.getClassName(), true, rawType.isPrimitive(), rawType.getGenericParameters());
         } else if (type instanceof ParameterizedType) {
             ParameterizedType parameterizedType = (ParameterizedType) type;
-
 
             List<TypeDescriptor> genericParameters = new ArrayList<>();
             Type[] typeArguments = parameterizedType.getActualTypeArguments();
@@ -90,20 +80,20 @@ public class ClassReflector {
 
     private static ClassnameDescriptor reflectClassname(Class<?> clazz) {
         rejectArrayClass(clazz);
-        return ClassnameDescriptorBuilder.with(clazz.getSimpleName()).build();
+        return ClassnameDescriptor.of(clazz.getSimpleName());
     }
 
     private static PackageDescriptor reflectPackage(Class<?> clazz) {
         rejectArrayClass(clazz);
-        if(clazz.isPrimitive()) {
-            return PackageDescriptorBuilder.with("").build();
+        if (clazz.isPrimitive()) {
+            return PackageDescriptor.of("");
         } else {
-            return PackageDescriptorBuilder.with(clazz.getPackage().getName()).build();
+            return PackageDescriptor.of(clazz.getPackage().getName());
         }
     }
 
     private static void rejectArrayClass(Class<?> clazz) {
-        if(clazz.isArray()) {
+        if (clazz.isArray()) {
             throw new IllegalStateException("Array classes are not permitted. Please pass the composed type of array the array. " + clazz);
         }
 
