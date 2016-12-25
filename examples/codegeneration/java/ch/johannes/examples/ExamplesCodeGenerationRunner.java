@@ -28,17 +28,21 @@ public class ExamplesCodeGenerationRunner {
         try {
             JavaSourceWriter mainJavaSourceWriter = new JavaSourceWriter(mainSourceFilesBase);
             JavaSourceWriter testJavaSourceWriter = new JavaSourceWriter(testSourceFilesBase);
+            BeanSourceGenerator cg = new BeanSourceGenerator();
 
             //generate person bean descriptor
             final ClassDescriptor personDescriptor = PersonMetadata.PERSON_DESCRIPTOR;
+            final String sourceCodeForPerson = cg.generateCode(personDescriptor);
+            mainJavaSourceWriter.writeJavaSourceFile(
+                    personDescriptor.getTypeDescriptor().getClassPackage(),
+                    personDescriptor.getTypeDescriptor().getClassName(),
+                    sourceCodeForPerson);
 
             //generate personTO bean
-
             final ClassDescriptor personTODescriptor = ClassDescriptor.of(
                     PersonTOMetadata.PERSONT_O_DESCRIPTOR.getTypeDescriptor().getClassPackage(),
                     "MyPersonTO")
                     .addFields(PersonTOMetadata.PERSONT_O_DESCRIPTOR.getFields());
-            BeanSourceGenerator cg = new BeanSourceGenerator();
             final String sourceCodeForPersonTO = cg.generateCode(personTODescriptor);
             mainJavaSourceWriter.writeJavaSourceFile(
                     personTODescriptor.getTypeDescriptor().getClassPackage(),

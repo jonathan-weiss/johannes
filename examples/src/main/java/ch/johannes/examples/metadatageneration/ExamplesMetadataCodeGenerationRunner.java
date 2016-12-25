@@ -4,10 +4,10 @@ import ch.johannes.cg.JavaSourceWriter;
 import ch.johannes.cg.MetadataSourceGenerator;
 import ch.johannes.descriptor.ClassDescriptor;
 import ch.johannes.descriptor.PackageDescriptor;
-import ch.johannes.examples.mapper.oneone.Person;
-import ch.johannes.examples.mapper.oneone.PersonMapper;
-import ch.johannes.examples.mapper.oneone.PersonMapperTest;
-import ch.johannes.examples.mapper.oneone.PersonTO;
+import ch.johannes.examples.mapper.product.Product;
+import ch.johannes.examples.mapper.product.ProductMapper;
+import ch.johannes.examples.mapper.product.ProductMapperTest;
+import ch.johannes.examples.mapper.product.ProductTO;
 import ch.johannes.reflector.ClassReflector;
 
 import java.io.IOException;
@@ -26,10 +26,10 @@ public class ExamplesMetadataCodeGenerationRunner {
 
     public static void runCodeGenerationForMetadata(Path codegenerationSourceFilesBase) {
         PackageDescriptor targetPackageDescriptor = PackageDescriptor.of("ch.johannes.examples.metadata");
-        runCodeGenerationForMetadata(codegenerationSourceFilesBase, targetPackageDescriptor, Person.class);
-        runCodeGenerationForMetadata(codegenerationSourceFilesBase, targetPackageDescriptor, PersonMapper.class);
-        runCodeGenerationForMetadata(codegenerationSourceFilesBase, targetPackageDescriptor, PersonMapperTest.class);
-        runCodeGenerationForMetadata(codegenerationSourceFilesBase, targetPackageDescriptor, PersonTO.class);
+        runCodeGenerationForMetadata(codegenerationSourceFilesBase, targetPackageDescriptor, Product.class);
+        runCodeGenerationForMetadata(codegenerationSourceFilesBase, targetPackageDescriptor, ProductMapper.class);
+        runCodeGenerationForMetadata(codegenerationSourceFilesBase, targetPackageDescriptor, ProductMapperTest.class);
+        runCodeGenerationForMetadata(codegenerationSourceFilesBase, targetPackageDescriptor, ProductTO.class);
     }
 
     public static void runCodeGenerationForMetadata(Path codegenerationSourceFilesBase, PackageDescriptor targetPackageDescriptor, Class<?> clazzToCreateMetadata) {

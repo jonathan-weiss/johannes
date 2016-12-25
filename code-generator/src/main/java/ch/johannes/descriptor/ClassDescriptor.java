@@ -6,7 +6,7 @@ import com.google.common.base.Preconditions;
 import java.util.Collections;
 import java.util.List;
 
-public class ClassDescriptor {
+public class ClassDescriptor implements Descriptor{
 
     private final TypeDescriptor typeDescriptor;
 

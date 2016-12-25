@@ -6,7 +6,7 @@ import com.google.common.base.Preconditions;
 import java.util.Collections;
 import java.util.List;
 
-public class TypeDescriptor {
+public class TypeDescriptor implements Descriptor{
 
     public static final boolean IS_ARRAY = true;
 

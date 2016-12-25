@@ -42,7 +42,6 @@ public class ClassScanner {
 
     private boolean matchAnyRegexPattern(ClassInfo classInfo) {
         final String className = fetchClassFromClassInfo(classInfo).getSimpleName();
-        System.out.println(String.format("Classname '%s' for info %s", className, classInfo));
 
         for(String regexPattern : this.regexPatterns) {
             if(className.matches(regexPattern)) {

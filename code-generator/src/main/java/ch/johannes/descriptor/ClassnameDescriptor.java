@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 
 import java.util.List;
 
-public class ClassnameDescriptor {
+public class ClassnameDescriptor implements Descriptor{
 
     private final String className;
 

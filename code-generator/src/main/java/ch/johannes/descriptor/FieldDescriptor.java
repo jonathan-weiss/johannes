@@ -2,7 +2,7 @@ package ch.johannes.descriptor;
 
 import com.google.common.base.Preconditions;
 
-public class FieldDescriptor {
+public class FieldDescriptor implements Descriptor {
 
     private final String fieldName;
 

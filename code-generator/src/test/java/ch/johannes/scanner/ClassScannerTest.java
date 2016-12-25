@@ -3,6 +3,7 @@ package ch.johannes.scanner;
 import ch.johannes.FileUtil;
 import ch.johannes.descriptor.ClassDescriptor;
 import ch.johannes.descriptor.ClassnameDescriptor;
+import ch.johannes.descriptor.Descriptor;
 import ch.johannes.descriptor.FieldDescriptor;
 import ch.johannes.descriptor.PackageDescriptor;
 import ch.johannes.descriptor.TypeDescriptor;
@@ -48,6 +49,7 @@ public class ClassScannerTest {
 
         //Assert
         assertThat(classes, containsInAnyOrder(
+                Descriptor.class,
                 ClassDescriptor.class,
                 ClassnameDescriptor.class,
                 FieldDescriptor.class,
