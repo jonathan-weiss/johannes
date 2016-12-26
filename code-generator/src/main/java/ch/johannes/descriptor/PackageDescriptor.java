@@ -1,5 +1,6 @@
 package ch.johannes.descriptor;
 
+import ch.johannes.reflector.ClassReflector;
 import com.google.common.base.Preconditions;
 
 import java.util.Arrays;
@@ -24,6 +25,13 @@ public class PackageDescriptor implements Descriptor {
      */
     public static PackageDescriptor of(String packageName) {
         return new PackageDescriptor(packageName);
+    }
+
+    /**
+     * Factory method
+     */
+    public static PackageDescriptor of(Class<?> clazz) {
+        return ClassReflector.reflectClass(clazz).getTypeDescriptor().getClassPackage();
     }
 
     public String getPackageName() {

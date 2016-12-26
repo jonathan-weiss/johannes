@@ -1,5 +1,6 @@
 package ch.johannes.descriptor;
 
+import ch.johannes.reflector.ClassReflector;
 import com.google.common.base.Preconditions;
 
 public class FieldDescriptor implements Descriptor {
@@ -28,6 +29,15 @@ public class FieldDescriptor implements Descriptor {
     public static FieldDescriptor of(String fieldName, TypeDescriptor fieldType) {
         return new FieldDescriptor(fieldName, fieldType);
     }
+
+    /**
+     * Factory method
+     */
+    public static FieldDescriptor of(String fieldName, Class<?> clazz) {
+        final ClassDescriptor classDescriptor = ClassReflector.reflectClass(clazz);
+        return of(fieldName, classDescriptor.getTypeDescriptor());
+    }
+
 
     /**
      * Prototype method

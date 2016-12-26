@@ -1,6 +1,7 @@
 package ch.johannes.descriptor;
 
 import ch.johannes.CollectionUtil;
+import ch.johannes.reflector.ClassReflector;
 import com.google.common.base.Preconditions;
 
 import java.util.Collections;
@@ -21,6 +22,13 @@ public class ClassDescriptor implements Descriptor{
         Preconditions.checkNotNull(fields, "fields must not be null.");
         this.typeDescriptor = typeDescriptor;
         this.fields = fields;
+    }
+
+    /**
+     * Factory method
+     */
+    public static ClassDescriptor of(Class<?> clazz) {
+        return ClassReflector.reflectClass(clazz);
     }
 
     /**

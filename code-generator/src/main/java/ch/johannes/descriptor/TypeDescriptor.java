@@ -1,6 +1,7 @@
 package ch.johannes.descriptor;
 
 import ch.johannes.CollectionUtil;
+import ch.johannes.reflector.ClassReflector;
 import com.google.common.base.Preconditions;
 
 import java.util.Collections;
@@ -63,6 +64,12 @@ public class TypeDescriptor implements Descriptor{
         return new TypeDescriptor(packageDescriptor, classnameDescriptor);
     }
 
+    /**
+     * Factory method
+     */
+    public static TypeDescriptor of(Class<?> clazz) {
+        return ClassReflector.reflectClass(clazz).getTypeDescriptor();
+    }
     /**
      * Factory method
      */

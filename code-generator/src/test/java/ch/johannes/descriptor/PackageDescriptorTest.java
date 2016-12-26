@@ -5,10 +5,18 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 public class PackageDescriptorTest {
+
+    @Test
+    public void of() throws Exception {
+        assertThat(PackageDescriptor.of("java.lang").getPackageName(), equalTo(Descriptors.STRING_TYPE_DESCRIPTOR.getClassPackage().getPackageName()));
+        assertThat(PackageDescriptor.of(String.class).getPackageName(), equalTo(Descriptors.STRING_TYPE_DESCRIPTOR.getClassPackage().getPackageName()));
+    }
+
 
     @Test
     public void getPackages() throws Exception {

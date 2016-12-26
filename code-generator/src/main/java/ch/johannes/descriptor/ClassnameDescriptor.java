@@ -1,5 +1,6 @@
 package ch.johannes.descriptor;
 
+import ch.johannes.reflector.ClassReflector;
 import com.google.common.base.Preconditions;
 
 import java.util.List;
@@ -24,6 +25,14 @@ public class ClassnameDescriptor implements Descriptor{
     public static ClassnameDescriptor of(String className) {
         return new ClassnameDescriptor(className);
     }
+
+    /**
+     * Factory method
+     */
+    public static ClassnameDescriptor of(Class<?> clazz) {
+        return ClassReflector.reflectClass(clazz).getTypeDescriptor().getClassName();
+    }
+
 
     public String getClassName() {
         return className;
