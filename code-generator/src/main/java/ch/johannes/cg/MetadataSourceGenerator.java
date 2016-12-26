@@ -46,7 +46,6 @@ public class MetadataSourceGenerator {
         Map<FieldDescriptor, FieldSpec> fieldSpecs = new HashMap<>();
         for (FieldDescriptor fieldDescriptor : sourceClassDescriptor.getFields()) {
             String nameOfField = fieldDescriptor.getFieldName();
-            ClassName classOfField = ClassName.get(fieldDescriptor.getFieldType().getClassPackage().getPackageName(), fieldDescriptor.getFieldType().getClassName().getClassName());
 
             //create constant field for field type
             FieldSpec fieldTypeSpec = FieldSpec.builder(TypeDescriptor.class, FIELD_TYPE_PREFIX + JavaNameUtil.fieldNameToConstant(nameOfField))

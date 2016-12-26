@@ -41,9 +41,9 @@ public class ExamplesMetadataCodeGenerationRunner {
         try {
             JavaSourceWriter mainJavaSourceWriter = new JavaSourceWriter(codegenerationSourceFilesBase);
             MetadataSourceGenerator metadataSourceGenerator = new MetadataSourceGenerator();
-            ClassDescriptor personClassDescriptor = ClassReflector.reflectClass(clazzToCreateMetadata);
-            String personMetadataSourceCode = metadataSourceGenerator.generateCode(personClassDescriptor, targetPackageDescriptor);
-            mainJavaSourceWriter.writeJavaSourceFile(targetPackageDescriptor, metadataSourceGenerator.getTargetClassname(personClassDescriptor, targetPackageDescriptor), personMetadataSourceCode);
+            ClassDescriptor classDescriptor = ClassReflector.reflectClass(clazzToCreateMetadata);
+            String metadataSourceCode = metadataSourceGenerator.generateCode(classDescriptor, targetPackageDescriptor);
+            mainJavaSourceWriter.writeJavaSourceFile(targetPackageDescriptor, metadataSourceGenerator.getTargetClassname(classDescriptor, targetPackageDescriptor), metadataSourceCode);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
