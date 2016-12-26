@@ -1,4 +1,4 @@
-package ch.johannes.examples.mapper.complex;
+package ch.johannes.examples.mapper.person;
 
 public enum Gender {
     MALE,
