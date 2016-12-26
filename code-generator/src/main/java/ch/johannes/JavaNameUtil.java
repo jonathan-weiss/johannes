@@ -15,8 +15,7 @@ public class JavaNameUtil {
             return camelCaseName;
         }
 
-        String firstLetter = camelCaseName.substring(0, 1).toUpperCase();
-        return firstLetter + camelCaseName.substring(1).replaceAll("([A-Z]{1}[^A-Z]+)", "_$1").toUpperCase();
+        return camelCaseName.replaceAll("([a-z]{1})([A-Z]{1})", "$1_$2").toUpperCase();
     }
 
 
