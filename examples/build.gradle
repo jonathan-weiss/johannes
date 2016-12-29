@@ -1,10 +1,18 @@
 apply from: "$rootDir/java.gradle"
 apply from: "$rootDir/intellij.gradle"
 
+
+rootProject.ext {
+    javaLanguageLevel = '1.8'
+    generatedMapperSourcesDir = "${buildDir}/generated-src/mapstruct/main"
+}
+
+
 sourceSets {
     main {
+        ext.originalJavaSrcDirs = java.srcDirs
         java {
-            srcDirs = ['src/main/java', 'src/generated/main/java']
+            srcDirs = ['src/main/java', 'src/generated/main/java', "${generatedMapperSourcesDir}"]
         }
         resources {
             srcDirs = ['src/main/resources', 'src/generated/main/resources']
@@ -30,11 +38,16 @@ sourceSets {
 }
 configurations {
     codegeneration
+    mapstruct
 }
+
 dependencies {
     compile libs.junit
     compile project(':code-generator')
     codegenerationCompile project(':code-generator')
+    compile( 'org.mapstruct:mapstruct:1.1.0.Final' )
+    mapstruct( 'org.mapstruct:mapstruct-processor:1.1.0.Final' )
+
 }
 
 // generate the metadata of existing classes
@@ -62,3 +75,36 @@ task cleanupGenerateSources(type: Delete) {
 // making sure that source files are generated
 // before compilation
 compileJava.dependsOn(generateSources)
+
+
+task generateMainMapperClasses(type: JavaCompile) {
+    ext.aptDumpDir = file( "${buildDir}/tmp/apt/mapstruct" )
+    destinationDir = aptDumpDir
+
+    classpath = compileJava.classpath + configurations.mapstruct
+    source = sourceSets.main.originalJavaSrcDirs
+    ext.sourceDestDir = file ( "$generatedMapperSourcesDir" )
+
+    options.define(
+            compilerArgs: [
+                    "-nowarn",
+                    "-proc:only",
+                    "-encoding", "UTF-8",
+                    "-processor", "org.mapstruct.ap.MappingProcessor",
+                    "-s", sourceDestDir.absolutePath,
+                    "-source", rootProject.javaLanguageLevel,
+                    "-target", rootProject.javaLanguageLevel,
+            ]
+    );
+
+    inputs.dir source
+    outputs.dir generatedMapperSourcesDir;
+    doFirst {
+        sourceDestDir.mkdirs()
+    }
+    doLast {
+        aptDumpDir.delete()
+    }
+}
+
+compileJava.dependsOn(generateMainMapperClasses)

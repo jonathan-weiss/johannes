@@ -3,6 +3,9 @@
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/../../../examples/build/classes/main" />
     <exclude-output />
+    <content url="file://$MODULE_DIR$/../../../examples/build/generated-src/mapstruct/main">
+      <sourceFolder url="file://$MODULE_DIR$/../../../examples/build/generated-src/mapstruct/main" isTestSource="false" />
+    </content>
     <content url="file://$MODULE_DIR$/../../../examples/src/generated/main">
       <sourceFolder url="file://$MODULE_DIR$/../../../examples/src/generated/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../examples/src/generated/main/resources" type="java-resource" />
@@ -15,6 +18,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Gradle: junit:junit:4.11" level="project" />
     <orderEntry type="module" module-name="code-generator_main" />
+    <orderEntry type="library" name="Gradle: org.mapstruct:mapstruct:1.1.0.Final" level="project" />
     <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" name="Gradle: io.github.lukehutch:fast-classpath-scanner:2.0.9" level="project" />
     <orderEntry type="library" name="Gradle: net.jodah:typetools:0.4.8" level="project" />

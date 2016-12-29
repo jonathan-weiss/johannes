@@ -4,14 +4,11 @@ import ch.johannes.cg.JavaSourceWriter;
 import ch.johannes.cg.MetadataSourceGenerator;
 import ch.johannes.descriptor.ClassDescriptor;
 import ch.johannes.descriptor.PackageDescriptor;
-import ch.johannes.examples.mapper.oneone.Person;
 import ch.johannes.examples.mapper.person.Address;
 import ch.johannes.examples.mapper.person.Country;
 import ch.johannes.examples.mapper.person.Gender;
+import ch.johannes.examples.mapper.person.Person;
 import ch.johannes.examples.mapper.product.Product;
-import ch.johannes.examples.mapper.product.ProductMapper;
-import ch.johannes.examples.mapper.product.ProductMapperTest;
-import ch.johannes.examples.mapper.product.ProductTO;
 import ch.johannes.reflector.ClassReflector;
 
 import java.io.IOException;
