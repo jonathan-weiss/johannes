@@ -2,6 +2,8 @@ package ch.johannes.examples.mapstruct;
 
 import ch.johannes.examples.mapper.person.Person;
 import ch.johannes.examples.mapper.person.PersonTO;
+import ch.johannes.examples.mapper.pet.Pet;
+import ch.johannes.examples.mapper.pet.PetTO;
 import ch.johannes.examples.mapper.product.Product;
 import ch.johannes.examples.mapper.product.ProductTO;
 import org.mapstruct.Mapper;
@@ -16,5 +18,7 @@ public interface MapStructMapper {
             @Mapping(source = "productName", target = "name")
     })
     ProductTO productToProductTO(Product product);
+
+    PetTO petToPetTO(Pet pet);
 
 }
