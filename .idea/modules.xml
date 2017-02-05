@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-257678306/annotationprocessing.iml" filepath="$PROJECT_DIR$/.idea/modules/-257678306/annotationprocessing.iml" group="annotationprocessing" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-257678306/annotationprocessing_main.iml" filepath="$PROJECT_DIR$/.idea/modules/-257678306/annotationprocessing_main.iml" group="annotationprocessing" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-257678306/annotationprocessing_test.iml" filepath="$PROJECT_DIR$/.idea/modules/-257678306/annotationprocessing_test.iml" group="annotationprocessing" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1382810767/code-generator.iml" filepath="$PROJECT_DIR$/.idea/modules/1382810767/code-generator.iml" group="code-generator" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1382810767/code-generator_main.iml" filepath="$PROJECT_DIR$/.idea/modules/1382810767/code-generator_main.iml" group="code-generator" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1382810767/code-generator_test.iml" filepath="$PROJECT_DIR$/.idea/modules/1382810767/code-generator_test.iml" group="code-generator" />

@@ -1,2 +1,3 @@
+includeFlat 'annotationprocessing'
 includeFlat 'code-generator'
 includeFlat 'examples'
