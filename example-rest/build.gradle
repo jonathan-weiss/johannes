@@ -18,7 +18,13 @@ dependencies {
 
 war {
     manifest {
-        attributes('Build-Version': version, 'Build-Time': new Date())
+        attributes(
+                "Implementation-Title": project.name,
+                "Implementation-Version": version,
+                "Implementation-Timestamp": new Date(),
+                'Build-Version': version,
+                'Build-Time': new Date()
+        )
     }
 
     archiveName = 'example-rest.war'
