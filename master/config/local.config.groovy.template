@@ -3,5 +3,6 @@ environments {
         url = 'jdbc:postgresql://localhost:5432/postgres'
         user = '<insert-user>'
         password = '<insert-password>'
+        wildflyDirectory = '<absolute path to installed wildfly>'
     }
 }

@@ -110,7 +110,7 @@ buildscript {
 }
 
 allprojects {
-    group = 'johannes'
+    group = 'ch.johannes'
     version = '1.0-SNAPSHOT';
 
 

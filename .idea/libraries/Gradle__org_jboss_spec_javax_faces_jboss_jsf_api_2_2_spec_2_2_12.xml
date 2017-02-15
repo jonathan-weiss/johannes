@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jboss.spec.javax.faces:jboss-jsf-api_2.2_spec:2.2.12">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jboss.spec.javax.faces/jboss-jsf-api_2.2_spec/2.2.12/18fd0408683e4773b1536116485fcb97fc161458/jboss-jsf-api_2.2_spec-2.2.12.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jboss.spec.javax.faces/jboss-jsf-api_2.2_spec/2.2.12/1e183b920125a584d39e90f2e2032aa7a6d1feb/jboss-jsf-api_2.2_spec-2.2.12-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

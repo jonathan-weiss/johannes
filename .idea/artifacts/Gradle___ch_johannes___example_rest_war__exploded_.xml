@@ -1,0 +1,59 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="Gradle : ch.johannes : example-rest.war (exploded)">
+    <output-path>$PROJECT_DIR$/example-rest/build/libs/exploded/example-rest.war</output-path>
+    <properties id="gradle-properties">
+      <options external-project-path="$PROJECT_DIR$/master">
+        <manifest>TWFuaWZlc3QtVmVyc2lvbjogMS4wDQpCdWlsZC1WZXJzaW9uOiAxLjAtU05BUFNIT1QNCkJ1aWxkLVRpbWU6IFdlZCBGZWIgMTUgMjM6MDc6MjAgQ0VUIDIwMTcNCg0K</manifest>
+      </options>
+    </properties>
+    <root id="root">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/example-rest/build/libs/exploded/example-rest.war/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="example-rest_main/web/Web Gradle : example-rest.war" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="example-rest_main" />
+          <element id="dir-copy" path="$PROJECT_DIR$/example-rest/build/resources/main" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="archive" name="ch.johannes-example-service-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="example-service_main" />
+            <element id="dir-copy" path="$PROJECT_DIR$/example-service/build/resources/main" />
+          </element>
+          <element id="archive" name="ch.johannes-example-data-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="example-data_main" />
+            <element id="dir-copy" path="$PROJECT_DIR$/example-data/build/resources/main" />
+          </element>
+          <element id="library" level="project" name="Gradle: com.google.guava:guava:19.0" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.datatype/jackson-datatype-jsr310/2.4.5/9b1dc2231d3ae163504f44561df147c552cb840f/jackson-datatype-jsr310-2.4.5.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.swagger/swagger-jaxrs/1.5.8/15fdd3c3c08254c845ff1f2f5a345e10a51e1dad/swagger-jaxrs-1.5.8.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.4.5/6fb96728ee26edb19fe329d94f3bd4df1a97652a/jackson-core-2.4.5.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.4.5/c69c0cb613128c69d84a6a0304ddb9fce82e8242/jackson-databind-2.4.5.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/2.4.5/918e84a84ee0b202bb74bab590119b01bbea9830/jackson-dataformat-yaml-2.4.5.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-xml/2.4.5/535f27c7e322abc54c9758b50df1594f31ee6524/jackson-dataformat-xml-2.4.5.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.swagger/swagger-core/1.5.8/545fe5b92dc4f7fc360fbda972fcc75ba8532044/swagger-core-1.5.8.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.reflections/reflections/0.9.10/c7f4ea230aedc757ca1499ebcfb2953c81cf8b67/reflections-0.9.10.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider/2.4.5/aefd5dd637402fd697c1e2b083535d153ffd66c0/jackson-jaxrs-json-provider-2.4.5.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.5/2852e6e05fbb95076fc091f6d1780f1f8fe35e0f/commons-io-2.5.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.yaml/snakeyaml/1.12/ebe66a6b88caab31d7a19571ad23656377523545/snakeyaml-1.12.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.module/jackson-module-jaxb-annotations/2.4.5/af5432247be7a0248a03b900687bb9a74a68ccfa/jackson-module-jaxb-annotations-2.4.5.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.codehaus.woodstox/stax2-api/3.1.4/ac19014b1e6a7c08aad07fe114af792676b685b7/stax2-api-3.1.4.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.6.3/365f7c674cb7a4b38531353392128d9fb1e37c0e/slf4j-api-1.6.3.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.datatype/jackson-datatype-joda/2.4.5/830f7e1a9d69674900d1fa066d6ba27112ec6ca9/jackson-datatype-joda-2.4.5.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.swagger/swagger-models/1.5.8/36a5fbf513a2793a665660bfc579b054b67d349e/swagger-models-1.5.8.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.validation/validation-api/1.1.0.Final/8613ae82954779d518631e05daa73a6a954817d5/validation-api-1.1.0.Final.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.javassist/javassist/3.18.2-GA/1180a90fbad732b60fb728a6bbe8fcb3151423d7/javassist-3.18.2-GA.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/annotations/2.0.1/9ef6656259841cebfb9fb0697bb122ada4485498/annotations-2.0.1.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.jaxrs/jackson-jaxrs-base/2.4.5/b5a04c9664913552b75820834e945424e32b244f/jackson-jaxrs-base-2.4.5.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jooq/jooq/3.7.3/1fb1059372bb6f1f83273ee76bd8f8cc5e9f7947/jooq-3.7.3.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/master/libs/postgresql-9.4.1208.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/joda-time/joda-time/2.2/a5f29a7acaddea3f4af307e8cf2d0cc82645fd7d/joda-time-2.2.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.swagger/swagger-annotations/1.5.8/48d3002e43bde443f19750ec5670d345e9cd8d62/swagger-annotations-1.5.8.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.4.5/b400d47efaf8ab612c03b904ae5bf26c6706ade6/jackson-annotations-2.4.5.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.4/5fe28b9518e58819180a43a850fbc0dd24b7c050/commons-lang3-3.4.jar" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

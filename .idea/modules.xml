@@ -5,6 +5,15 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1382810767/code-generator.iml" filepath="$PROJECT_DIR$/.idea/modules/1382810767/code-generator.iml" group="code-generator" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1382810767/code-generator_main.iml" filepath="$PROJECT_DIR$/.idea/modules/1382810767/code-generator_main.iml" group="code-generator" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1382810767/code-generator_test.iml" filepath="$PROJECT_DIR$/.idea/modules/1382810767/code-generator_test.iml" group="code-generator" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1436526281/example-data.iml" filepath="$PROJECT_DIR$/.idea/modules/1436526281/example-data.iml" group="example-data" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1436526281/example-data_main.iml" filepath="$PROJECT_DIR$/.idea/modules/1436526281/example-data_main.iml" group="example-data" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1436526281/example-data_test.iml" filepath="$PROJECT_DIR$/.idea/modules/1436526281/example-data_test.iml" group="example-data" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1436947187/example-rest.iml" filepath="$PROJECT_DIR$/.idea/modules/1436947187/example-rest.iml" group="example-rest" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1436947187/example-rest_main.iml" filepath="$PROJECT_DIR$/.idea/modules/1436947187/example-rest_main.iml" group="example-rest" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1436947187/example-rest_test.iml" filepath="$PROJECT_DIR$/.idea/modules/1436947187/example-rest_test.iml" group="example-rest" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1041352502/example-service.iml" filepath="$PROJECT_DIR$/.idea/modules/1041352502/example-service.iml" group="example-service" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1041352502/example-service_main.iml" filepath="$PROJECT_DIR$/.idea/modules/1041352502/example-service_main.iml" group="example-service" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1041352502/example-service_test.iml" filepath="$PROJECT_DIR$/.idea/modules/1041352502/example-service_test.iml" group="example-service" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/-177266971/examples.iml" filepath="$PROJECT_DIR$/.idea/modules/-177266971/examples.iml" group="examples" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/-177266971/examples_codegeneration.iml" filepath="$PROJECT_DIR$/.idea/modules/-177266971/examples_codegeneration.iml" group="examples" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/-177266971/examples_main.iml" filepath="$PROJECT_DIR$/.idea/modules/-177266971/examples_main.iml" group="examples" />

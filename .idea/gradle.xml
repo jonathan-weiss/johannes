@@ -9,6 +9,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/code-generator" />
+            <option value="$PROJECT_DIR$/example-data" />
+            <option value="$PROJECT_DIR$/example-rest" />
+            <option value="$PROJECT_DIR$/example-service" />
             <option value="$PROJECT_DIR$/examples" />
             <option value="$PROJECT_DIR$/master" />
           </set>

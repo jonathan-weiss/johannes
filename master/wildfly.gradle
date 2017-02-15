@@ -1,0 +1,91 @@
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption;
+
+// Need to be visible in the addRunConfiguration method
+ext.TEMPLATE_DIRECTORY = "$rootProject.projectDir/wildfly-templates"
+ext.RUN_CONFIGURATION_DIRECTORY = "$rootProject.projectDir/.idea/runConfigurations"
+
+// Only need to be visible in regular gradle tasks
+def CONFIGURATION_DIRECTORY = "$rootProject.config.wildflyDirectory/standalone/configuration"
+def POSTGRES_MODULE_DIRECTORY = "$rootProject.config.wildflyDirectory/modules/org/postgres/main"
+
+def WILDFLY_TASKS_GROUP = 'Wildfly'
+
+task deleteConfiguration() {
+    doLast {
+        delete "$CONFIGURATION_DIRECTORY/logging.properties"
+        delete "$CONFIGURATION_DIRECTORY/standalone.xml"
+        delete "$CONFIGURATION_DIRECTORY/mgmt-groups.proprties"
+        delete "$CONFIGURATION_DIRECTORY/mgmt-users.proprties"
+        delete "$RUN_CONFIGURATION_DIRECTORY/example-rest.xml"
+        delete "$POSTGRES_MODULE_DIRECTORY"
+    }
+}
+configure(deleteConfiguration) {
+    group = WILDFLY_TASKS_GROUP
+    description = 'Removes the custom server configuration.'
+}
+
+task createConfiguration() {
+    doLast {
+        // logging.properties
+        Path sourceLoggingFile = Paths.get("$TEMPLATE_DIRECTORY/logging.properties.template")
+        Path targetLoggingFile = Paths.get("$CONFIGURATION_DIRECTORY/logging.properties")
+        Files.copy(sourceLoggingFile, targetLoggingFile, StandardCopyOption.REPLACE_EXISTING)
+
+        // standalone.xml
+        Path sourceStandaloneFile = Paths.get("$TEMPLATE_DIRECTORY/standalone.xml.template")
+        Path targetStandaloneFile = Paths.get("$CONFIGURATION_DIRECTORY/standalone.xml")
+        Files.copy(sourceStandaloneFile, targetStandaloneFile, StandardCopyOption.REPLACE_EXISTING)
+
+        // mgmt-groups.proprties
+        Path sourceGroupsFile = Paths.get("$TEMPLATE_DIRECTORY/mgmt-groups.properties.template")
+        Path targetGroupsFile = Paths.get("$CONFIGURATION_DIRECTORY/mgmt-groups.properties")
+        Files.copy(sourceGroupsFile, targetGroupsFile, StandardCopyOption.REPLACE_EXISTING)
+
+        // mgmt-users.proprties
+        Path sourceUsersFile = Paths.get("$TEMPLATE_DIRECTORY/mgmt-users.properties.template")
+        Path targetUserFile = Paths.get("$CONFIGURATION_DIRECTORY/mgmt-users.properties")
+        Files.copy(sourceUsersFile, targetUserFile, StandardCopyOption.REPLACE_EXISTING)
+
+        // configure data source
+        ant.replace(file: targetStandaloneFile, token: '@DB_USER@', value: "$rootProject.config.user")
+        ant.replace(file: targetStandaloneFile, token: '@DB_PASSWORD@', value: "$rootProject.config.password")
+        ant.replace(file: targetStandaloneFile, token: '@DB_URL@', value: "$rootProject.config.url")
+
+        // enable reloading of changed jsp files
+        ant.replace(file: targetStandaloneFile, token: '@DEVELOPMENT@', value: 'true')
+
+        // create postgresql module
+        Files.createDirectories(Paths.get(POSTGRES_MODULE_DIRECTORY))
+        Path sourceModuleFile = Paths.get("$TEMPLATE_DIRECTORY/module.xml")
+        Path targetModuleFile = Paths.get("$POSTGRES_MODULE_DIRECTORY/module.xml")
+        Files.copy(sourceModuleFile, targetModuleFile, StandardCopyOption.REPLACE_EXISTING)
+        ant.replace(file: targetModuleFile, token: '@VERSION@', value: versions.postgres)
+
+        // copy postgresql driver
+        Files.createDirectories(Paths.get(POSTGRES_MODULE_DIRECTORY))
+        Path sourcePostgresJar = Paths.get("$rootProject.projectDir/libs/postgresql-${versions.postgres}.jar")
+        Path targetPostgresJar = Paths.get("$POSTGRES_MODULE_DIRECTORY/postgresql-${versions.postgres}.jar")
+        Files.copy(sourcePostgresJar, targetPostgresJar, StandardCopyOption.REPLACE_EXISTING)
+
+        // Create directory for run configurations
+        Files.createDirectories(Paths.get(RUN_CONFIGURATION_DIRECTORY))
+
+        // run configurations
+        addRunConfiguration("example-rest.xml")
+    }
+}
+
+configure(createConfiguration) {
+    group = WILDFLY_TASKS_GROUP
+    description = 'Creates a user specific server configuration.'
+}
+
+def addRunConfiguration(name) {
+    Path source = Paths.get("$TEMPLATE_DIRECTORY/$name")
+    Path target = Paths.get("$RUN_CONFIGURATION_DIRECTORY/$name")
+    Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING)
+}

@@ -1,6 +1,6 @@
 apply from: "$rootDir/java.gradle"
 apply from: "$rootDir/intellij.gradle"
-//apply from: "$rootDir/wildfly.gradle"
+apply from: "$rootDir/wildfly.gradle"
 apply plugin: 'war'
 
 dependencies {
