@@ -1,2 +1,5 @@
 includeFlat 'code-generator'
 includeFlat 'examples'
+includeFlat 'example-data'
+includeFlat 'example-service'
+includeFlat 'example-rest'

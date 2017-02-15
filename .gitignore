@@ -1,3 +1,10 @@
+master/.gradletasknamecache
+
+# user specific configuration
+master/config/local.config.groovy
+master/db-scripts/local.sql
+
+
 .idea/workspace.xml
 
 build/

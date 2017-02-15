@@ -1,0 +1,16 @@
+apply from: "$rootDir/java.gradle"
+apply from: "$rootDir/pmd.gradle"
+apply from: "$rootDir/intellij.gradle"
+
+dependencies {
+    provided libs.slf4j
+    provided libs.wildfly
+    provided libs.weld_api
+
+    compile libs.commons_io
+    compile libs.guava
+
+    compile project(':example-data')
+
+    testRuntime libs.logback
+}

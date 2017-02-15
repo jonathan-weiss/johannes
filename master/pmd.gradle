@@ -1,0 +1,32 @@
+dependencies {
+    pmd 'net.sourceforge.pmd:pmd-core:5.5.1'
+    pmd 'net.sourceforge.pmd:pmd-java:5.5.1'
+}
+
+def OUTPUT_DIRECTORY = new File("$buildDir/reports/pmd")
+
+task preparePmdReportDirectory {
+    doLast {
+        def success = OUTPUT_DIRECTORY.mkdirs()
+
+        logger.warn("Created report directory: directory=$OUTPUT_DIRECTORY, success=$success")
+    }
+}
+
+task pmd(type: JavaExec) {
+    dependsOn preparePmdReportDirectory
+
+    def rulesets = "$rootProject.projectDir/codestyle/pmd-rules.xml"
+    def sources = "$projectDir/src/main/java"
+
+    classpath = configurations.pmd
+    main = 'net.sourceforge.pmd.PMD'
+    args '-rulesets', rulesets, '-dir', sources, '-format', 'xml', '-reportfile', OUTPUT_DIRECTORY.getPath() + '/pmd-report.xml', '-language', 'java', '-version', '1.8', '-failOnViolation', 'true'
+
+    doLast {
+        logger.warn('pmd configuration: ' + project.name)
+        logger.warn('   Rulesets: ' + rulesets)
+        logger.warn('   Sources: ' + sources)
+        logger.warn('   Output directory: ' + OUTPUT_DIRECTORY)
+    }
+}

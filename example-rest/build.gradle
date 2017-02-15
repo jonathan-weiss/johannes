@@ -1,0 +1,25 @@
+apply from: "$rootDir/java.gradle"
+apply from: "$rootDir/intellij.gradle"
+//apply from: "$rootDir/wildfly.gradle"
+apply plugin: 'war'
+
+dependencies {
+    provided libs.resteasy
+    provided libs.multipart
+    provided libs.weld_api
+    provided libs.wildfly
+    compile libs.jackson_datatype
+    compile(libs.swagger) {
+        exclude group: 'javax.ws.rs', module: 'jsr311-api'
+        exclude group: 'com.google.guava', module: 'guava'
+    }
+    compile project(':example-service')
+}
+
+war {
+    manifest {
+        attributes('Build-Version': version, 'Build-Time': new Date())
+    }
+
+    archiveName = 'example-rest.war'
+}

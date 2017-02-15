@@ -1,0 +1,86 @@
+plugins {
+    id "org.flywaydb.flyway" version "4.0"
+}
+
+apply from: "$rootDir/java.gradle"
+apply from: "$rootDir/pmd.gradle"
+apply from: "$rootDir/intellij.gradle"
+
+dependencies {
+    provided libs.slf4j
+    provided libs.weld_api
+    provided libs.wildfly
+
+    compile libs.commons_lang
+    compile libs.commons_io
+    compile libs.guava
+    compile libs.jooq
+    compile libs.postgres
+
+    testCompile libs.flyway_core
+    testCompile libs.groovy
+    testCompile libs.postgres
+
+    testRuntime libs.logback
+}
+
+flyway {
+    url = config.url
+    user = config.user
+    password = config.password
+}
+
+task jooq() {
+    doLast {
+        // http://www.jooq.org/doc/3.7/manual/code-generation/codegen-gradle/
+        // Use your favourite XML builder to construct the code generation configuration file
+        // ----------------------------------------------------------------------------------
+        def writer = new StringWriter()
+        new groovy.xml.MarkupBuilder(writer)
+                .configuration('xmlns': 'http://www.jooq.org/xsd/jooq-codegen-3.7.0.xsd') {
+            jdbc() {
+                driver('org.postgresql.Driver')
+                url(config.url)
+                user(config.user)
+                password(config.password)
+            }
+            generator() {
+                database() {
+                    name('org.jooq.util.postgres.PostgresDatabase')
+                    inputSchema("public")
+                    includes('.*')
+                }
+
+                // Watch out for this caveat when using MarkupBuilder with "reserved names"
+                // - https://github.com/jOOQ/jOOQ/issues/4797
+                // - http://stackoverflow.com/a/11389034/521799
+                // - https://groups.google.com/forum/#!topic/jooq-user/wi4S9rRxk4A
+                generate([:]) {
+                    records true
+                    pojos false
+                    daos false
+                    jpaAnnotations false
+                    validationAnnotations false
+                    interfaces false
+                    fluentSetters true
+                }
+                target() {
+                    packageName('ch.johannes.example.data.schema')
+                    directory('../example-data/src/main/java')
+                }
+            }
+        }
+
+        // Run the code generator
+        // ----------------------
+        org.jooq.util.GenerationTool.generate(
+                javax.xml.bind.JAXB.unmarshal(new StringReader(writer.toString()), org.jooq.util.jaxb.Configuration.class)
+        )
+    }
+}
+
+
+task initializeDatabase(dependsOn: ['flywayClean', 'flywayMigrate']) {
+    group = 'Deployment'
+    description = 'Initializes the database.'
+}
