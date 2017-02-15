@@ -13,6 +13,10 @@
     <bytecodeTargetLevel>
       <module name="annotationprocessing_main" target="1.8" />
       <module name="annotationprocessing_test" target="1.8" />
+      <module name="ap-examples_main" target="1.8" />
+      <module name="ap-examples_test" target="1.8" />
+      <module name="ap_main" target="1.8" />
+      <module name="ap_test" target="1.8" />
       <module name="code-generator_main" target="1.8" />
       <module name="code-generator_test" target="1.8" />
       <module name="examples_codegeneration" target="1.8" />
