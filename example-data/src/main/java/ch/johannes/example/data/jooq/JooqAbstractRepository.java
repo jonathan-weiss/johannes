@@ -1,10 +1,8 @@
 package ch.johannes.example.data.jooq;
 
-import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
-import org.jooq.exception.DataAccessException;
-import org.jooq.impl.DSL;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -21,48 +19,30 @@ public abstract class JooqAbstractRepository {
         this.dataSource = dataSource;
     }
 
+    private JooqExecutor jooqExecutor;
+
+    public void setJooqExecutor(JooqExecutor jooqExecutor) {
+        this.jooqExecutor = jooqExecutor;
+    }
+
+    @PostConstruct
+    public void initializeJooqExectutor() {
+        this.setJooqExecutor(new JooqDefaultExecutor(SQL_DIALECT, dataSource));
+    }
+
     public <T> T execute(JOOQCallback<T> callback) {
-        final Connection connection = DatabaseUtil.createConnection(dataSource);
-        try {
-            return execute(callback, connection);
-        } catch (Exception e) {
-            throw new RepositoryException(e.getMessage(), e);
-        } finally {
-            DatabaseUtil.close(connection);
-        }
+        return this.jooqExecutor.execute(callback);
     }
 
     protected <T> T execute(JOOQCallback<T> callback, Connection connection) throws SQLException {
-        try (DSLContext dslContext = DSL.using(connection, SQL_DIALECT)) {
-            return callback.execute(dslContext);
-        } catch (DataAccessException e) {
-            throw new RepositoryException(e.getMessage(), unwrapRootCause(e));
-        }
+        return this.jooqExecutor.execute(callback, connection);
     }
 
     public void executeWithoutResult(JOOQVoidCallback callback) {
-        final Connection connection = DatabaseUtil.createConnection(dataSource);
-        try {
-            executeWithoutResult(callback, connection);
-        } catch (Exception e) {
-            throw new RepositoryException(e.getMessage(), e);
-        } finally {
-            DatabaseUtil.close(connection);
-        }
+        this.jooqExecutor.executeWithoutResult(callback);
     }
 
     protected void executeWithoutResult(JOOQVoidCallback callback, Connection connection) throws SQLException {
-        try (DSLContext dslContext = DSL.using(connection, SQL_DIALECT)) {
-            callback.execute(dslContext);
-        } catch (DataAccessException e) {
-            throw new RepositoryException(e.getMessage(), unwrapRootCause(e));
-        }
-    }
-
-    private Exception unwrapRootCause(Exception e) {
-        if (e.getCause() instanceof SQLException && ((SQLException) e.getCause()).getNextException() != null) {
-            return ((SQLException) e.getCause()).getNextException();
-        }
-        return e;
+        this.jooqExecutor.executeWithoutResult(callback, connection);
     }
 }
