@@ -5,19 +5,28 @@ import org.jooq.SQLDialect;
 import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
 
+import javax.annotation.Resource;
+import javax.enterprise.context.ApplicationScoped;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
 
+@ApplicationScoped
 public class JooqDefaultExecutor implements JooqExecutor{
+
+    public static final SQLDialect SQL_DIALECT = SQLDialect.POSTGRES_9_5;
+
+    public JooqDefaultExecutor() {
+        this.sqlDialect = SQL_DIALECT;
+    }
 
     private final SQLDialect sqlDialect;
 
-    private final DataSource dataSource;
+    private DataSource dataSource;
 
-    public JooqDefaultExecutor(SQLDialect sqlDialect, DataSource dataSource) {
-        this.sqlDialect = sqlDialect;
+    @Resource(lookup = "java:/JohannesDS")
+    public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 

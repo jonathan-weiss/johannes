@@ -27,8 +27,6 @@ public class JooqPersonDaoTest {
     @Test
     public void getAllPerson() throws Exception {
         //arrange
-        JooqPersonDao jooqPersonDao = new JooqPersonDao();
-
         DSLContext dslContext = mock(DSLContext.class);
         SelectWhereStep<PersonRecord> selectWhereStep = mock(SelectWhereStep.class);
         Result<PersonRecord> result = mock(Result.class);
@@ -39,8 +37,10 @@ public class JooqPersonDaoTest {
         when(selectWhereStep.fetch()).thenReturn(result);
         when(result.stream()).thenReturn(streamResult);
 
+
         JooqExecutor jooqExecutor = new MockJooqExecutor(dslContext);
-        jooqPersonDao.setJooqExecutor(jooqExecutor);
+        JooqPersonDao jooqPersonDao = new JooqPersonDao(jooqExecutor);
+
 
         //act
         final List<Person> allPerson = jooqPersonDao.getAllPerson();
