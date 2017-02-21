@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="WithMyAnnotation" enabled="true">
+        <processor name="ch.johannes.playground.MyAnnotationProcessor" />
+        <module name="examples" />
+        <module name="examples_codegeneration" />
+        <module name="examples_main" />
+        <module name="examples_test" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="annotationprocessing_main" target="1.8" />
+      <module name="annotationprocessing_test" target="1.8" />
+      <module name="ap-examples_main" target="1.8" />
+      <module name="ap-examples_test" target="1.8" />
+      <module name="ap_main" target="1.8" />
+      <module name="ap_test" target="1.8" />
+      <module name="code-generator_main" target="1.8" />
+      <module name="code-generator_test" target="1.8" />
+      <module name="examples_codegeneration" target="1.8" />
+      <module name="examples_main" target="1.8" />
+      <module name="examples_test" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

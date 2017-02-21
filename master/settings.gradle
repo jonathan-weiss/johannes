@@ -1,3 +1,5 @@
+includeFlat 'ap'
+includeFlat 'ap-examples'
 includeFlat 'code-generator'
 includeFlat 'examples'
 includeFlat 'example-data'

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1440691147/ap.iml" filepath="$PROJECT_DIR$/.idea/modules/1440691147/ap.iml" group="ap" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1337229301/ap-examples.iml" filepath="$PROJECT_DIR$/.idea/modules/-1337229301/ap-examples.iml" group="ap-examples" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1337229301/ap-examples_main.iml" filepath="$PROJECT_DIR$/.idea/modules/-1337229301/ap-examples_main.iml" group="ap-examples" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1337229301/ap-examples_test.iml" filepath="$PROJECT_DIR$/.idea/modules/-1337229301/ap-examples_test.iml" group="ap-examples" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1440691147/ap_main.iml" filepath="$PROJECT_DIR$/.idea/modules/1440691147/ap_main.iml" group="ap" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1440691147/ap_test.iml" filepath="$PROJECT_DIR$/.idea/modules/1440691147/ap_test.iml" group="ap" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1382810767/code-generator.iml" filepath="$PROJECT_DIR$/.idea/modules/1382810767/code-generator.iml" group="code-generator" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1382810767/code-generator_main.iml" filepath="$PROJECT_DIR$/.idea/modules/1382810767/code-generator_main.iml" group="code-generator" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1382810767/code-generator_test.iml" filepath="$PROJECT_DIR$/.idea/modules/1382810767/code-generator_test.iml" group="code-generator" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-177266971/examples.iml" filepath="$PROJECT_DIR$/.idea/modules/-177266971/examples.iml" group="examples" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-177266971/examples_codegeneration.iml" filepath="$PROJECT_DIR$/.idea/modules/-177266971/examples_codegeneration.iml" group="examples" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-177266971/examples_main.iml" filepath="$PROJECT_DIR$/.idea/modules/-177266971/examples_main.iml" group="examples" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-177266971/examples_test.iml" filepath="$PROJECT_DIR$/.idea/modules/-177266971/examples_test.iml" group="examples" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/johannes-framework.iml" filepath="$PROJECT_DIR$/.idea/johannes-framework.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/master.iml" filepath="$PROJECT_DIR$/.idea/modules/master.iml" />
+    </modules>
+  </component>
+</project>
