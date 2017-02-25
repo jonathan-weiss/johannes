@@ -23,9 +23,9 @@ import java.util.Set;
 
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedAnnotationTypes({
-        "ch.johannes.annotations.MyDiscoveredAnnotation"
+        "ch.johannes.annotations.Plan"
 })
-public class MyAnnotationProcessor extends AbstractProcessor {
+public class JohannesAnnotationProcessor extends AbstractProcessor {
 
     private Elements elementUtils;
 
@@ -46,7 +46,7 @@ public class MyAnnotationProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        messager.printMessage(Diagnostic.Kind.WARNING, "MyAnnotationProcessor: We have started now...");
+        messager.printMessage(Diagnostic.Kind.WARNING, "JohannesAnnotationProcessor: We have started now...");
 
         for (TypeElement annotatedElement : annotations) {
             final Set<? extends Element> elementsAnnotatedWith = roundEnv.getElementsAnnotatedWith(annotatedElement);
@@ -55,13 +55,13 @@ public class MyAnnotationProcessor extends AbstractProcessor {
                 //discoverGivenAnnotations(annotations);
             }
         }
-        messager.printMessage(Diagnostic.Kind.WARNING, "MyAnnotationProcessor:...and goodbye.");
+        messager.printMessage(Diagnostic.Kind.WARNING, "JohannesAnnotationProcessor:...and goodbye.");
         return true;
     }
 
     private void createANewType() {
         try {
-            final TypeElement classElement = elementUtils.getTypeElement("ch.johannes.annotations.examples.AnotherClass");
+            final TypeElement classElement = elementUtils.getTypeElement("ch.johannes.example.data.dao.person.Person");
             PackageElement packageElement = (PackageElement) classElement.getEnclosingElement();
             JavaFileObject jfo = processingEnv.getFiler().createSourceFile(classElement.getQualifiedName() + "BeanInfo");
 
@@ -69,15 +69,16 @@ public class MyAnnotationProcessor extends AbstractProcessor {
             bw.append("package ");
             bw.append(packageElement.getQualifiedName());
             bw.append(";");
+
+            bw.append("public class " + classElement.getSimpleName() + "BeanInfo {}");
             bw.newLine();
             bw.newLine();
 
             bw.close();
             // rest of generated class contents
 
-
         } catch (IOException e) {
-            messager.printMessage(Diagnostic.Kind.ERROR, "MyAnnotationProcessor:Couldn't write file");
+            messager.printMessage(Diagnostic.Kind.ERROR, "JohannesAnnotationProcessor:Couldn't write file");
         }
 
     }
@@ -97,10 +98,8 @@ public class MyAnnotationProcessor extends AbstractProcessor {
 
     }
 
-
-
     private void discoverElement(Element element, String intend) {
-        if(element == null) {
+        if (element == null) {
             return;
         }
 
@@ -109,7 +108,7 @@ public class MyAnnotationProcessor extends AbstractProcessor {
         messager.printMessage(Diagnostic.Kind.NOTE, String.format("%sType: %s %s %s ", intend, element.asType(), element.asType().getKind(), element.asType().toString()));
         messager.printMessage(Diagnostic.Kind.NOTE, String.format("%sAnnotations: %s ", intend, element.getAnnotationMirrors()));
         //discoverElement(element.getEnclosingElement(), intend + " ");
-        for(Element enclosedElement: element.getEnclosedElements()) {
+        for (Element enclosedElement : element.getEnclosedElements()) {
             discoverElement(enclosedElement, intend + " ");
         }
         messager.printMessage(Diagnostic.Kind.NOTE, String.format("%s-------------------------", intend));

@@ -98,12 +98,16 @@ buildscript {
             flatDir { dirs "${rootProject.projectDir}/libs" }
             mavenCentral()
             jcenter()
+            maven {
+                url "https://plugins.gradle.org/m2/"
+            }
         }
     }
 
     dependencies {
         classpath libs.jooq_codegen
         classpath libs.postgres
+        classpath "net.ltgt.gradle:gradle-apt-plugin:0.9"
     }
 
     repositories ext.repos

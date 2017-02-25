@@ -8,4 +8,5 @@ dependencies {
     compile libs.guava
     testCompile libs.junit
     compile libs.javapoet
+    compile project(':code-generator-api')
 }

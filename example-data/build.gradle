@@ -5,7 +5,11 @@ plugins {
 apply from: "$rootDir/java.gradle"
 apply from: "$rootDir/pmd.gradle"
 apply from: "$rootDir/intellij.gradle"
+apply plugin: "net.ltgt.apt"
 
+configurations {
+    johannesCodeGeneration
+}
 dependencies {
     provided libs.slf4j
     provided libs.weld_api
@@ -17,12 +21,83 @@ dependencies {
     compile libs.jooq
     compile libs.postgres
 
+    compile project(':code-generator-api')
+    johannesCodeGeneration project(':code-generator')
+
     testCompile libs.flyway_core
     testCompile libs.groovy
     testCompile libs.postgres
 
     testRuntime libs.logback
 }
+
+sourceSets {
+    main {
+        ext.originalJavaSrcDirs = java.srcDirs
+        ext.originalJavaResourceDirs = resources.srcDirs
+        java {
+            srcDirs += ['src/generated/main/java']
+        }
+        resources {
+            srcDirs += ['src/generated/main/resources']
+        }
+    }
+    test {
+        ext.originalTestJavaSrcDirs = java.srcDirs
+        ext.originalTestJavaResourceDirs = resources.srcDirs
+        java {
+            srcDirs += ['src/generated/test/java']
+        }
+        resources {
+            srcDirs += ['src/generated/test/resources']
+        }
+    }
+    codegeneration {
+        java {
+            srcDir './codegeneration/java'
+        }
+        resources {
+            srcDir './codegeneration/resources'
+        }
+    }
+
+}
+
+task generateMainClasses(type: JavaCompile) {
+    ext.aptDumpDir = file("${buildDir}/tmp/apt")
+    destinationDir = aptDumpDir
+
+    classpath = compileJava.classpath + configurations.johannesCodeGeneration
+
+    source = sourceSets.main.originalJavaSrcDirs
+    ext.sourceDestDir = file('src/generated/main/java')
+
+    options.define(
+            compilerArgs: [
+                    //"-nowarn",
+                    "-proc:only",
+                    "-processor", "ch.johannes.annotations.JohannesAnnotationProcessor",
+                    "-s", sourceDestDir.absolutePath,
+                    "-source", sourceCompatibility,
+                    "-target", targetCompatibility,
+            ]
+    );
+
+
+
+    //support for incremental build support
+    inputs.dir source
+    outputs.dir sourceDestDir.absolutePath;
+
+    doFirst {
+        sourceDestDir.mkdirs()
+    }
+    doLast {
+        aptDumpDir.delete()
+    }
+}
+
+compileJava.dependsOn(generateMainClasses)
 
 flyway {
     url = config.url
