@@ -8,6 +8,7 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.PackageElement;
@@ -23,9 +24,9 @@ import java.util.Set;
 
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedAnnotationTypes({
-        "ch.johannes.annotations.Plan"
+        "ch.johannes.annotations.Metadata"
 })
-public class JohannesAnnotationProcessor extends AbstractProcessor {
+public class MetadataAnnotationProcessor extends AbstractProcessor {
 
     private Elements elementUtils;
 
@@ -46,17 +47,29 @@ public class JohannesAnnotationProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        messager.printMessage(Diagnostic.Kind.WARNING, "JohannesAnnotationProcessor: We have started now...");
+        messager.printMessage(Diagnostic.Kind.WARNING, "MetadataAnnotationProcessor: We have started now...");
 
         for (TypeElement annotatedElement : annotations) {
-            final Set<? extends Element> elementsAnnotatedWith = roundEnv.getElementsAnnotatedWith(annotatedElement);
-            if(elementsAnnotatedWith != null) {
-                //createANewType();
-                //discoverGivenAnnotations(annotations);
+            messager.printMessage(Diagnostic.Kind.WARNING, "MetadataAnnotationProcessor: annotation: - " + annotatedElement);
+            final Set<? extends Element> elementsAnnotatedWithMetadata = roundEnv.getElementsAnnotatedWith(annotatedElement);
+            for(Element element:elementsAnnotatedWithMetadata) {
+                messager.printMessage(Diagnostic.Kind.WARNING, "MetadataAnnotationProcessor element: - " + element);
+                messager.printMessage(Diagnostic.Kind.WARNING, "MetadataAnnotationProcessor elements to build: - " + getClassesForMetadata(element));
+
             }
+
         }
-        messager.printMessage(Diagnostic.Kind.WARNING, "JohannesAnnotationProcessor:...and goodbye.");
+        messager.printMessage(Diagnostic.Kind.WARNING, "MetadataAnnotationProcessor:...and goodbye.");
         return true;
+    }
+
+    private Class<?> [] getClassesForMetadata(Element element) {
+        for(AnnotationMirror annotationMirror : element.getAnnotationMirrors()) {
+            if(annotationMirror.getAnnotationType().asElement().getSimpleName().contentEquals("Metadata")) {
+                annotationMirror.getElementValues().get("value");
+            }
+        };
+        return new Class<?>[] {};
     }
 
     private void createANewType() {

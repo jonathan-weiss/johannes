@@ -3,9 +3,10 @@ package ch.johannes.example.data.dao.person;
 public class Person {
 
     private final Gender gender;
+
     private final String firstname;
+
     private final String lastname;
-    private PersonBeanInfo personBeanInfo;
 
     public Person(Gender gender, String firstname, String lastname) {
         this.gender = gender;

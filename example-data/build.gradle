@@ -76,7 +76,7 @@ task generateMainClasses(type: JavaCompile) {
             compilerArgs: [
                     //"-nowarn",
                     "-proc:only",
-                    "-processor", "ch.johannes.annotations.JohannesAnnotationProcessor",
+                    "-processor", "ch.johannes.annotations.JohannesAnnotationProcessor,ch.johannes.annotations.MetadataAnnotationProcessor",
                     "-s", sourceDestDir.absolutePath,
                     "-source", sourceCompatibility,
                     "-target", targetCompatibility,
