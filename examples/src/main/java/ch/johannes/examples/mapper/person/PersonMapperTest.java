@@ -1,7 +1,6 @@
 package ch.johannes.examples.mapper.person;
 
 import ch.johannes.CollectionUtil;
-import ch.johannes.examples.mapper.product.Product;
 import org.junit.Test;
 
 import java.time.LocalDate;

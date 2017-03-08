@@ -1,9 +1,6 @@
 package ch.johannes.reflector;
 
 import ch.johannes.descriptor.ClassDescriptor;
-import ch.johannes.descriptor.ClassnameDescriptor;
-import ch.johannes.descriptor.FieldDescriptor;
-import ch.johannes.descriptor.PackageDescriptor;
 import ch.johannes.descriptor.TypeDescriptor;
 import org.junit.Test;
 
@@ -11,8 +8,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
