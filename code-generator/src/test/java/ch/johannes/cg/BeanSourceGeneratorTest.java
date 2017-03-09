@@ -3,6 +3,8 @@ package ch.johannes.cg;
 import ch.johannes.FileUtil;
 import ch.johannes.descriptor.ClassDescriptor;
 import ch.johannes.descriptor.FieldDescriptor;
+import ch.johannes.descriptor.PackageDescriptor;
+import ch.johannes.plan.BeanSourcePlan;
 import org.junit.Test;
 
 import static ch.johannes.descriptor.Descriptors.STRING_TYPE_DESCRIPTOR;
@@ -21,7 +23,9 @@ public class BeanSourceGeneratorTest {
                 .addField(FieldDescriptor.of("firstname", STRING_TYPE_DESCRIPTOR))
                 .addField(FieldDescriptor.of("lastname", STRING_TYPE_DESCRIPTOR));
 
-        String generatedCode = cg.generateCode(personTODescriptor);
+        BeanSourcePlan plan = new BeanSourcePlan(personTODescriptor);
+
+        String generatedCode = cg.generateCode(plan);
         assertThat(generatedCode, equalTo(expectedJavaSourceText));
     }
 }
