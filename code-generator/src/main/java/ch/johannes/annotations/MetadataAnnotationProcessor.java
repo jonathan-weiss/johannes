@@ -9,8 +9,10 @@ import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
@@ -20,7 +22,10 @@ import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedAnnotationTypes({
@@ -55,6 +60,18 @@ public class MetadataAnnotationProcessor extends AbstractProcessor {
             for(Element element:elementsAnnotatedWithMetadata) {
                 messager.printMessage(Diagnostic.Kind.WARNING, "MetadataAnnotationProcessor element: - " + element);
                 messager.printMessage(Diagnostic.Kind.WARNING, "MetadataAnnotationProcessor elements to build: - " + getClassesForMetadata(element));
+
+                final List<? extends AnnotationMirror> metadatas = elementUtils.getAllAnnotationMirrors(element).stream()/*.filter(annotationMirror -> annotationMirror.getAnnotationType().asElement().getSimpleName().equals("Metadata"))*/.collect(Collectors.toList());
+                for (AnnotationMirror metadata : metadatas) {
+                    final Map<? extends ExecutableElement, ? extends AnnotationValue> elementValues = metadata.getElementValues();
+                    ;
+
+                    Element metadataElement = elementUtils.getTypeElement("ch.johannes.annotations.Metadata");
+
+                    messager.printMessage(Diagnostic.Kind.WARNING, "MetadataAnnotationProcessor: Type to generate: - " + elementValues.get("value"));
+                    //messager.printMessage(Diagnostic.Kind.WARNING, "MetadataAnnotationProcessor: Element to generate: - " + typeUtils.asElement(typeMirror));
+
+                }
 
             }
 
