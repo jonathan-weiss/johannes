@@ -2,12 +2,22 @@ package ch.johannes.cg;
 
 public class BeanUtil {
 
+    public static String prefixAndSuffixName(String fieldname, String prefix, String suffix) {
+        return prefix + fieldname.substring(0, 1).toUpperCase() + fieldname.substring(1) + suffix;
+    }
+
+    public static String prefixName(String fieldname, String prefix) {
+        return prefixAndSuffixName(fieldname, prefix, "");
+    }
+
+
     public static String createGetterName(String fieldname) {
-        return "get" + fieldname.substring(0, 1).toUpperCase() + fieldname.substring(1);
+        return prefixName(fieldname, "get");
+
     }
 
     public static String createSetterName(String fieldname) {
-        return "set" + fieldname.substring(0, 1).toUpperCase() + fieldname.substring(1);
+        return prefixName(fieldname, "set");
     }
 
 }

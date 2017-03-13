@@ -4,12 +4,9 @@
 package ch.johannes.example.data.schema.tables;
 
 
-import ch.johannes.example.data.schema.Keys;
 import ch.johannes.example.data.schema.Public;
 import ch.johannes.example.data.schema.tables.records.GroupMembershipRecord;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Generated;
@@ -17,7 +14,6 @@ import javax.annotation.Generated;
 import org.jooq.Field;
 import org.jooq.Table;
 import org.jooq.TableField;
-import org.jooq.UniqueKey;
 import org.jooq.impl.TableImpl;
 
 
@@ -34,7 +30,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class GroupMembership extends TableImpl<GroupMembershipRecord> {
 
-	private static final long serialVersionUID = -1087354514;
+	private static final long serialVersionUID = 2124830957;
 
 	/**
 	 * The reference instance of <code>public.group_membership</code>
@@ -84,22 +80,6 @@ public class GroupMembership extends TableImpl<GroupMembershipRecord> {
 
 	private GroupMembership(String alias, Table<GroupMembershipRecord> aliased, Field<?>[] parameters) {
 		super(alias, Public.PUBLIC, aliased, parameters, "");
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public UniqueKey<GroupMembershipRecord> getPrimaryKey() {
-		return Keys.GROUP_MEMBERSHIP_PKEY;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public List<UniqueKey<GroupMembershipRecord>> getKeys() {
-		return Arrays.<UniqueKey<GroupMembershipRecord>>asList(Keys.GROUP_MEMBERSHIP_PKEY);
 	}
 
 	/**

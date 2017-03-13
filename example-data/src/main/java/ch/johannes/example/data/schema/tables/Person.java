@@ -4,22 +4,17 @@
 package ch.johannes.example.data.schema.tables;
 
 
-import ch.johannes.example.data.schema.Keys;
 import ch.johannes.example.data.schema.Public;
 import ch.johannes.example.data.schema.enums.GenderTypeEnum;
 import ch.johannes.example.data.schema.tables.records.PersonRecord;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Generated;
 
 import org.jooq.Field;
-import org.jooq.Identity;
 import org.jooq.Table;
 import org.jooq.TableField;
-import org.jooq.UniqueKey;
 import org.jooq.impl.TableImpl;
 
 
@@ -36,7 +31,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Person extends TableImpl<PersonRecord> {
 
-	private static final long serialVersionUID = -987043670;
+	private static final long serialVersionUID = 1864252165;
 
 	/**
 	 * The reference instance of <code>public.person</code>
@@ -96,30 +91,6 @@ public class Person extends TableImpl<PersonRecord> {
 
 	private Person(String alias, Table<PersonRecord> aliased, Field<?>[] parameters) {
 		super(alias, Public.PUBLIC, aliased, parameters, "");
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Identity<PersonRecord, Integer> getIdentity() {
-		return Keys.IDENTITY_PERSON;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public UniqueKey<PersonRecord> getPrimaryKey() {
-		return Keys.PERSON_PKEY;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public List<UniqueKey<PersonRecord>> getKeys() {
-		return Arrays.<UniqueKey<PersonRecord>>asList(Keys.PERSON_PKEY, Keys.PERSON_GUID_KEY);
 	}
 
 	/**

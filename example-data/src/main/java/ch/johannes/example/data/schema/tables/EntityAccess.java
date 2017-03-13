@@ -4,12 +4,9 @@
 package ch.johannes.example.data.schema.tables;
 
 
-import ch.johannes.example.data.schema.Keys;
 import ch.johannes.example.data.schema.Public;
 import ch.johannes.example.data.schema.tables.records.EntityAccessRecord;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Generated;
@@ -17,7 +14,6 @@ import javax.annotation.Generated;
 import org.jooq.Field;
 import org.jooq.Table;
 import org.jooq.TableField;
-import org.jooq.UniqueKey;
 import org.jooq.impl.TableImpl;
 
 
@@ -34,7 +30,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EntityAccess extends TableImpl<EntityAccessRecord> {
 
-	private static final long serialVersionUID = 425311929;
+	private static final long serialVersionUID = -893654770;
 
 	/**
 	 * The reference instance of <code>public.entity_access</code>
@@ -84,22 +80,6 @@ public class EntityAccess extends TableImpl<EntityAccessRecord> {
 
 	private EntityAccess(String alias, Table<EntityAccessRecord> aliased, Field<?>[] parameters) {
 		super(alias, Public.PUBLIC, aliased, parameters, "");
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public UniqueKey<EntityAccessRecord> getPrimaryKey() {
-		return Keys.ENTITY_ACCESS_PKEY;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public List<UniqueKey<EntityAccessRecord>> getKeys() {
-		return Arrays.<UniqueKey<EntityAccessRecord>>asList(Keys.ENTITY_ACCESS_PKEY);
 	}
 
 	/**

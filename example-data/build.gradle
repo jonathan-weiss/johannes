@@ -134,11 +134,13 @@ task jooq() {
                 generate([:]) {
                     records true
                     pojos false
+                    immutablePojos false
                     daos false
                     jpaAnnotations false
                     validationAnnotations false
                     interfaces false
                     fluentSetters true
+                    relations false
                 }
                 target() {
                     packageName('ch.johannes.example.data.schema')

@@ -4,21 +4,14 @@
 package ch.johannes.example.data.schema.tables;
 
 
-import ch.johannes.example.data.schema.Keys;
 import ch.johannes.example.data.schema.Public;
 import ch.johannes.example.data.schema.tables.records.AddressRecord;
-
-import java.util.Arrays;
-import java.util.List;
 
 import javax.annotation.Generated;
 
 import org.jooq.Field;
-import org.jooq.ForeignKey;
-import org.jooq.Identity;
 import org.jooq.Table;
 import org.jooq.TableField;
-import org.jooq.UniqueKey;
 import org.jooq.impl.TableImpl;
 
 
@@ -35,7 +28,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Address extends TableImpl<AddressRecord> {
 
-	private static final long serialVersionUID = -1535614099;
+	private static final long serialVersionUID = -125308865;
 
 	/**
 	 * The reference instance of <code>public.address</code>
@@ -95,38 +88,6 @@ public class Address extends TableImpl<AddressRecord> {
 
 	private Address(String alias, Table<AddressRecord> aliased, Field<?>[] parameters) {
 		super(alias, Public.PUBLIC, aliased, parameters, "");
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Identity<AddressRecord, Integer> getIdentity() {
-		return Keys.IDENTITY_ADDRESS;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public UniqueKey<AddressRecord> getPrimaryKey() {
-		return Keys.ADDRESS_PKEY;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public List<UniqueKey<AddressRecord>> getKeys() {
-		return Arrays.<UniqueKey<AddressRecord>>asList(Keys.ADDRESS_PKEY);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public List<ForeignKey<AddressRecord, ?>> getReferences() {
-		return Arrays.<ForeignKey<AddressRecord, ?>>asList(Keys.ADDRESS__ADDRESS_PERSON_ID_FKEY);
 	}
 
 	/**

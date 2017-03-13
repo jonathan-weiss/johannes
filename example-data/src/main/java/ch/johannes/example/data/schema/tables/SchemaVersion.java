@@ -4,20 +4,16 @@
 package ch.johannes.example.data.schema.tables;
 
 
-import ch.johannes.example.data.schema.Keys;
 import ch.johannes.example.data.schema.Public;
 import ch.johannes.example.data.schema.tables.records.SchemaVersionRecord;
 
 import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.annotation.Generated;
 
 import org.jooq.Field;
 import org.jooq.Table;
 import org.jooq.TableField;
-import org.jooq.UniqueKey;
 import org.jooq.impl.TableImpl;
 
 
@@ -34,7 +30,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SchemaVersion extends TableImpl<SchemaVersionRecord> {
 
-	private static final long serialVersionUID = -989260227;
+	private static final long serialVersionUID = 674703140;
 
 	/**
 	 * The reference instance of <code>public.schema_version</code>
@@ -119,22 +115,6 @@ public class SchemaVersion extends TableImpl<SchemaVersionRecord> {
 
 	private SchemaVersion(String alias, Table<SchemaVersionRecord> aliased, Field<?>[] parameters) {
 		super(alias, Public.PUBLIC, aliased, parameters, "");
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public UniqueKey<SchemaVersionRecord> getPrimaryKey() {
-		return Keys.SCHEMA_VERSION_PK;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public List<UniqueKey<SchemaVersionRecord>> getKeys() {
-		return Arrays.<UniqueKey<SchemaVersionRecord>>asList(Keys.SCHEMA_VERSION_PK);
 	}
 
 	/**

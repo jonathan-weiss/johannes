@@ -4,12 +4,9 @@
 package ch.johannes.example.data.schema.tables;
 
 
-import ch.johannes.example.data.schema.Keys;
 import ch.johannes.example.data.schema.Public;
 import ch.johannes.example.data.schema.tables.records.UserMappingRecord;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Generated;
@@ -17,7 +14,6 @@ import javax.annotation.Generated;
 import org.jooq.Field;
 import org.jooq.Table;
 import org.jooq.TableField;
-import org.jooq.UniqueKey;
 import org.jooq.impl.TableImpl;
 
 
@@ -34,7 +30,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class UserMapping extends TableImpl<UserMappingRecord> {
 
-	private static final long serialVersionUID = -372963972;
+	private static final long serialVersionUID = -93782720;
 
 	/**
 	 * The reference instance of <code>public.user_mapping</code>
@@ -79,22 +75,6 @@ public class UserMapping extends TableImpl<UserMappingRecord> {
 
 	private UserMapping(String alias, Table<UserMappingRecord> aliased, Field<?>[] parameters) {
 		super(alias, Public.PUBLIC, aliased, parameters, "");
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public UniqueKey<UserMappingRecord> getPrimaryKey() {
-		return Keys.USER_MAPPING_PKEY;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public List<UniqueKey<UserMappingRecord>> getKeys() {
-		return Arrays.<UniqueKey<UserMappingRecord>>asList(Keys.USER_MAPPING_PKEY, Keys.USER_MAPPING_TECHNICAL_USERNAME_KEY);
 	}
 
 	/**

@@ -1,0 +1,23 @@
+package ch.johannes.examples.mapper.oneone;
+
+import ch.johannes.data.JooqExecutor;
+import ch.johannes.examples.schema.records.PersonRecord;
+import ch.johannes.examples.schema.tables.Tables.PERSON;
+import java.util.List;
+import javax.inject.ApplicationScoped;
+import javax.inject.Inject;
+
+@ApplicationScoped
+public class JooqPersonDao {
+  private final JooqExecutor jooqExecutor;
+
+  @Inject
+  public JooqPersonDao(JooqExecutor jooqExecutor) {
+    this.jooqExecutor = jooqExecutor;
+  }
+
+  public List<PersonRecord> fetchAllPersonRecord() {
+    final Result<PersonRecord> records = jooqExecutor.execute(dslContext -> dslContext.selectFrom(Tables.PERSON).fetch();
+    return records;
+  }
+}
