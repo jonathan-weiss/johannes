@@ -8,6 +8,7 @@ import ch.johannes.descriptor.ClassDescriptor;
 import ch.johannes.descriptor.ClassnameDescriptor;
 import ch.johannes.examples.metadata.PersonMetadata;
 import ch.johannes.examples.metadata.PersonTOMetadata;
+import ch.johannes.plan.BeanSourcePlan;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,7 +33,11 @@ public class ExamplesCodeGenerationRunner {
 
             //generate person bean descriptor
             final ClassDescriptor personDescriptor = PersonMetadata.PERSON_DESCRIPTOR;
-            final String sourceCodeForPerson = cg.generateCode(personDescriptor);
+            BeanSourcePlan plan = new BeanSourcePlan(
+                    personDescriptor.getTypeDescriptor().getClassPackage(),
+                    personDescriptor.getTypeDescriptor().getClassName(),
+                    personDescriptor.getFields());
+            final String sourceCodeForPerson = cg.generateCode(plan);
             mainJavaSourceWriter.writeJavaSourceFile(
                     personDescriptor.getTypeDescriptor().getClassPackage(),
                     personDescriptor.getTypeDescriptor().getClassName(),
@@ -43,7 +48,13 @@ public class ExamplesCodeGenerationRunner {
                     PersonTOMetadata.PERSONT_O_DESCRIPTOR.getTypeDescriptor().getClassPackage(),
                     "MyPersonTO")
                     .addFields(PersonTOMetadata.PERSONT_O_DESCRIPTOR.getFields());
-            final String sourceCodeForPersonTO = cg.generateCode(personTODescriptor);
+
+            BeanSourcePlan planTO = new BeanSourcePlan(
+                    personTODescriptor.getTypeDescriptor().getClassPackage(),
+                    personTODescriptor.getTypeDescriptor().getClassName(),
+                    personTODescriptor.getFields());
+
+            final String sourceCodeForPersonTO = cg.generateCode(planTO);
             mainJavaSourceWriter.writeJavaSourceFile(
                     personTODescriptor.getTypeDescriptor().getClassPackage(),
                     personTODescriptor.getTypeDescriptor().getClassName(),
