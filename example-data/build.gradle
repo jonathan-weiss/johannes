@@ -76,8 +76,7 @@ task generateMainClasses(type: JavaCompile) {
             compilerArgs: [
                     //"-nowarn",
                     "-proc:only",
-                    "-processor", "ch.johannes.annotations.JohannesAnnotationProcessor," +
-                            "ch.johannes.annotations.MetadataAnnotationProcessor",
+                    "-processor", "ch.johannes.annotations.MetadataAnnotationProcessor",
                     "-s", sourceDestDir.absolutePath,
                     "-source", sourceCompatibility,
                     "-target", targetCompatibility,
@@ -89,6 +88,7 @@ task generateMainClasses(type: JavaCompile) {
     //support for incremental build support
     inputs.dir source
     outputs.dir sourceDestDir.absolutePath;
+    outputs.dir file('src/generated/main/tmp/x' + Math.random()) //sourceDestDir.absolutePath;
 
     doFirst {
         sourceDestDir.mkdirs()

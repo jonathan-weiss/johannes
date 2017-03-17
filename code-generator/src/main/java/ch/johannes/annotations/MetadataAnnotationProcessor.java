@@ -1,5 +1,13 @@
 package ch.johannes.annotations;
 
+import ch.johannes.MetadataClassPrism;
+import ch.johannes.cg.MetadataSourceGenerator;
+import ch.johannes.descriptor.ClassDescriptor;
+import ch.johannes.descriptor.ClassnameDescriptor;
+import ch.johannes.descriptor.FieldDescriptor;
+import ch.johannes.descriptor.PackageDescriptor;
+import ch.johannes.descriptor.TypeDescriptor;
+
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
@@ -9,21 +17,24 @@ import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.PrimitiveType;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -41,6 +52,8 @@ public class MetadataAnnotationProcessor extends AbstractProcessor {
 
     private Messager messager;
 
+    private MetadataSourceGenerator metadataSourceGenerator = new MetadataSourceGenerator();
+
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
@@ -52,96 +65,95 @@ public class MetadataAnnotationProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        messager.printMessage(Diagnostic.Kind.WARNING, "MetadataAnnotationProcessor: We have started now...");
-
         for (TypeElement annotatedElement : annotations) {
-            messager.printMessage(Diagnostic.Kind.WARNING, "MetadataAnnotationProcessor: annotation: - " + annotatedElement);
             final Set<? extends Element> elementsAnnotatedWithMetadata = roundEnv.getElementsAnnotatedWith(annotatedElement);
-            for(Element element:elementsAnnotatedWithMetadata) {
-                messager.printMessage(Diagnostic.Kind.WARNING, "MetadataAnnotationProcessor element: - " + element);
-                messager.printMessage(Diagnostic.Kind.WARNING, "MetadataAnnotationProcessor elements to build: - " + getClassesForMetadata(element));
+            for (Element element : elementsAnnotatedWithMetadata) {
+                final Set<? extends AnnotationMirror> metadataAnnotationMirrors = element.getAnnotationMirrors()
+                        .stream()
+                        .filter(annotationMirror -> annotationMirror.getAnnotationType().toString().equals(Metadata.class.getName()))
+                        .collect(Collectors.toSet());
 
-                final List<? extends AnnotationMirror> metadatas = elementUtils.getAllAnnotationMirrors(element).stream()/*.filter(annotationMirror -> annotationMirror.getAnnotationType().asElement().getSimpleName().equals("Metadata"))*/.collect(Collectors.toList());
-                for (AnnotationMirror metadata : metadatas) {
-                    final Map<? extends ExecutableElement, ? extends AnnotationValue> elementValues = metadata.getElementValues();
-                    ;
-
-                    Element metadataElement = elementUtils.getTypeElement("ch.johannes.annotations.Metadata");
-
-                    messager.printMessage(Diagnostic.Kind.WARNING, "MetadataAnnotationProcessor: Type to generate: - " + elementValues.get("value"));
-                    //messager.printMessage(Diagnostic.Kind.WARNING, "MetadataAnnotationProcessor: Element to generate: - " + typeUtils.asElement(typeMirror));
-
+                for (AnnotationMirror metadataAnnotation : metadataAnnotationMirrors) {
+                    final MetadataClassPrism annotationMirror = MetadataClassPrism.getInstance(metadataAnnotation);
+                    if (annotationMirror.value().isEmpty()) {
+                        if (element.asType().getKind() == TypeKind.DECLARED) {
+                            generateMetadataSource((DeclaredType) element.asType());
+                        }
+                    } else {
+                        annotationMirror.value()
+                                .stream()
+                                .filter(typeMirror -> typeMirror.getKind() == TypeKind.DECLARED)
+                                .map(typeMirror -> (DeclaredType) typeMirror)
+                                .forEach(this::generateMetadataSource);
+                    }
                 }
 
             }
 
         }
-        messager.printMessage(Diagnostic.Kind.WARNING, "MetadataAnnotationProcessor:...and goodbye.");
         return true;
     }
 
-    private Class<?> [] getClassesForMetadata(Element element) {
-        for(AnnotationMirror annotationMirror : element.getAnnotationMirrors()) {
-            if(annotationMirror.getAnnotationType().asElement().getSimpleName().contentEquals("Metadata")) {
-                annotationMirror.getElementValues().get("value");
-            }
-        };
-        return new Class<?>[] {};
-    }
+    private void generateMetadataSource(DeclaredType declaredType) {
+        //TODO create metadata for this type
 
-    private void createANewType() {
+
+        ClassDescriptor sourceClassDescriptor = createGenerationModel(declaredType);
+        PackageDescriptor targetPackage = sourceClassDescriptor.getTypeDescriptor().getClassPackage();
+        final String javaSourceCode = metadataSourceGenerator.generateCode(sourceClassDescriptor, targetPackage);
+
+        String fullQualifiedName = String.format("%s.%sMetadata",targetPackage.getPackageName(), sourceClassDescriptor.getTypeDescriptor().getClassName());
+        messager.printMessage(Diagnostic.Kind.NOTE, "MetadataAnnotationProcessor: generate: " + fullQualifiedName);
         try {
-            final TypeElement classElement = elementUtils.getTypeElement("ch.johannes.example.data.dao.person.Person");
-            PackageElement packageElement = (PackageElement) classElement.getEnclosingElement();
-            JavaFileObject jfo = processingEnv.getFiler().createSourceFile(classElement.getQualifiedName() + "BeanInfo");
-
-            BufferedWriter bw = new BufferedWriter(jfo.openWriter());
-            bw.append("package ");
-            bw.append(packageElement.getQualifiedName());
-            bw.append(";");
-
-            bw.append("public class " + classElement.getSimpleName() + "BeanInfo {}");
-            bw.newLine();
-            bw.newLine();
-
-            bw.close();
-            // rest of generated class contents
-
-        } catch (IOException e) {
-            messager.printMessage(Diagnostic.Kind.ERROR, "JohannesAnnotationProcessor:Couldn't write file");
-        }
-
-    }
-
-    private void discoverGivenAnnotations(Set<? extends TypeElement> annotations) {
-        TypeMirror typeMirror = elementUtils.getTypeElement("ch.johannes.annotations.examples.AnotherClass").asType();
-        discoverElement(typeUtils.asElement(typeMirror), "typeMirror");
-        // Itearate over all @Factory annotated elements
-        for (Element annotatedElement : annotations) {
-            messager.printMessage(Diagnostic.Kind.NOTE, annotatedElement.toString());
-            discoverElement(annotatedElement, " ");
-            // Check if a class has been annotated with @Factory
-            if (annotatedElement.getKind() != ElementKind.CLASS) {
-
+        Writer writer = null;
+            try {
+                JavaFileObject jfo = filer.createSourceFile(fullQualifiedName);
+                writer = jfo.openWriter();
+                writer.write(javaSourceCode);
+            } finally {
+                if(writer != null) {
+                    writer.close();
+                }
             }
+        } catch (IOException e) {
+            messager.printMessage(Diagnostic.Kind.ERROR, String.format("Couldn't write file %s (%s)", sourceClassDescriptor, targetPackage));
         }
 
     }
 
-    private void discoverElement(Element element, String intend) {
-        if (element == null) {
-            return;
+    private ClassDescriptor createGenerationModel(DeclaredType declaredType) {
+
+        final Element element = declaredType.asElement();
+        final PackageElement packageOf = elementUtils.getPackageOf(element);
+
+        final List<VariableElement> variableElements = ElementFilter.fieldsIn(element.getEnclosedElements());
+        final List<FieldDescriptor> fieldDescriptors = variableElements.stream().map(this::convertVariableElement).collect(Collectors.toList());
+        ClassDescriptor descriptor = ClassDescriptor.of(packageOf.toString(), element.getSimpleName().toString());
+        descriptor = descriptor.addFields(fieldDescriptors);
+
+        return descriptor;
+    }
+
+    private FieldDescriptor convertVariableElement(VariableElement variableElement) {
+        String fieldName = variableElement.getSimpleName().toString();
+        TypeDescriptor fieldType = convertType(variableElement.asType());
+        return FieldDescriptor.of(fieldName, fieldType);
+    }
+
+    private TypeDescriptor convertType(TypeMirror typeMirror) {
+
+        if(typeMirror.getKind().isPrimitive()) {
+            return TypeDescriptor.of("", typeMirror.toString()).withPrimitive(true);
         }
 
-        messager.printMessage(Diagnostic.Kind.NOTE, String.format("%s-------------------------", intend));
-        messager.printMessage(Diagnostic.Kind.NOTE, String.format("%sElement: %s %s %s ", intend, element.getSimpleName(), element.getKind(), element.getModifiers()));
-        messager.printMessage(Diagnostic.Kind.NOTE, String.format("%sType: %s %s %s ", intend, element.asType(), element.asType().getKind(), element.asType().toString()));
-        messager.printMessage(Diagnostic.Kind.NOTE, String.format("%sAnnotations: %s ", intend, element.getAnnotationMirrors()));
-        //discoverElement(element.getEnclosingElement(), intend + " ");
-        for (Element enclosedElement : element.getEnclosedElements()) {
-            discoverElement(enclosedElement, intend + " ");
+        final Element element = typeUtils.asElement(typeMirror);
+        if(element == null) {
+            messager.printMessage(Diagnostic.Kind.ERROR, String.format("Couldn't fetch element for type %s.", typeMirror));
         }
-        messager.printMessage(Diagnostic.Kind.NOTE, String.format("%s-------------------------", intend));
+        final PackageElement packageElement = elementUtils.getPackageOf(element);
+        PackageDescriptor packageOf = PackageDescriptor.of(packageElement.getQualifiedName().toString());
+        ClassnameDescriptor typeName = ClassnameDescriptor.of(element.getSimpleName().toString());
+        return TypeDescriptor.of(packageOf, typeName);
     }
 
     @Override
