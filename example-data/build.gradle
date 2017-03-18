@@ -22,11 +22,13 @@ dependencies {
     compile libs.postgres
 
     compile project(':code-generator-api')
+
     johannesCodeGeneration project(':code-generator')
 
     testCompile libs.flyway_core
     testCompile libs.groovy
     testCompile libs.postgres
+    testCompile libs.mockito
 
     testRuntime libs.logback
 }
@@ -52,25 +54,16 @@ sourceSets {
             srcDirs += ['src/generated/test/resources']
         }
     }
-    codegeneration {
-        java {
-            srcDir './codegeneration/java'
-        }
-        resources {
-            srcDir './codegeneration/resources'
-        }
-    }
-
 }
 
-task generateMainClasses(type: JavaCompile) {
+task generateMetadataClasses(type: JavaCompile) {
     ext.aptDumpDir = file("${buildDir}/tmp/apt")
     destinationDir = aptDumpDir
 
     classpath = compileJava.classpath + configurations.johannesCodeGeneration
 
     source = sourceSets.main.originalJavaSrcDirs
-    ext.sourceDestDir = file('src/generated/main/java')
+    ext.sourceDestDir = file("${project(':example-data-generator').projectDir}/src/metadata/main/java")
 
     options.define(
             compilerArgs: [
@@ -98,7 +91,9 @@ task generateMainClasses(type: JavaCompile) {
     }
 }
 
-compileJava.dependsOn(generateMainClasses)
+compileJava.dependsOn(generateMetadataClasses)
+compileJava.dependsOn(":example-data-generator:generateExampleDataGeneratedMainSourceCode")
+compileJava.dependsOn(":example-data-generator:generateExampleDataGeneratedTestSourceCode")
 
 flyway {
     url = config.url

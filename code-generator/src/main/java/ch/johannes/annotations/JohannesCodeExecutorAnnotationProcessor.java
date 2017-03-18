@@ -1,5 +1,7 @@
 package ch.johannes.annotations;
 
+import ch.johannes.executor.CodeGeneratorRunnable;
+
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
@@ -19,13 +21,14 @@ import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.ServiceLoader;
 import java.util.Set;
 
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedAnnotationTypes({
-        "ch.johannes.annotations.Plan"
+        "ch.johannes.annotations.CodeGeneratorExecutor"
 })
-public class JohannesAnnotationProcessor extends AbstractProcessor {
+public class JohannesCodeExecutorAnnotationProcessor extends AbstractProcessor {
 
     private Elements elementUtils;
 
@@ -46,16 +49,49 @@ public class JohannesAnnotationProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        messager.printMessage(Diagnostic.Kind.WARNING, "JohannesAnnotationProcessor: We have started now...");
+        messager.printMessage(Diagnostic.Kind.WARNING, "JohannesCodeExecutorAnnotationProcessor: We have started now...");
+
+
+        ServiceLoader.load(
+                CodeGeneratorRunnable.class,
+                ClassLoader.getSystemClassLoader()
+        ).forEach(codeGeneratorRunnable -> {
+            messager.printMessage(Diagnostic.Kind.WARNING, "JohannesCodeExecutorAnnotationProcessor: Run " + codeGeneratorRunnable);
+        });
+//                .iterator();
+//        List<CodeGeneratorRunnable> processors = new ArrayList<>();
+//
+//
+//        for(CodeGeneratorRunnable CodeGeneratorRunnable : processorIterator) {
+//
+//        }
+//        while ( processorIterator.hasNext() ) {
+//
+//
+//            processors.add( processorIterator.next() );
+//        }
 
         for (TypeElement annotatedElement : annotations) {
             final Set<? extends Element> elementsAnnotatedWith = roundEnv.getElementsAnnotatedWith(annotatedElement);
-            if(elementsAnnotatedWith != null) {
+            if (elementsAnnotatedWith != null) {
+
+
+                for (Element elementAnnotatedWith : elementsAnnotatedWith) {
+                    messager.printMessage(Diagnostic.Kind.WARNING, "JohannesCodeExecutorAnnotationProcessor:" + elementAnnotatedWith);
+
+                    String clazzname = elementAnnotatedWith.toString();
+                    try {
+                        Class<?> cls = Class.forName(clazzname, false, ClassLoader.getSystemClassLoader().getParent());
+                        messager.printMessage(Diagnostic.Kind.NOTE, String.format("Class '%s' was found.", cls));
+                    } catch (ClassNotFoundException e) {
+                        messager.printMessage(Diagnostic.Kind.ERROR, String.format("Class '%s' not found.", clazzname));
+                    }
+                }
                 //createANewType();
                 //discoverGivenAnnotations(annotations);
             }
         }
-        messager.printMessage(Diagnostic.Kind.WARNING, "JohannesAnnotationProcessor:...and goodbye.");
+        messager.printMessage(Diagnostic.Kind.WARNING, "JohannesCodeExecutorAnnotationProcessor:...and goodbye.");
         return true;
     }
 
@@ -78,7 +114,7 @@ public class JohannesAnnotationProcessor extends AbstractProcessor {
             // rest of generated class contents
 
         } catch (IOException e) {
-            messager.printMessage(Diagnostic.Kind.ERROR, "JohannesAnnotationProcessor:Couldn't write file");
+            messager.printMessage(Diagnostic.Kind.ERROR, "JohannesCodeExecutorAnnotationProcessor:Couldn't write file");
         }
 
     }
