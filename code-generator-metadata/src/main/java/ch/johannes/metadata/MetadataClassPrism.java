@@ -1,6 +1,6 @@
-package ch.johannes;
+package ch.johannes.metadata;
 
-import ch.johannes.annotations.Metadata;
+import ch.johannes.metadata.api.Metadata;
 
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
@@ -46,7 +46,7 @@ public class MetadataClassPrism {
     }
 
     /**
-     * Return a prism of the {@code @ch.johannes.annotations.Metadata} annotation whose mirror is mirror.
+     * Return a prism of the {@link Metadata} annotation whose mirror is mirror.
      */
     public static MetadataClassPrism getInstance(AnnotationMirror mirror) {
         return new MetadataClassPrism(mirror);

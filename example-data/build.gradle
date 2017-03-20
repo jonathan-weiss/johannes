@@ -8,7 +8,7 @@ apply from: "$rootDir/intellij.gradle"
 apply plugin: "net.ltgt.apt"
 
 configurations {
-    johannesCodeGeneration
+    metadataCodeGeneration
 }
 dependencies {
     provided libs.slf4j
@@ -21,9 +21,10 @@ dependencies {
     compile libs.jooq
     compile libs.postgres
 
-    compile project(':code-generator-api')
+    metadataCodeGeneration project(':code-generator-metadata-api')
+    metadataCodeGeneration project(':code-generator-metadata')
 
-    johannesCodeGeneration project(':code-generator')
+    compile project(':code-generator-metadata-api')
 
     testCompile libs.flyway_core
     testCompile libs.groovy
@@ -60,7 +61,7 @@ task generateMetadataClasses(type: JavaCompile) {
     ext.aptDumpDir = file("${buildDir}/tmp/apt")
     destinationDir = aptDumpDir
 
-    classpath = compileJava.classpath + configurations.johannesCodeGeneration
+    classpath = compileJava.classpath + configurations.metadataCodeGeneration
 
     source = sourceSets.main.originalJavaSrcDirs
     ext.sourceDestDir = file("${project(':example-data-generator').projectDir}/src/metadata/main/java")
@@ -69,7 +70,7 @@ task generateMetadataClasses(type: JavaCompile) {
             compilerArgs: [
                     //"-nowarn",
                     "-proc:only",
-                    "-processor", "ch.johannes.annotations.MetadataAnnotationProcessor",
+                    "-processor", "ch.johannes.metadata.MetadataAnnotationProcessor",
                     "-s", sourceDestDir.absolutePath,
                     "-source", sourceCompatibility,
                     "-target", targetCompatibility,

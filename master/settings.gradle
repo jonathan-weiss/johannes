@@ -1,4 +1,6 @@
 includeFlat 'code-generator-api'
+includeFlat 'code-generator-metadata'
+includeFlat 'code-generator-metadata-api'
 includeFlat 'code-generator'
 //includeFlat 'examples'
 includeFlat 'example-data'

@@ -1,12 +1,11 @@
-package ch.johannes.annotations;
+package ch.johannes.metadata;
 
-import ch.johannes.MetadataClassPrism;
-import ch.johannes.cg.MetadataSourceGenerator;
 import ch.johannes.descriptor.ClassDescriptor;
 import ch.johannes.descriptor.ClassnameDescriptor;
 import ch.johannes.descriptor.FieldDescriptor;
 import ch.johannes.descriptor.PackageDescriptor;
 import ch.johannes.descriptor.TypeDescriptor;
+import ch.johannes.metadata.api.Metadata;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
@@ -18,12 +17,10 @@ import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
@@ -31,7 +28,6 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
@@ -40,7 +36,7 @@ import java.util.stream.Collectors;
 
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedAnnotationTypes({
-        "ch.johannes.annotations.Metadata"
+        "ch.johannes.metadata.api.Metadata"
 })
 public class MetadataAnnotationProcessor extends AbstractProcessor {
 
@@ -95,23 +91,20 @@ public class MetadataAnnotationProcessor extends AbstractProcessor {
     }
 
     private void generateMetadataSource(DeclaredType declaredType) {
-        //TODO create metadata for this type
-
-
         ClassDescriptor sourceClassDescriptor = createGenerationModel(declaredType);
         PackageDescriptor targetPackage = sourceClassDescriptor.getTypeDescriptor().getClassPackage();
         final String javaSourceCode = metadataSourceGenerator.generateCode(sourceClassDescriptor, targetPackage);
 
-        String fullQualifiedName = String.format("%s.%sMetadata",targetPackage.getPackageName(), sourceClassDescriptor.getTypeDescriptor().getClassName());
+        String fullQualifiedName = String.format("%s.%sMetadata", targetPackage.getPackageName(), sourceClassDescriptor.getTypeDescriptor().getClassName());
         messager.printMessage(Diagnostic.Kind.NOTE, "MetadataAnnotationProcessor: generate: " + fullQualifiedName);
         try {
-        Writer writer = null;
+            Writer writer = null;
             try {
                 JavaFileObject jfo = filer.createSourceFile(fullQualifiedName);
                 writer = jfo.openWriter();
                 writer.write(javaSourceCode);
             } finally {
-                if(writer != null) {
+                if (writer != null) {
                     writer.close();
                 }
             }
@@ -142,12 +135,12 @@ public class MetadataAnnotationProcessor extends AbstractProcessor {
 
     private TypeDescriptor convertType(TypeMirror typeMirror) {
 
-        if(typeMirror.getKind().isPrimitive()) {
+        if (typeMirror.getKind().isPrimitive()) {
             return TypeDescriptor.of("", typeMirror.toString()).withPrimitive(true);
         }
 
         final Element element = typeUtils.asElement(typeMirror);
-        if(element == null) {
+        if (element == null) {
             messager.printMessage(Diagnostic.Kind.ERROR, String.format("Couldn't fetch element for type %s.", typeMirror));
         }
         final PackageElement packageElement = elementUtils.getPackageOf(element);
