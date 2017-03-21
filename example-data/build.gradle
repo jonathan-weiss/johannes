@@ -96,6 +96,13 @@ compileJava.dependsOn(generateMetadataClasses)
 compileJava.dependsOn(":example-data-generator:generateExampleDataGeneratedMainSourceCode")
 compileJava.dependsOn(":example-data-generator:generateExampleDataGeneratedTestSourceCode")
 
+// deletes the generated sources
+task cleanupGenerateSources(type: Delete) {
+    delete './src/generated'
+    followSymlinks = false
+}
+
+
 flyway {
     url = config.url
     user = config.user
