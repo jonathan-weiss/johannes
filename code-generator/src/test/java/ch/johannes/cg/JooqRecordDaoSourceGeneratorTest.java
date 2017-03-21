@@ -1,6 +1,6 @@
 package ch.johannes.cg;
 
-import ch.johannes.FileUtil;
+import ch.johannes.core.FileUtil;
 import ch.johannes.descriptor.ClassnameDescriptor;
 import ch.johannes.descriptor.FieldDescriptor;
 import ch.johannes.descriptor.PackageDescriptor;

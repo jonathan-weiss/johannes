@@ -7,6 +7,5 @@ dependencies {
     compile libs.guava
     testCompile libs.junit
     compile libs.javapoet
-    compile project(':code-generator-core')
     compile project(':code-generator-api')
 }

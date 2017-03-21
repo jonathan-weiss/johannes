@@ -1,5 +1,6 @@
 package ch.johannes.cg;
 
+import ch.johannes.core.BeanUtil;
 import ch.johannes.descriptor.FieldDescriptor;
 import ch.johannes.plan.JooqRecordDaoSourcePlan;
 import com.squareup.javapoet.ClassName;

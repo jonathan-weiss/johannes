@@ -1,4 +1,4 @@
-package ch.johannes.cg;
+package ch.johannes.core;
 
 import ch.johannes.descriptor.ClassnameDescriptor;
 import ch.johannes.descriptor.PackageDescriptor;

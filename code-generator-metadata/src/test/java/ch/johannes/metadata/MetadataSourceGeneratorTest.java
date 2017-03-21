@@ -1,6 +1,7 @@
-package ch.johannes.cg;
+package ch.johannes.metadata;
 
-import ch.johannes.FileUtil;
+import ch.johannes.core.FileUtil;
+import ch.johannes.core.JavaSourceWriter;
 import ch.johannes.descriptor.ClassDescriptor;
 import ch.johannes.descriptor.ClassnameDescriptor;
 import ch.johannes.descriptor.FieldDescriptor;
@@ -29,7 +30,6 @@ public class MetadataSourceGeneratorTest {
                 .addField(FieldDescriptor.of("street", STRING_TYPE_DESCRIPTOR))
                 .addField(FieldDescriptor.of("zipCode", STRING_TYPE_DESCRIPTOR))
                 .addField(FieldDescriptor.of("city", STRING_TYPE_DESCRIPTOR));
-
 
         TypeDescriptor listOfStringFieldType = LIST_TYPE_DESCRIPTOR.addGenericParameter(STRING_TYPE_DESCRIPTOR);
 

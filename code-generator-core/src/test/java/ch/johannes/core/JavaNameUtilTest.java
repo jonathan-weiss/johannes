@@ -1,4 +1,4 @@
-package ch.johannes;
+package ch.johannes.core;
 
 import org.junit.Test;
 

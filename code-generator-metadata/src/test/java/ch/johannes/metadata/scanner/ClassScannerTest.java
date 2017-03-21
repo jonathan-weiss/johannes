@@ -1,6 +1,6 @@
-package ch.johannes.scanner;
+package ch.johannes.metadata.scanner;
 
-import ch.johannes.FileUtil;
+import ch.johannes.core.FileUtil;
 import ch.johannes.descriptor.ClassDescriptor;
 import ch.johannes.descriptor.ClassnameDescriptor;
 import ch.johannes.descriptor.Descriptor;
@@ -12,7 +12,6 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;

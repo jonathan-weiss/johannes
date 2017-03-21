@@ -1,4 +1,4 @@
-package ch.johannes.scanner;
+package ch.johannes.metadata.scanner;
 
 import com.google.common.base.Preconditions;
 import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
@@ -7,7 +7,6 @@ import io.github.lukehutch.fastclasspathscanner.scanner.ClassInfo;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class ClassScanner {

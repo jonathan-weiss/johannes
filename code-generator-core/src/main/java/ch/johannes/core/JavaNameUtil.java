@@ -1,4 +1,4 @@
-package ch.johannes.metadata;
+package ch.johannes.core;
 
 public class JavaNameUtil {
 

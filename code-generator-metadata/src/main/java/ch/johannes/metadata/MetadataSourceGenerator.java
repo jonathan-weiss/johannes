@@ -1,5 +1,6 @@
 package ch.johannes.metadata;
 
+import ch.johannes.core.JavaNameUtil;
 import ch.johannes.descriptor.ClassDescriptor;
 import ch.johannes.descriptor.ClassnameDescriptor;
 import ch.johannes.descriptor.Descriptors;

@@ -1,4 +1,4 @@
-package ch.johannes.cg;
+package ch.johannes.core;
 
 public class BeanUtil {
 

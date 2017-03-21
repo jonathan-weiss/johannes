@@ -1,9 +1,8 @@
 package ch.johannes.cg;
 
-import ch.johannes.FileUtil;
+import ch.johannes.core.FileUtil;
 import ch.johannes.descriptor.ClassDescriptor;
 import ch.johannes.descriptor.FieldDescriptor;
-import ch.johannes.plan.BeanSourcePlan;
 import ch.johannes.plan.ImmutableBeanSourcePlan;
 import org.junit.Test;
 
