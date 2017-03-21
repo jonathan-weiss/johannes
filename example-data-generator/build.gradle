@@ -21,36 +21,20 @@ dependencies {
 }
 
 
-task generateExampleDataGeneratedMainSourceCode(type: JavaExec, dependsOn: 'classes') {
+task generateExampleDataSourceCode(type: JavaExec, dependsOn: 'classes') {
     group = 'Code Generation'
-    description = 'Generate code for the example-data layers main classes.'
-    ext.mainSourceDestinationDir = file("${project(':example-data').projectDir}/src/generated/main/java")
+    description = 'Generate code for the example-data layers main and test classes.'
+    ext.generatedCodeDestinationDir = file("${project(':example-data').projectDir}/src/generated")
+    ext.mainSourceDestinationDir = file(generatedCodeDestinationDir.absolutePath + "/main/java")
+    ext.testSourceDestinationDir = file(generatedCodeDestinationDir.absolutePath + "/test/java")
 
     classpath = sourceSets.main.runtimeClasspath
-    main = 'ch.johannes.example.generator.MainCodeGeneratorRunnable'
-    args mainSourceDestinationDir.absolutePath
+    main = 'ch.johannes.example.generator.CodeGeneratorRunnable'
+    args mainSourceDestinationDir.absolutePath, testSourceDestinationDir.absolutePath
 
     //support for incremental build support
     inputs.dir sourceSets.main.runtimeClasspath
-    outputs.dir mainSourceDestinationDir.absolutePath;
-
-    //to avoid incremental build support for this task
-    outputs.dir file("${buildDir}/tmp/apt/d" + Math.random()) //sourceDestDir.absolutePath;
-
-}
-
-task generateExampleDataGeneratedTestSourceCode(type: JavaExec, dependsOn: 'classes') {
-    group = 'Code Generation'
-    description = 'Generate code for the example-data layers test classes.'
-    ext.testSourceDestinationDir = file("${project(':example-data').projectDir}/src/generated/test/java")
-
-    classpath = sourceSets.main.runtimeClasspath
-    main = 'ch.johannes.example.generator.TestCodeGeneratorRunnable'
-    args testSourceDestinationDir.absolutePath
-
-    //support for incremental build support
-    inputs.dir sourceSets.main.runtimeClasspath
-    outputs.dir testSourceDestinationDir.absolutePath;
+    outputs.dir generatedCodeDestinationDir.absolutePath;
 
     //to avoid incremental build support for this task
     outputs.dir file("${buildDir}/tmp/apt/d" + Math.random()) //sourceDestDir.absolutePath;

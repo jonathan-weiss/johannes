@@ -93,8 +93,7 @@ task generateMetadataClasses(type: JavaCompile) {
 }
 
 compileJava.dependsOn(generateMetadataClasses)
-compileJava.dependsOn(":example-data-generator:generateExampleDataGeneratedMainSourceCode")
-compileJava.dependsOn(":example-data-generator:generateExampleDataGeneratedTestSourceCode")
+compileJava.dependsOn(":example-data-generator:generateExampleDataSourceCode")
 
 // deletes the generated sources
 task cleanupGenerateSources(type: Delete) {
