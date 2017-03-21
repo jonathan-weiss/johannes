@@ -3,9 +3,7 @@ apply from: "$rootDir/intellij.gradle"
 
 dependencies {
     compile libs.junit //for generators to know test annotations
-    compile libs.typetools
     compile libs.guava
     testCompile libs.junit
-    compile libs.javapoet
     compile project(':code-generator-api')
 }
