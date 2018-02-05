@@ -1,0 +1,22 @@
+package ch.johannes.examples.mapper.oneone;
+
+import java.lang.String;
+
+public final class PersonTO {
+  private final String firstname;
+
+  private final String lastname;
+
+  public PersonTO(String firstname, String lastname) {
+    this.firstname = firstname;
+    this.lastname = lastname;
+  }
+
+  public String getFirstname() {
+    return this.firstname;
+  }
+
+  public String getLastname() {
+    return this.lastname;
+  }
+}

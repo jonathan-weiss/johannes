@@ -6,6 +6,8 @@ import ch.johannes.descriptor.FieldDescriptor;
 import ch.johannes.descriptor.PackageDescriptor;
 import ch.johannes.descriptor.TypeDescriptor;
 import ch.johannes.metadata.api.Metadata;
+import ch.johannes.metadata.util.ElementSummaryUtil;
+import ch.johannes.metadata.util.TypeSummaryUtil;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
@@ -90,7 +92,24 @@ public class MetadataAnnotationProcessor extends AbstractProcessor {
         return true;
     }
 
+    private void printTypeSummary(DeclaredType declaredType) {
+        TypeSummaryUtil.printTypeSummary(messager, declaredType);
+        final Element element = declaredType.asElement();
+        ElementSummaryUtil.printElementSummary(messager, element);
+    }
+
     private void generateMetadataSource(DeclaredType declaredType) {
+        printTypeSummary(declaredType);
+        declaredType.getTypeArguments();
+        declaredType.getKind();
+        declaredType.getEnclosingType();
+        declaredType.asElement().getEnclosedElements();
+        declaredType.asElement().getSimpleName();
+
+        //declaredType.asElement().getEnclosedElements().get(0).getSimpleName()
+
+        declaredType.getTypeArguments();
+
         ClassDescriptor sourceClassDescriptor = createGenerationModel(declaredType);
         PackageDescriptor targetPackage = sourceClassDescriptor.getTypeDescriptor().getClassPackage();
         final String javaSourceCode = metadataSourceGenerator.generateCode(sourceClassDescriptor, targetPackage);

@@ -5,8 +5,10 @@ import ch.johannes.descriptor.ClassDescriptor;
 import ch.johannes.descriptor.ClassnameDescriptor;
 import ch.johannes.descriptor.Descriptor;
 import ch.johannes.descriptor.FieldDescriptor;
+import ch.johannes.descriptor.MethodDescriptor;
 import ch.johannes.descriptor.PackageDescriptor;
 import ch.johannes.descriptor.TypeDescriptor;
+import ch.johannes.descriptor.VariableDescriptor;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -51,6 +53,8 @@ public class ClassScannerTest {
                 Descriptor.class,
                 ClassDescriptor.class,
                 ClassnameDescriptor.class,
+                MethodDescriptor.class,
+                VariableDescriptor.class,
                 FieldDescriptor.class,
                 PackageDescriptor.class,
                 TypeDescriptor.class));
